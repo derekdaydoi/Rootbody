@@ -1,73 +1,99 @@
-# Rootbody V1
+# Rootbody V2
 
-Rootbody là PWA local-first để theo dõi calorie deficit cá nhân. Bản V1 ưu tiên mô hình năng lượng minh bạch và thao tác nhanh trên điện thoại, chưa phụ thuộc Apple Health hoặc backend.
+Rootbody là PWA local-first để ước tính calorie deficit và theo dõi xu hướng cân nặng. V2 ưu tiên model có thể giải thích, nhập tay nhanh và chạy độc lập trên GitHub Pages; không phụ thuộc Apple Health, backend hay tài khoản.
 
-## Công thức V1
+## V2 có gì
+
+- Hồ sơ cá nhân: cân nặng, chiều cao, BMI và lựa chọn `Asian action points` / `International`.
+- Ghi vận động thủ công:
+  - Đi bộ: số bước + số phút.
+  - Chạy: số bước + số phút.
+  - Cầu lông: số phút + trình độ từ Yếu đến Giỏi.
+- 12 món/khẩu phần mẫu thêm bằng một chạm, calorie được làm tròn lên có chủ đích.
+- Dashboard hiển thị calorie và `kg eq.` — kg tương đương năng lượng.
+- Chart cân nặng tối đa 20 lần ghi gần nhất và chart số bước 14 ngày.
+- Migration không phá dữ liệu từ localStorage `rootbody.v1` sang `rootbody.v2`.
+- Cài lên iPhone Home Screen và hoạt động offline sau lần tải đầu.
+
+## Model năng lượng
+
+### Cân bằng ngày
 
 ```text
-deficit = calo nền + calorie vận động thêm - calorie đã ăn
+deficit_kcal = baseline_kcal + activity_net_kcal - intake_kcal
+predicted_weight_change_kg = -deficit_kcal / 7,700
 ```
 
-Giá trị mặc định:
+`baseline_kcal` mặc định là 1.600 kcal/ngày theo product assumption hiện tại, không phải BMR được cá nhân hóa. V2 chưa hỏi tuổi/giới tính nên không tự suy ra BMR.
 
-- calo nền: `1.600 kcal/ngày`;
-- deficit mục tiêu: `400 kcal/ngày`.
+`kg eq.` không phải dự báo số cân ngày mai. Nó chỉ là năng lượng quy đổi; nước, glycogen, muối, tiêu hóa và sai số khẩu phần khiến cân thực tế lệch đáng kể. Chart cân thật được dùng để đánh giá xu hướng.
 
-Hai giá trị đều chỉnh được trong **Thiết lập**. `1.600` là prior cá nhân ban đầu, không phải hằng số đúng cho mọi người và không phải kết luận y khoa.
+### Vận động
 
-Rootbody không suy diễn độ chính xác giả từ một ngày cân. V1 thu thập weight log; calibrated TDEE chỉ nên mở khi có tối thiểu 14 lần cân trong cửa sổ 21 ngày và food log đủ đầy.
+```text
+activity_net_kcal = floor_to_10((MET - 1) × 3.5 × weight_kg / 200 × minutes)
+```
 
-## Có trong V1
+Trừ `1 MET` để tránh cộng lại phần năng lượng nghỉ đã nằm trong baseline. Kết quả vận động làm tròn xuống 10 kcal.
 
-- tính deficit theo thời gian thực;
-- nhập tổng calorie theo từng bữa;
-- nhập calorie vận động thêm;
-- ngân sách ăn dựa trên deficit mục tiêu;
-- log cân nặng buổi sáng;
-- tiến độ dữ liệu cho TDEE calibration;
-- export/import JSON;
-- lưu hoàn toàn bằng `localStorage` trên thiết bị;
-- PWA offline và Home Screen;
-- không account, analytics hoặc server.
+Đi bộ/chạy dùng chiều cao để ước tính độ dài bước, suy ra quãng đường và tốc độ:
+
+```text
+walking_step_length_m = height_m × 0.415
+running_step_length_m = height_m × 0.65
+distance_km = steps × step_length_m / 1,000
+speed_kmh = distance_km / hours
+```
+
+MET được chọn theo band tốc độ của [2024 Adult Compendium — Walking](https://pacompendium.com/walking/) và [Running](https://pacompendium.com/running/). Cầu lông neo theo 5.5 MET (social), 7.0 MET (competitive) và 9.0 MET (match play) trong [Sports Compendium](https://pacompendium.com/sports/); các mức xen giữa là product heuristic bảo thủ.
+
+### BMI
+
+```text
+BMI = weight_kg / height_m²
+```
+
+Công thức không đổi giữa hai lựa chọn. `International` dùng mốc 25/30. `Asian action points` dùng mốc 23/27.5 để cảnh báo nguy cơ; đây là action points, không phải một định nghĩa BMI mới cho mọi người châu Á. Tham chiếu: [WHO expert consultation](https://pubmed.ncbi.nlm.nih.gov/14726171/).
+
+BMI chỉ là screening, không phải chẩn đoán sức khỏe.
+
+## Quy tắc ước tính
+
+- Đồ ăn: làm tròn lên; ví dụ cà phê sữa được cố định 100 kcal.
+- Vận động: tính phần ròng và làm tròn xuống.
+- Ngày chưa ghi món ăn không tạo dự báo kg, vì coi lượng ăn là 0 sẽ tạo thâm hụt giả.
+- Mọi sample đều có khẩu phần cố định; bấm nhiều lần tương ứng nhiều khẩu phần.
 
 ## Privacy
 
-Food log, cân nặng và thiết lập chỉ nằm trong trình duyệt hiện tại. Xóa browser data hoặc gỡ website data sẽ làm mất dữ liệu nếu chưa export JSON.
+- Toàn bộ hồ sơ, món ăn, vận động và cân nặng nằm trong `localStorage` của trình duyệt.
+- Không gửi dữ liệu tới server, không analytics, không tài khoản.
+- Xóa dữ liệu website trong Safari/Chrome sẽ xóa dữ liệu Rootbody trên máy đó.
+- GitHub Pages chỉ phục vụ các file tĩnh của ứng dụng.
 
 ## Chạy local
 
-Không cần build hoặc dependency:
+Mở bằng một static server bất kỳ, ví dụ:
 
 ```bash
-python -m http.server 8080
+python -m http.server 8765
 ```
 
-Mở `http://localhost:8080`.
+Sau đó truy cập `http://localhost:8765`.
 
-## GitHub Pages
+## Deploy GitHub Pages
 
-Repo được thiết kế để publish trực tiếp từ root của nhánh `main`. Tất cả asset dùng relative URL nên hoạt động dưới project path `/Rootbody/`.
+Workflow `.github/workflows/pages.yml` deploy nhánh `main`. Trong repository, chọn `Settings → Pages → Source: GitHub Actions` một lần; các commit sau sẽ tự deploy.
 
-## Brand
+## Cấu trúc
 
-Rootbody dùng cùng hệ thống với Rootflow và Rootwork:
-
-- background `#F3F0E7`;
-- surface `#FFFDF9`;
-- ink `#101110`;
-- duy nhất một brand green `#14614A`;
-- Manrope 800 cho wordmark, heading và số lớn;
-- system font cho UI vận hành;
-- icon nền xanh đặc, nét trắng tròn và một root anchor dot.
-
-Chi tiết nằm trong [`BRAND_SPEC.md`](./BRAND_SPEC.md).
-
-## Giới hạn đã biết
-
-- chưa có food database, barcode hoặc photo estimation;
-- activity calorie do người dùng nhập;
-- chưa có HealthKit;
-- chưa tính calibrated TDEE;
-- dữ liệu chưa sync giữa các thiết bị.
-
-Rootbody V1 là tracking instrument, không phải medical device hoặc lời khuyên điều trị.
+```text
+Rootbody/
+├── brand/                   # SVG logo, symbol, wordmark
+├── .github/workflows/       # GitHub Pages deployment
+├── index.html               # PWA shell
+├── styles.css               # Root family design system
+├── app.js                   # model, storage, charts, interactions
+├── sw.js                    # offline cache
+└── manifest.webmanifest     # install metadata
+```
