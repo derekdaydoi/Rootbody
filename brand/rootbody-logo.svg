@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 220" role="img" aria-labelledby="title desc">
+  <title id="title">Rootbody logo</title>
+  <desc id="desc">Rootbody lockup with green app mark, ROOT in graphite and BODY in green.</desc>
+  <g transform="translate(10 10) scale(.2)">
+    <rect width="1000" height="1000" rx="220" fill="#14614A"/>
+    <g fill="none" stroke="#FFFFFF" stroke-width="74" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M328 752 V248"/>
+      <path d="M328 276 H505 C631 276 702 335 702 420 C702 504 637 552 512 552 H328"/>
+      <path d="M512 552 C654 552 724 608 724 694 C724 790 631 827 500 795 L328 752"/>
+    </g>
+    <circle cx="230" cy="690" r="45" fill="#FFFFFF"/>
+  </g>
+  <text x="245" y="128" font-family="Manrope, 'Avenir Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="82" font-weight="800" letter-spacing="-5"><tspan fill="#101110">ROOT</tspan><tspan fill="#14614A">BODY</tspan></text>
+  <text x="250" y="165" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="700" letter-spacing="4.4" fill="#858981">MAKE ENERGY VISIBLE.</text>
+</svg>
