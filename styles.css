@@ -56,6 +56,8 @@ body.sheet-open { overflow: hidden; overscroll-behavior: none; }
 button, input, select { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
 button { color: inherit; }
+:focus-visible { outline: 3px solid rgba(20, 97, 74, .28); outline-offset: 3px; }
+.brand:focus-visible { border-radius: 16px; }
 
 .app-shell {
   width: min(100%, 620px);
