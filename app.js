@@ -41,6 +41,8 @@
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
   let state = loadState();
   let toastTimer;
+  let lockedScrollY = 0;
+  let viewportCleanup = null;
 
   function defaultState() {
     return {
@@ -244,7 +246,9 @@
       $("[data-deficit-note]").textContent = "Ghi ít nhất một món để mở dự báo hôm nay.";
     } else {
       $("[data-kg-value]").textContent = signedKg(kgChange);
-      $("[data-deficit-kcal]").textContent = `${signedKcal(deficit)} kcal thâm hụt`;
+      $("[data-deficit-kcal]").textContent = deficit >= 0
+        ? `${integer.format(deficit)} kcal thâm hụt`
+        : `${integer.format(Math.abs(deficit))} kcal dư`;
       $("[data-seven-day]").textContent = `7 ngày: ${signedKg(kgChange * 7)} kg`;
       if (deficit >= state.settings.targetDeficit) {
         $("[data-deficit-status]").textContent = "Đạt mục tiêu";
@@ -337,7 +341,10 @@
   function renderHistory() {
     renderWeightChart();
     renderStepChart();
-    const dates = Object.keys(state.days).sort().reverse();
+    const dates = Object.keys(state.days)
+      .filter((date) => (state.days[date]?.meals?.length || 0) + (state.days[date]?.activities?.length || 0) > 0)
+      .sort()
+      .reverse();
     const target = $("[data-history-list]");
     if (!dates.length) {
       target.innerHTML = '<div class="empty-state">Lịch sử sẽ xuất hiện sau khi ghi món ăn hoặc vận động.</div>';
@@ -410,7 +417,9 @@
     const settingsForm = $("[data-settings-form]");
     settingsForm.elements.baselineKcal.value = state.settings.baselineKcal;
     settingsForm.elements.targetDeficit.value = state.settings.targetDeficit;
-    $("[data-weight-form]").elements.date.value ||= localDateKey();
+    const weightDate = $("[data-weight-form]").elements.date;
+    weightDate.max = localDateKey();
+    weightDate.value ||= localDateKey();
   }
 
   function walkingMet(speed) {
@@ -473,6 +482,61 @@
     }
   }
 
+  function syncVisualViewport() {
+    const viewport = window.visualViewport;
+    document.documentElement.style.setProperty("--visual-viewport-height", `${Math.round(viewport?.height || window.innerHeight)}px`);
+  }
+
+  function lockPageForDialog(dialog) {
+    if (document.body.classList.contains("sheet-open")) return;
+    lockedScrollY = window.scrollY || window.pageYOffset || 0;
+    document.body.dataset.rootbodyScrollY = String(lockedScrollY);
+    document.body.classList.add("sheet-open");
+    document.body.style.position = "fixed";
+    document.body.style.top = `${-lockedScrollY}px`;
+    document.body.style.left = "0";
+    document.body.style.right = "0";
+    document.body.style.width = "100%";
+    syncVisualViewport();
+
+    const revealField = (event) => {
+      if (!dialog.contains(event.target) || !/^(INPUT|TEXTAREA|SELECT)$/.test(event.target.tagName)) return;
+      syncVisualViewport();
+      setTimeout(() => event.target.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" }), 280);
+    };
+    window.visualViewport?.addEventListener("resize", syncVisualViewport);
+    window.visualViewport?.addEventListener("scroll", syncVisualViewport);
+    window.addEventListener("resize", syncVisualViewport);
+    document.addEventListener("focusin", revealField);
+    viewportCleanup = () => {
+      window.visualViewport?.removeEventListener("resize", syncVisualViewport);
+      window.visualViewport?.removeEventListener("scroll", syncVisualViewport);
+      window.removeEventListener("resize", syncVisualViewport);
+      document.removeEventListener("focusin", revealField);
+    };
+  }
+
+  function unlockPageAfterDialog() {
+    if (!document.body.classList.contains("sheet-open")) return;
+    const restoreY = Number(document.body.dataset.rootbodyScrollY || lockedScrollY || 0);
+    document.body.classList.remove("sheet-open");
+    document.body.style.position = "";
+    document.body.style.top = "";
+    document.body.style.left = "";
+    document.body.style.right = "";
+    document.body.style.width = "";
+    delete document.body.dataset.rootbodyScrollY;
+    document.documentElement.style.removeProperty("--visual-viewport-height");
+    viewportCleanup?.();
+    viewportCleanup = null;
+    requestAnimationFrame(() => window.scrollTo({ top: restoreY, left: 0, behavior: "auto" }));
+  }
+
+  function closeDialog(dialogOrId) {
+    const dialog = typeof dialogOrId === "string" ? document.getElementById(dialogOrId) : dialogOrId;
+    if (dialog?.open) dialog.close();
+  }
+
   function openDialog(id) {
     const dialog = document.getElementById(id);
     if (!dialog) return;
@@ -480,10 +544,15 @@
     if (id === "weightDialog") {
       const form = $("[data-weight-form]");
       form.elements.date.value = localDateKey();
+      form.elements.date.max = localDateKey();
       form.elements.kg.value = state.profile.weightKg || "";
     }
     if (id === "activityDialog") updateActivityForm();
-    if (!dialog.open) dialog.showModal();
+    if (!dialog.open) {
+      lockPageForDialog(dialog);
+      dialog.addEventListener("close", unlockPageAfterDialog, { once: true });
+      dialog.showModal();
+    }
   }
 
   function openActivityDialog(type) {
@@ -505,7 +574,7 @@
     $$("[data-view]").forEach((section) => section.classList.toggle("is-active", section.dataset.view === target));
     $$(".tab[data-nav]").forEach((tab) => tab.classList.toggle("is-active", tab.dataset.nav === target));
     if (location.hash !== `#${target}`) history.replaceState(null, "", `#${target}`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
     if (target === "history") renderHistory();
   }
 
@@ -521,9 +590,13 @@
     const nav = event.target.closest("[data-nav]");
     if (nav) { event.preventDefault(); navigate(nav.dataset.nav); return; }
     const opener = event.target.closest("[data-open-dialog]");
-    if (opener) { openDialog(opener.dataset.openDialog); return; }
+    if (opener) {
+      if (opener.dataset.openDialog === "activityDialog") openActivityDialog("walk");
+      else openDialog(opener.dataset.openDialog);
+      return;
+    }
     const closer = event.target.closest("[data-close-dialog]");
-    if (closer) { document.getElementById(closer.dataset.closeDialog)?.close(); return; }
+    if (closer) { closeDialog(closer.dataset.closeDialog); return; }
     const option = event.target.closest("[data-activity-type]");
     if (option) { openActivityDialog(option.dataset.activityType); return; }
     const foodButton = event.target.closest("[data-food-id]");
@@ -549,7 +622,7 @@
     const kcal = Number(form.elements.mealKcal.value);
     if (!name || !Number.isFinite(kcal) || kcal < 1) return;
     dayData().meals.push({ id: uid(), name, serving: "Ước tính thủ công", kcal: Math.ceil(kcal / 10) * 10, source: "manual", createdAt: new Date().toISOString() });
-    saveState(); form.reset(); $("#mealDialog").close(); renderAll(); showToast("Đã thêm món và làm tròn calorie lên.");
+    saveState(); form.reset(); closeDialog("mealDialog"); renderAll(); showToast("Đã thêm món và làm tròn calorie lên.");
   });
 
   $("[data-activity-form]").addEventListener("input", updateActivityForm);
@@ -570,7 +643,7 @@
       speedKmh: result.speedKmh === null ? null : Math.round(result.speedKmh * 10) / 10,
       createdAt: new Date().toISOString()
     });
-    saveState(); form.reset(); $("#activityDialog").close(); renderAll(); showToast(`Đã cộng ${result.kcal} kcal vận động ròng.`);
+    saveState(); form.reset(); closeDialog("activityDialog"); renderAll(); showToast(`Đã cộng ${result.kcal} kcal vận động ròng.`);
   });
 
   $("[data-profile-form]").addEventListener("change", (event) => {
@@ -594,11 +667,14 @@
     const form = event.currentTarget;
     const date = form.elements.date.value;
     const kg = Number(form.elements.kg.value);
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || kg < 30 || kg > 300) return;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || date > localDateKey() || kg < 30 || kg > 300) {
+      showToast("Ngày cân hoặc cân nặng không hợp lệ.");
+      return;
+    }
     upsertWeight(date, kg);
     const latest = state.weights[state.weights.length - 1];
     if (latest) state.profile.weightKg = latest.kg;
-    saveState(); $("#weightDialog").close(); renderAll(); showToast("Đã cập nhật chart cân nặng.");
+    saveState(); closeDialog("weightDialog"); renderAll(); showToast("Đã cập nhật chart cân nặng.");
   });
 
   function upsertWeight(date, kg) {
@@ -612,17 +688,37 @@
   $("[data-settings-form]").addEventListener("submit", (event) => {
     event.preventDefault();
     const form = event.currentTarget;
-    state.settings.baselineKcal = safeNumber(form.elements.baselineKcal.value, 800, 4000, 1600);
-    state.settings.targetDeficit = safeNumber(form.elements.targetDeficit.value, 100, 1000, 400);
-    saveState(); $("#settingsDialog").close(); renderAll(); showToast("Đã cập nhật model năng lượng.");
+    const baseline = safeNumber(form.elements.baselineKcal.value, 800, 4000, 1600);
+    const target = safeNumber(form.elements.targetDeficit.value, 100, 1000, 400);
+    if (target >= baseline) {
+      showToast("Mục tiêu thâm hụt phải thấp hơn calo nền.");
+      return;
+    }
+    state.settings.baselineKcal = baseline;
+    state.settings.targetDeficit = target;
+    saveState(); closeDialog("settingsDialog"); renderAll(); showToast("Đã cập nhật model năng lượng.");
+  });
+
+  $$('dialog').forEach((dialog) => {
+    dialog.addEventListener("click", (event) => {
+      if (event.target !== dialog) return;
+      const rect = dialog.getBoundingClientRect();
+      const outside = event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom;
+      if (outside) closeDialog(dialog);
+    });
   });
 
   window.addEventListener("hashchange", () => navigate(location.hash.slice(1)));
+
+  try { if ("scrollRestoration" in history) history.scrollRestoration = "manual"; } catch (error) {}
+  const resetInitialScroll = () => window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  requestAnimationFrame(resetInitialScroll);
+  setTimeout(resetInitialScroll, 80);
 
   renderAll();
   navigate(location.hash.slice(1) || "today");
 
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js?v=2").catch((error) => console.warn("Service worker chưa sẵn sàng.", error)));
+    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js?v=21").catch((error) => console.warn("Service worker chưa sẵn sàng.", error)));
   }
 })();

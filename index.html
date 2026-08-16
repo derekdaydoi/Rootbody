@@ -8,14 +8,14 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Rootbody">
-  <title>Rootbody V2</title>
+  <title>Rootbody V2.1</title>
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./brand/rootbody-symbol.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="./icon-180.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=2">
+  <link rel="stylesheet" href="./styles.css?v=21">
 </head>
 <body>
   <div class="app-shell">
@@ -25,7 +25,7 @@
         <span class="brand-name"><span>ROOT</span><strong>BODY</strong></span>
       </a>
       <div class="header-actions">
-        <span class="version-pill">V2 · local</span>
+        <span class="version-pill">V2.1 · local</span>
         <button class="icon-button" type="button" data-open-dialog="settingsDialog" aria-label="Mở cài đặt">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5v.2h-4v-.2a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.5v-.2h4v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></svg>
         </button>
@@ -41,7 +41,7 @@
 
         <button class="profile-nudge" type="button" data-nav="profile" hidden>
           <span class="nudge-icon">↗</span>
-          <span><strong>Hoàn thiện hồ sơ</strong><small>Cần cân nặng và chiều cao để tính BMI, vận động.</small></span>
+          <span><strong>Hoàn thiện hồ sơ người dùng</strong><small>Cân nặng và chiều cao được dùng để tính BMI và vận động.</small></span>
         </button>
 
         <article class="deficit-hero" aria-live="polite">
@@ -64,7 +64,7 @@
 
         <article class="budget-panel">
           <div class="section-line">
-            <div><p class="section-kicker">Ngân sách ăn còn lại</p><p class="budget-value"><span data-budget-remaining>1.200</span> kcal</p></div>
+            <div><p class="budget-label">Ngân sách ăn còn lại</p><p class="budget-value"><span data-budget-remaining>1.200</span> kcal</p></div>
             <span class="budget-context" data-budget-context>Mục tiêu −400</span>
           </div>
           <div class="progress-track" role="progressbar" aria-label="Calo đã ăn so với ngân sách" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-budget-progress><span data-budget-fill></span></div>
@@ -72,7 +72,7 @@
 
         <section class="section-block" aria-labelledby="quickFoodTitle">
           <div class="section-line">
-            <div><p class="section-kicker">Một chạm</p><h2 id="quickFoodTitle">Món thường ăn</h2></div>
+            <h2 id="quickFoodTitle">Món thường ăn</h2>
             <button class="text-button" type="button" data-open-dialog="mealDialog">Món khác</button>
           </div>
           <div class="food-grid" data-food-grid></div>
@@ -81,7 +81,7 @@
 
         <section class="section-block" aria-labelledby="todayLogTitle">
           <div class="section-line">
-            <div><p class="section-kicker">Nhật ký</p><h2 id="todayLogTitle">Hôm nay</h2></div>
+            <h2 id="todayLogTitle">Nhật ký hôm nay</h2>
             <button class="square-add" type="button" data-open-dialog="activityDialog" aria-label="Thêm vận động">+</button>
           </div>
           <div class="log-list" data-today-log></div>
@@ -90,29 +90,29 @@
 
       <section class="view" id="history" data-view="history" aria-labelledby="historyTitle">
         <div class="screen-heading">
-          <div><p class="eyebrow">Dữ liệu thực</p><h1 id="historyTitle">Biến động</h1></div>
+          <h1 id="historyTitle">Biến động</h1>
           <button class="primary-small" type="button" data-open-dialog="weightDialog">+ Cân nặng</button>
         </div>
 
         <article class="chart-card">
-          <div class="chart-heading"><div><p class="section-kicker">Cân nặng</p><h2>Xu hướng kg</h2></div><strong data-weight-delta>—</strong></div>
+          <div class="chart-heading"><h2>Cân nặng</h2><strong data-weight-delta>—</strong></div>
           <div class="chart-shell" data-weight-chart></div>
         </article>
 
         <article class="chart-card">
-          <div class="chart-heading"><div><p class="section-kicker">14 ngày</p><h2>Số bước</h2></div><strong data-step-average>—</strong></div>
+          <div class="chart-heading"><h2>Số bước · 14 ngày</h2><strong data-step-average>—</strong></div>
           <div class="chart-shell" data-step-chart></div>
         </article>
 
         <section class="section-block" aria-labelledby="dayHistoryTitle">
-          <div class="section-line"><div><p class="section-kicker">Cân bằng</p><h2 id="dayHistoryTitle">Theo ngày</h2></div></div>
+          <div class="section-line"><h2 id="dayHistoryTitle">Cân bằng theo ngày</h2></div>
           <div class="history-list" data-history-list></div>
         </section>
       </section>
 
       <section class="view" id="activity" data-view="activity" aria-labelledby="activityTitle">
         <div class="screen-heading">
-          <div><p class="eyebrow">Nhập chay</p><h1 id="activityTitle">Vận động</h1></div>
+          <h1 id="activityTitle">Vận động</h1>
           <span class="date-chip" data-today-short></span>
         </div>
 
@@ -123,7 +123,7 @@
         </article>
 
         <section class="section-block" aria-labelledby="activityPickTitle">
-          <div class="section-line"><div><p class="section-kicker">Chọn loại</p><h2 id="activityPickTitle">Ghi buổi tập</h2></div></div>
+          <div class="section-line"><h2 id="activityPickTitle">Ghi buổi tập</h2></div>
           <div class="activity-options">
             <button class="activity-option" type="button" data-activity-type="walk"><span class="activity-glyph">W</span><span><strong>Đi bộ</strong><small>Số bước · số phút</small></span><b>↗</b></button>
             <button class="activity-option" type="button" data-activity-type="run"><span class="activity-glyph">R</span><span><strong>Chạy</strong><small>Số bước · số phút</small></span><b>↗</b></button>
@@ -132,7 +132,7 @@
         </section>
 
         <section class="section-block" aria-labelledby="activityLogTitle">
-          <div class="section-line"><div><p class="section-kicker">Đã ghi</p><h2 id="activityLogTitle">Hôm nay</h2></div></div>
+          <div class="section-line"><h2 id="activityLogTitle">Đã ghi hôm nay</h2></div>
           <div class="log-list" data-activity-log></div>
         </section>
 
@@ -141,7 +141,7 @@
 
       <section class="view" id="profile" data-view="profile" aria-labelledby="profileTitle">
         <div class="screen-heading">
-          <div><p class="eyebrow">Dữ liệu đầu vào</p><h1 id="profileTitle">Cá nhân</h1></div>
+          <h1 id="profileTitle">Cá nhân</h1>
           <span class="privacy-chip">Không tài khoản</span>
         </div>
 
@@ -159,7 +159,7 @@
         </form>
 
         <section class="section-block profile-facts" aria-labelledby="profileFactsTitle">
-          <div class="section-line"><div><p class="section-kicker">Đang dùng</p><h2 id="profileFactsTitle">Model cá nhân</h2></div></div>
+          <div class="section-line"><h2 id="profileFactsTitle">Model đang dùng</h2></div>
           <dl>
             <div><dt>Calo nền</dt><dd><span data-profile-baseline>1.600</span> kcal/ngày</dd></div>
             <div><dt>Mục tiêu thâm hụt</dt><dd><span data-profile-target>400</span> kcal/ngày</dd></div>
@@ -182,17 +182,17 @@
 
   <dialog id="mealDialog">
     <form method="dialog" class="dialog-card" data-meal-form>
-      <div class="dialog-heading"><div><p class="section-kicker">Ước tính bảo thủ</p><h2>Thêm món khác</h2></div><button class="dialog-close" value="cancel" aria-label="Đóng">×</button></div>
+      <div class="dialog-heading"><h2>Thêm món khác</h2><button class="dialog-close" type="button" data-close-dialog="mealDialog" aria-label="Đóng">×</button></div>
       <label class="field"><span>Tên món</span><input name="mealName" type="text" maxlength="60" placeholder="Ví dụ: Phở bò" required></label>
-      <label class="field"><span>Calorie đã làm tròn lên</span><span class="input-with-unit"><input name="mealKcal" type="number" inputmode="numeric" min="1" max="5000" step="10" placeholder="500" required><b>kcal</b></span></label>
-      <p class="form-help">Không chắc 430 hay 480? Ghi 500. Rootbody ưu tiên không đánh giá thấp đồ ăn.</p>
+      <label class="field"><span>Calorie đã làm tròn lên</span><span class="input-with-unit"><input name="mealKcal" type="number" inputmode="numeric" min="10" max="5000" step="10" placeholder="500" required><b>kcal</b></span></label>
+      <p class="form-help">Khi không chắc 430 hay 480 kcal, nên ghi 500 để tránh đánh giá thấp đồ ăn.</p>
       <button class="primary-button" type="submit" value="default">Thêm vào hôm nay</button>
     </form>
   </dialog>
 
   <dialog id="activityDialog">
     <form method="dialog" class="dialog-card" data-activity-form>
-      <div class="dialog-heading"><div><p class="section-kicker">Ước tính ròng</p><h2 data-activity-dialog-title>Thêm vận động</h2></div><button class="dialog-close" value="cancel" aria-label="Đóng">×</button></div>
+      <div class="dialog-heading"><h2 data-activity-dialog-title>Thêm vận động</h2><button class="dialog-close" type="button" data-close-dialog="activityDialog" aria-label="Đóng">×</button></div>
       <label class="field"><span>Loại vận động</span><select name="activityType"><option value="walk">Đi bộ</option><option value="run">Chạy</option><option value="badminton">Cầu lông</option></select></label>
       <label class="field" data-steps-field><span>Số bước</span><span class="input-with-unit"><input name="steps" type="number" inputmode="numeric" min="1" max="100000" step="1" placeholder="5000"><b>bước</b></span></label>
       <label class="field"><span>Thời lượng</span><span class="input-with-unit"><input name="minutes" type="number" inputmode="numeric" min="1" max="600" step="1" placeholder="45" required><b>phút</b></span></label>
@@ -204,7 +204,7 @@
 
   <dialog id="weightDialog">
     <form method="dialog" class="dialog-card" data-weight-form>
-      <div class="dialog-heading"><div><p class="section-kicker">Dữ liệu thực</p><h2>Ghi cân nặng</h2></div><button class="dialog-close" value="cancel" aria-label="Đóng">×</button></div>
+      <div class="dialog-heading"><h2>Ghi cân nặng</h2><button class="dialog-close" type="button" data-close-dialog="weightDialog" aria-label="Đóng">×</button></div>
       <label class="field"><span>Ngày</span><input name="date" type="date" required></label>
       <label class="field"><span>Cân nặng</span><span class="input-with-unit"><input name="kg" type="number" inputmode="decimal" min="30" max="300" step="0.1" placeholder="72.5" required><b>kg</b></span></label>
       <button class="primary-button" type="submit" value="default">Lưu cân nặng</button>
@@ -213,24 +213,24 @@
 
   <dialog id="settingsDialog">
     <form method="dialog" class="dialog-card" data-settings-form>
-      <div class="dialog-heading"><div><p class="section-kicker">Model năng lượng</p><h2>Cài đặt</h2></div><button class="dialog-close" value="cancel" aria-label="Đóng">×</button></div>
+      <div class="dialog-heading"><h2>Cài đặt</h2><button class="dialog-close" type="button" data-close-dialog="settingsDialog" aria-label="Đóng">×</button></div>
       <label class="field"><span>Calo nền mỗi ngày</span><span class="input-with-unit"><input name="baselineKcal" type="number" inputmode="numeric" min="800" max="4000" step="50" required><b>kcal</b></span></label>
       <label class="field"><span>Mục tiêu thâm hụt</span><span class="input-with-unit"><input name="targetDeficit" type="number" inputmode="numeric" min="100" max="1000" step="50" required><b>kcal</b></span></label>
-      <p class="form-help">V2 giữ mặc định 1.600 kcal theo yêu cầu. Chưa tự suy ra BMR vì thiếu tuổi và giới tính.</p>
+      <p class="form-help">Mặc định hiện tại là 1.600 kcal. Model chưa tự suy ra BMR vì hồ sơ không thu thập tuổi và giới tính.</p>
       <button class="primary-button" type="submit" value="default">Lưu cài đặt</button>
     </form>
   </dialog>
 
   <dialog id="modelDialog">
     <div class="dialog-card model-dialog">
-      <div class="dialog-heading"><div><p class="section-kicker">Không phải cân thật</p><h2>kg eq. là gì?</h2></div><button class="dialog-close" type="button" data-close-dialog="modelDialog" aria-label="Đóng">×</button></div>
+      <div class="dialog-heading"><h2>kg eq. là gì?</h2><button class="dialog-close" type="button" data-close-dialog="modelDialog" aria-label="Đóng">×</button></div>
       <p><strong>Thâm hụt = calo nền + vận động ròng − calorie đã ăn.</strong></p>
-      <p>Rootbody chia kết quả cho 7.700 để tạo “kg tương đương năng lượng”. Nước, glycogen, muối và sai số khẩu phần khiến số cân thực tế dao động mạnh hơn.</p>
+      <p>Rootbody chia kết quả cho 7.700 để tạo “kg tương đương năng lượng”. Đây không phải cân nặng chắc chắn của người dùng; nước, glycogen, muối và khẩu phần làm số cân thực tế dao động mạnh hơn.</p>
       <p>Vì vậy chart cân thật là trọng tài; kg eq. chỉ là la bàn ngắn hạn.</p>
     </div>
   </dialog>
 
   <div class="toast" role="status" aria-live="polite" data-toast></div>
-  <script src="./app.js?v=2" defer></script>
+  <script src="./app.js?v=21" defer></script>
 </body>
 </html>
