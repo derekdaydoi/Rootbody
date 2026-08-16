@@ -1,8 +1,8 @@
-# Rootbody V2
+# Rootbody V2.2
 
 Rootbody là PWA local-first để ước tính calorie deficit và theo dõi xu hướng cân nặng. V2 ưu tiên model có thể giải thích, nhập tay nhanh và chạy độc lập trên GitHub Pages; không phụ thuộc Apple Health, backend hay tài khoản.
 
-V2.1 dùng natural document scroll giống Rootflow/Rootwork, bottom navigation dạng floating và bottom sheet có header đóng cố định. Text dài được xuống dòng thay vì cắt mất nội dung.
+V2.2 dùng app shell 620 px, natural document scroll, floating bottom navigation và nhịp spacing theo Rootflow/Rootwork. Logo menu được tăng kích thước và độ dày nét; navigation dùng SVG nhất quán. Typography ưu tiên OpenAI Sans, fallback sang Inter và system UI.
 
 ## V2 có gì
 

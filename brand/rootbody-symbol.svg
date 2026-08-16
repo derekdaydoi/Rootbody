@@ -2,10 +2,10 @@
   <title id="title">Rootbody symbol</title>
   <desc id="desc">A white anchored B with a narrow waist on Root green.</desc>
   <rect width="1000" height="1000" rx="220" fill="#14614A"/>
-  <g fill="none" stroke="#FFFFFF" stroke-width="74" stroke-linecap="round" stroke-linejoin="round">
+  <g fill="none" stroke="#FFFFFF" stroke-width="90" stroke-linecap="round" stroke-linejoin="round">
     <path d="M328 752 V248"/>
     <path d="M328 276 H505 C631 276 702 335 702 420 C702 504 637 552 512 552 H328"/>
     <path d="M512 552 C654 552 724 608 724 694 C724 790 631 827 500 795 L328 752"/>
   </g>
-  <circle cx="230" cy="690" r="45" fill="#FFFFFF"/>
+  <circle cx="230" cy="690" r="50" fill="#FFFFFF"/>
 </svg>

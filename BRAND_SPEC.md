@@ -20,8 +20,8 @@ No gradients and no second green.
 
 ## Typography
 
-- Brand, display headings and large numbers: Manrope 800.
-- Operational UI: the native system font stack.
+- UI, headings and large numbers: `OpenAI Sans`, with Inter and the native system stack as fallbacks.
+- Brand wordmark: weight 800. Product headings: weight 700.
 
 ## Symbol
 
@@ -32,12 +32,12 @@ It preserves the family constraints:
 - `viewBox="0 0 1000 1000"`;
 - solid `#14614A` background with `rx="220"`;
 - white `#FFFFFF` foreground;
-- `stroke-width="74"` with round caps and joins;
+- `stroke-width="90"` with round caps and joins;
 - all geometry survives a central circular crop;
 - legible at Home Screen size.
 
 ## Wordmark
 
-`ROOT` uses `#101110`; `BODY` uses `#14614A`. Both use Manrope 800 with tight tracking.
+`ROOT` uses `#101110`; `BODY` uses `#14614A`. Both use OpenAI Sans/Inter 800 with tight tracking.
 
 Tagline: `MAKE ENERGY VISIBLE.`
