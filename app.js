@@ -3,7 +3,7 @@
 
   const STORAGE_KEY = "rootbody.v2";
   const LEGACY_KEY = "rootbody.v1";
-  const MODEL_VERSION = "0.2";
+  const MODEL_VERSION = "0.3";
   const KCAL_PER_KG = 7700;
   const number = new Intl.NumberFormat("vi-VN", { maximumFractionDigits: 1 });
   const integer = new Intl.NumberFormat("vi-VN", { maximumFractionDigits: 0 });
@@ -26,7 +26,14 @@
     { id: "stir-oil", name: "Dầu / sốt món xào", serving: "phần cộng thêm", kcal: 150 }
   ];
 
-  const ACTIVITY_NAMES = { walk: "Đi bộ", run: "Chạy", badminton: "Cầu lông", legacy: "Vận động V1" };
+  const ACTIVITY_NAMES = {
+    walk: "Đi bộ", run: "Chạy", badminton: "Cầu lông",
+    gym_bike: "Đạp xe", gym_treadmill: "Máy chạy",
+    gym_shoulder: "Máy tập cơ vai", gym_alpha: "Máy cơ Alpha",
+    gym_dumbbell: "Tạ đơn", gym_bench: "Nằm nâng ngực",
+    gym_adductor: "Máy khép đùi", gym_abductor: "Máy mở đùi",
+    legacy: "Vận động V1"
+  };
   const LEVELS = {
     weak: { label: "Yếu", met: 3.5 },
     poor: { label: "Kém", met: 4.5 },
@@ -34,6 +41,17 @@
     medium_plus: { label: "Trung bình +", met: 6.0 },
     good: { label: "Khá", met: 7.0 },
     strong: { label: "Giỏi", met: 9.0 }
+  };
+  const STRENGTH_LEVELS = {
+    gym_light: { label: "Nhẹ · nghỉ nhiều", offset: -0.7 },
+    gym_medium: { label: "Vừa · nghỉ tiêu chuẩn", offset: 0 },
+    gym_heavy: { label: "Nặng · nghỉ ngắn", offset: 1.5 }
+  };
+  const ALL_LEVELS = { ...LEVELS, ...STRENGTH_LEVELS };
+  const STRENGTH_TYPES = new Set(["gym_shoulder", "gym_alpha", "gym_dumbbell", "gym_bench", "gym_adductor", "gym_abductor"]);
+  const STRENGTH_BASE_MET = {
+    gym_shoulder: 3.5, gym_alpha: 3.5, gym_dumbbell: 4.0,
+    gym_bench: 4.0, gym_adductor: 3.2, gym_abductor: 3.2
   };
 
   const $ = (selector, root = document) => root.querySelector(selector);
@@ -141,7 +159,9 @@
       name: String(item.name || ACTIVITY_NAMES[item.type] || "Vận động").slice(0, 60),
       kcal: safeNumber(item.kcal, 0, 10000, 0), steps: safeNumber(item.steps, 0, 100000, 0),
       minutes: nullableNumber(item.minutes, 1, 600), met: nullableNumber(item.met, 1, 30),
-      level: item.level && LEVELS[item.level] ? item.level : null,
+      level: item.level && ALL_LEVELS[item.level] ? item.level : null,
+      resistance: nullableNumber(item.resistance, 1, 30), cadenceRpm: nullableNumber(item.cadenceRpm, 30, 140),
+      inclinePct: nullableNumber(item.inclinePct, 0, 20),
       distanceKm: nullableNumber(item.distanceKm, 0, 100), speedKmh: nullableNumber(item.speedKmh, 0, 50),
       createdAt: String(item.createdAt || new Date().toISOString())
     }));
@@ -289,7 +309,10 @@
     const bits = [];
     if (item.minutes) bits.push(`${integer.format(item.minutes)} phút`);
     if (item.steps) bits.push(`${integer.format(item.steps)} bước`);
-    if (item.level && LEVELS[item.level]) bits.push(LEVELS[item.level].label);
+    if (item.level && ALL_LEVELS[item.level]) bits.push(ALL_LEVELS[item.level].label);
+    if (item.resistance) bits.push(`level ${integer.format(item.resistance)}/30`);
+    if (item.cadenceRpm) bits.push(`${integer.format(item.cadenceRpm)} RPM`);
+    if (item.type === "gym_treadmill" && Number.isFinite(item.inclinePct)) bits.push(`dốc ${number.format(item.inclinePct)}%`);
     if (item.distanceKm) bits.push(`~${number.format(item.distanceKm)} km`);
     return bits.join(" · ") || "Dữ liệu chuyển từ V1";
   }
@@ -442,7 +465,37 @@
     return 11.8;
   }
 
-  function estimateActivity(type, steps, minutes, level) {
+  function treadmillMet(speedKmh, inclinePct) {
+    const speedMpm = speedKmh * 1000 / 60;
+    const grade = inclinePct / 100;
+    const oxygen = speedKmh < 8
+      ? 3.5 + 0.1 * speedMpm + 1.8 * speedMpm * grade
+      : 3.5 + 0.2 * speedMpm + 0.9 * speedMpm * grade;
+    return clamp(oxygen / 3.5, 2, 18);
+  }
+
+  function bikeMet(resistance, cadenceRpm) {
+    const resistanceMet = 3.5 + ((resistance - 1) / 29) * 5.5;
+    const cadenceAdjustment = clamp((cadenceRpm - 70) * 0.025, -0.75, 1.5);
+    return clamp(resistanceMet + cadenceAdjustment, 3.5, 10.5);
+  }
+
+  function strengthMet(type, intensity) {
+    const base = STRENGTH_BASE_MET[type] || 3.5;
+    return clamp(base + (STRENGTH_LEVELS[intensity] || STRENGTH_LEVELS.gym_medium).offset, 2.5, 6.0);
+  }
+
+  function readActivityInput(form) {
+    return {
+      steps: Number(form.elements.steps.value), minutes: Number(form.elements.minutes.value),
+      level: form.elements.level.value, intensity: form.elements.gymIntensity.value,
+      resistance: Number(form.elements.resistance.value), cadenceRpm: Number(form.elements.cadenceRpm.value),
+      treadmillSpeed: Number(form.elements.treadmillSpeed.value), inclinePct: Number(form.elements.inclinePct.value)
+    };
+  }
+
+  function estimateActivity(type, input) {
+    const { steps, minutes, level, intensity, resistance, cadenceRpm, treadmillSpeed, inclinePct } = input;
     const weight = Number(state.profile.weightKg);
     const height = Number(state.profile.heightCm);
     if (!weight) return { error: "Nhập cân nặng trong Cá nhân trước." };
@@ -450,6 +503,18 @@
     let met, distanceKm = null, speedKmh = null;
     if (type === "badminton") {
       met = (LEVELS[level] || LEVELS.medium).met;
+    } else if (type === "gym_bike") {
+      if (!Number.isFinite(resistance) || resistance < 1 || resistance > 30) return { error: "Level xe phải từ 1 đến 30." };
+      if (!Number.isFinite(cadenceRpm) || cadenceRpm < 30 || cadenceRpm > 140) return { error: "Nhịp đạp phải từ 30 đến 140 RPM." };
+      met = bikeMet(resistance, cadenceRpm);
+    } else if (type === "gym_treadmill") {
+      if (!Number.isFinite(treadmillSpeed) || treadmillSpeed < 1 || treadmillSpeed > 25) return { error: "Tốc độ máy phải từ 1 đến 25 km/h." };
+      if (!Number.isFinite(inclinePct) || inclinePct < 0 || inclinePct > 20) return { error: "Độ dốc phải từ 0 đến 20%." };
+      speedKmh = treadmillSpeed;
+      distanceKm = treadmillSpeed * minutes / 60;
+      met = treadmillMet(treadmillSpeed, inclinePct);
+    } else if (STRENGTH_TYPES.has(type)) {
+      met = strengthMet(type, intensity);
     } else {
       if (!height) return { error: "Nhập chiều cao trong Cá nhân trước." };
       if (!Number.isFinite(steps) || steps < 1) return { error: "Nhập số bước hợp lệ." };
@@ -468,16 +533,35 @@
     const form = $("[data-activity-form]");
     const type = form.elements.activityType.value;
     const isBadminton = type === "badminton";
-    $("[data-steps-field]").hidden = isBadminton;
+    const usesSteps = type === "walk" || type === "run";
+    const isBike = type === "gym_bike";
+    const isTreadmill = type === "gym_treadmill";
+    const isStrength = STRENGTH_TYPES.has(type);
+    $("[data-steps-field]").hidden = !usesSteps;
     $("[data-level-field]").hidden = !isBadminton;
-    form.elements.steps.required = !isBadminton;
+    $("[data-strength-field]").hidden = !isStrength;
+    $("[data-bike-resistance-field]").hidden = !isBike;
+    $("[data-bike-cadence-field]").hidden = !isBike;
+    $("[data-treadmill-speed-field]").hidden = !isTreadmill;
+    $("[data-treadmill-incline-field]").hidden = !isTreadmill;
+    form.elements.steps.required = usesSteps;
+    form.elements.resistance.required = isBike;
+    form.elements.cadenceRpm.required = isBike;
+    form.elements.treadmillSpeed.required = isTreadmill;
+    form.elements.inclinePct.required = isTreadmill;
     $("[data-activity-dialog-title]").textContent = `Thêm ${ACTIVITY_NAMES[type].toLowerCase()}`;
-    const result = estimateActivity(type, Number(form.elements.steps.value), Number(form.elements.minutes.value), form.elements.level.value);
+    const input = readActivityInput(form);
+    const result = estimateActivity(type, input);
     const preview = $("[data-activity-preview]");
     if (result.error) {
       preview.innerHTML = `<span>Ước tính</span><strong>—</strong><small>${escapeHtml(result.error)}</small>`;
     } else {
-      const meta = result.speedKmh ? ` · ~${number.format(result.speedKmh)} km/h` : ` · ${LEVELS[form.elements.level.value].label}`;
+      let meta = "";
+      if (type === "badminton") meta = ` · ${LEVELS[input.level].label}`;
+      else if (type === "gym_bike") meta = ` · level ${integer.format(input.resistance)}/30 · ${integer.format(input.cadenceRpm)} RPM`;
+      else if (type === "gym_treadmill") meta = ` · ${number.format(input.treadmillSpeed)} km/h · dốc ${number.format(input.inclinePct)}%`;
+      else if (isStrength) meta = ` · ${STRENGTH_LEVELS[input.intensity].label}`;
+      else if (result.speedKmh) meta = ` · ~${number.format(result.speedKmh)} km/h`;
       preview.innerHTML = `<span>MET ${number.format(result.met)}${meta}</span><strong>${integer.format(result.kcal)} kcal ròng</strong><small>${kg3.format(kcalToKg(result.kcal))} kg eq.</small>`;
     }
   }
@@ -565,6 +649,7 @@
     form.reset();
     form.elements.activityType.value = type;
     form.elements.level.value = "medium";
+    form.elements.gymIntensity.value = "gym_medium";
     updateActivityForm();
     openDialog("activityDialog");
   }
@@ -631,14 +716,17 @@
     event.preventDefault();
     const form = event.currentTarget;
     const type = form.elements.activityType.value;
-    const steps = type === "badminton" ? 0 : Number(form.elements.steps.value);
-    const minutes = Number(form.elements.minutes.value);
-    const level = form.elements.level.value;
-    const result = estimateActivity(type, steps, minutes, level);
+    const input = readActivityInput(form);
+    const steps = type === "walk" || type === "run" ? input.steps : 0;
+    const result = estimateActivity(type, input);
     if (result.error) { showToast(result.error); return; }
+    const level = type === "badminton" ? input.level : STRENGTH_TYPES.has(type) ? input.intensity : null;
     dayData().activities.push({
-      id: uid(), type, name: ACTIVITY_NAMES[type], kcal: result.kcal, steps, minutes,
-      level: type === "badminton" ? level : null, met: result.met,
+      id: uid(), type, name: ACTIVITY_NAMES[type], kcal: result.kcal, steps, minutes: input.minutes,
+      level, met: result.met,
+      resistance: type === "gym_bike" ? input.resistance : null,
+      cadenceRpm: type === "gym_bike" ? input.cadenceRpm : null,
+      inclinePct: type === "gym_treadmill" ? input.inclinePct : null,
       distanceKm: result.distanceKm === null ? null : Math.round(result.distanceKm * 10) / 10,
       speedKmh: result.speedKmh === null ? null : Math.round(result.speedKmh * 10) / 10,
       createdAt: new Date().toISOString()
@@ -719,6 +807,6 @@
   navigate(location.hash.slice(1) || "today");
 
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js?v=21").catch((error) => console.warn("Service worker chưa sẵn sàng.", error)));
+    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js?v=23").catch((error) => console.warn("Service worker chưa sẵn sàng.", error)));
   }
 })();

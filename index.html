@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <meta name="theme-color" content="#F3F0E7">
   <meta name="description" content="Rootbody — ước tính calorie deficit và xu hướng cân nặng, local-first.">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=22">
+  <link rel="stylesheet" href="./styles.css?v=23">
 </head>
 <body>
   <div class="app-shell">
@@ -130,12 +130,26 @@
           </div>
         </section>
 
+        <section class="section-block" aria-labelledby="gymPickTitle">
+          <div class="section-line"><h2 id="gymPickTitle">Gym</h2></div>
+          <div class="activity-options gym-options">
+            <button class="activity-option" type="button" data-activity-type="gym_bike"><span class="activity-glyph">XE</span><span><strong>Đạp xe</strong><small>Phút · level 1–30 · RPM</small></span><b>↗</b></button>
+            <button class="activity-option" type="button" data-activity-type="gym_treadmill"><span class="activity-glyph">D</span><span><strong>Máy chạy</strong><small>Phút · tốc độ · độ dốc</small></span><b>↗</b></button>
+            <button class="activity-option" type="button" data-activity-type="gym_shoulder"><span class="activity-glyph">V</span><span><strong>Máy tập cơ vai</strong><small>Phút · cường độ</small></span><b>↗</b></button>
+            <button class="activity-option" type="button" data-activity-type="gym_alpha"><span class="activity-glyph">α</span><span><strong>Máy cơ Alpha</strong><small>Phút · cường độ</small></span><b>↗</b></button>
+            <button class="activity-option" type="button" data-activity-type="gym_dumbbell"><span class="activity-glyph">T</span><span><strong>Tạ đơn</strong><small>Phút · cường độ</small></span><b>↗</b></button>
+            <button class="activity-option" type="button" data-activity-type="gym_bench"><span class="activity-glyph">N</span><span><strong>Nằm nâng ngực</strong><small>Phút · cường độ</small></span><b>↗</b></button>
+            <button class="activity-option" type="button" data-activity-type="gym_adductor"><span class="activity-glyph">K</span><span><strong>Máy khép đùi</strong><small>Phút · cường độ</small></span><b>↗</b></button>
+            <button class="activity-option" type="button" data-activity-type="gym_abductor"><span class="activity-glyph">M</span><span><strong>Máy mở đùi</strong><small>Phút · cường độ</small></span><b>↗</b></button>
+          </div>
+        </section>
+
         <section class="section-block" aria-labelledby="activityLogTitle">
           <div class="section-line"><h2 id="activityLogTitle">Đã ghi hôm nay</h2></div>
           <div class="log-list" data-activity-log></div>
         </section>
 
-        <aside class="model-note"><strong>Cách tính bảo thủ</strong><p>Rootbody suy ra tốc độ từ bước + phút + chiều cao, chọn MET, trừ 1 MET nghỉ rồi làm tròn calorie xuống.</p></aside>
+        <aside class="model-note"><strong>Cách tính bảo thủ</strong><p>Rootbody chọn MET theo dữ liệu buổi tập, trừ 1 MET nghỉ rồi làm tròn calorie xuống. Level xe 1–30 chỉ là thang tương đối vì mỗi hãng máy dùng lực cản khác nhau.</p></aside>
       </section>
 
       <section class="view" id="profile" data-view="profile" aria-labelledby="profileTitle">
@@ -204,10 +218,15 @@
   <dialog id="activityDialog">
     <form method="dialog" class="dialog-card" data-activity-form>
       <div class="dialog-heading"><h2 data-activity-dialog-title>Thêm vận động</h2><button class="dialog-close" type="button" data-close-dialog="activityDialog" aria-label="Đóng">×</button></div>
-      <label class="field"><span>Loại vận động</span><select name="activityType"><option value="walk">Đi bộ</option><option value="run">Chạy</option><option value="badminton">Cầu lông</option></select></label>
+      <label class="field"><span>Loại vận động</span><select name="activityType"><optgroup label="Hằng ngày & thể thao"><option value="walk">Đi bộ</option><option value="run">Chạy</option><option value="badminton">Cầu lông</option></optgroup><optgroup label="Gym"><option value="gym_bike">Đạp xe</option><option value="gym_treadmill">Máy chạy</option><option value="gym_shoulder">Máy tập cơ vai</option><option value="gym_alpha">Máy cơ Alpha</option><option value="gym_dumbbell">Tạ đơn</option><option value="gym_bench">Nằm nâng ngực</option><option value="gym_adductor">Máy khép đùi</option><option value="gym_abductor">Máy mở đùi</option></optgroup></select></label>
       <label class="field" data-steps-field><span>Số bước</span><span class="input-with-unit"><input name="steps" type="number" inputmode="numeric" min="1" max="100000" step="1" placeholder="5000"><b>bước</b></span></label>
       <label class="field"><span>Thời lượng</span><span class="input-with-unit"><input name="minutes" type="number" inputmode="numeric" min="1" max="600" step="1" placeholder="45" required><b>phút</b></span></label>
       <label class="field" data-level-field hidden><span>Trình độ / cường độ</span><select name="level"><option value="weak">Yếu</option><option value="poor">Kém</option><option value="medium" selected>Trung bình</option><option value="medium_plus">Trung bình +</option><option value="good">Khá</option><option value="strong">Giỏi</option></select></label>
+      <label class="field" data-strength-field hidden><span>Cường độ cả buổi</span><select name="gymIntensity"><option value="gym_light">Nhẹ · nghỉ nhiều</option><option value="gym_medium" selected>Vừa · nghỉ tiêu chuẩn</option><option value="gym_heavy">Nặng · nghỉ ngắn</option></select></label>
+      <label class="field" data-bike-resistance-field hidden><span>Level lực cản</span><span class="input-with-unit"><input name="resistance" type="number" inputmode="numeric" min="1" max="30" step="1" value="10"><b>/ 30</b></span></label>
+      <label class="field" data-bike-cadence-field hidden><span>Nhịp đạp</span><span class="input-with-unit"><input name="cadenceRpm" type="number" inputmode="numeric" min="30" max="140" step="1" value="70"><b>RPM</b></span></label>
+      <label class="field" data-treadmill-speed-field hidden><span>Tốc độ máy</span><span class="input-with-unit"><input name="treadmillSpeed" type="number" inputmode="decimal" min="1" max="25" step="0.1" value="5"><b>km/h</b></span></label>
+      <label class="field" data-treadmill-incline-field hidden><span>Độ dốc</span><span class="input-with-unit"><input name="inclinePct" type="number" inputmode="decimal" min="0" max="20" step="0.5" value="0"><b>%</b></span></label>
       <div class="estimate-preview" data-activity-preview><span>Ước tính sau khi nhập</span><strong>— kcal ròng</strong><small>— kg eq.</small></div>
       <button class="primary-button" type="submit" value="default">Lưu buổi tập</button>
     </form>
@@ -242,6 +261,6 @@
   </dialog>
 
   <div class="toast" role="status" aria-live="polite" data-toast></div>
-  <script src="./app.js?v=22" defer></script>
+  <script src="./app.js?v=23" defer></script>
 </body>
 </html>

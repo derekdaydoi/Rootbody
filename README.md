@@ -1,8 +1,8 @@
-# Rootbody V2.2
+# Rootbody V2.3
 
 Rootbody là PWA local-first để ước tính calorie deficit và theo dõi xu hướng cân nặng. V2 ưu tiên model có thể giải thích, nhập tay nhanh và chạy độc lập trên GitHub Pages; không phụ thuộc Apple Health, backend hay tài khoản.
 
-V2.2 dùng app shell 620 px, natural document scroll, floating bottom navigation và nhịp spacing theo Rootflow/Rootwork. Logo menu được tăng kích thước và độ dày nét; navigation dùng SVG nhất quán. Typography ưu tiên OpenAI Sans, fallback sang Inter và system UI.
+V2.3 bổ sung 8 bài gym, ước tính máy chạy có độ dốc và chặn pinch zoom theo yêu cầu triển khai mobile. App vẫn dùng shell 620 px, natural document scroll và floating bottom navigation theo Rootflow/Rootwork.
 
 ## V2 có gì
 
@@ -11,6 +11,7 @@ V2.2 dùng app shell 620 px, natural document scroll, floating bottom navigation
   - Đi bộ: số bước + số phút.
   - Chạy: số bước + số phút.
   - Cầu lông: số phút + trình độ từ Yếu đến Giỏi.
+  - Gym: xe đạp, máy chạy có độ dốc, máy vai, máy cơ Alpha, tạ đơn, nằm nâng ngực, máy khép đùi và máy mở đùi.
 - 12 món/khẩu phần mẫu thêm bằng một chạm, calorie được làm tròn lên có chủ đích.
 - Dashboard hiển thị calorie và `kg eq.` — kg tương đương năng lượng.
 - Chart cân nặng tối đa 20 lần ghi gần nhất và chart số bước 14 ngày.
@@ -48,6 +49,13 @@ speed_kmh = distance_km / hours
 ```
 
 MET được chọn theo band tốc độ của [2024 Adult Compendium — Walking](https://pacompendium.com/walking/) và [Running](https://pacompendium.com/running/). Cầu lông neo theo 5.5 MET (social), 7.0 MET (competitive) và 9.0 MET (match play) trong [Sports Compendium](https://pacompendium.com/sports/); các mức xen giữa là product heuristic bảo thủ.
+
+### Gym
+
+- Xe đạp dùng thời lượng, level lực cản 1–30 và RPM. Vì level không chuẩn hóa giữa hãng máy, model nội suy bảo thủ trong dải 3,5–9,0 MET của [2024 Adult Compendium — Bicycling](https://pacompendium.com/bicycling/), rồi giới hạn tối đa 10,5 MET khi cadence cao.
+- Máy chạy dùng tốc độ và độ dốc theo phương trình metabolic walking/running của ACSM. Độ dốc được giới hạn 0–20%; tốc độ 1–25 km/h.
+- Máy tập sức mạnh dùng tổng thời gian đã gồm cả lúc nghỉ và ba mức cường độ. Dải 2,5–6,0 MET được neo theo resistance training 3,5–6,0 MET trong [2024 Adult Compendium — Conditioning Exercise](https://pacompendium.com/conditioning-exercise/).
+- Tất cả kết quả tiếp tục trừ 1 MET nghỉ và làm tròn xuống 10 kcal. Sai số lớn nhất nằm ở level xe không có watt và thời gian nghỉ giữa hiệp.
 
 ### BMI
 
