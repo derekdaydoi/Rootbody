@@ -190,7 +190,8 @@
       id: String(item.id || "").slice(0, 60),
       completedAt: String(item.completedAt || new Date().toISOString()),
       before: normalizeProtocolCheckin(item.before),
-      after: normalizeProtocolCheckin(item.after)
+      after: normalizeProtocolCheckin(item.after),
+      retentions: Array.isArray(item.retentions) ? item.retentions.slice(0, 3).map((seconds) => safeNumber(seconds, 0, 180, 0)) : []
     })).filter((item) => item.id) : [];
     return {
       settings: { goal, daysPerWeek, minutes, experience, hasPain: Boolean(value.settings?.hasPain) },

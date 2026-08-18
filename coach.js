@@ -20,6 +20,16 @@
   let protocolTimerInterval = null;
   let protocolTimerEndAt = 0;
   let protocolTimerRemaining = 0;
+  const WIM_BREATH_MS = 4000;
+  const WIM_BREATHS = 30;
+  const WIM_RECOVERY_MS = 15000;
+  const WIM_RETENTION_CAP_MS = 180000;
+  const WIM_ROUNDS = 3;
+  let wimInterval = null;
+  let wimPhase = "ready";
+  let wimRound = 1;
+  let wimPhaseStartedAt = 0;
+  let wimRetentions = [];
 
   function state() { return core.getState(); }
   function coach() { return state().coach; }
@@ -510,11 +520,154 @@
     }, {});
   }
 
+  function clearWimInterval() {
+    if (wimInterval) clearInterval(wimInterval);
+    wimInterval = null;
+  }
+
+  function wimElapsedMs() {
+    return wimPhaseStartedAt ? Math.max(0, Date.now() - wimPhaseStartedAt) : 0;
+  }
+
+  function renderWimRetentions() {
+    const wrap = $("[data-wim-retentions]");
+    if (!wrap) return;
+    wrap.hidden = !wimRetentions.length;
+    wrap.innerHTML = wimRetentions.map((seconds, index) => `<span>Round ${index + 1} · ${formatProtocolTime(seconds)}</span>`).join("");
+  }
+
+  function renderWimGuide() {
+    const protocol = currentProtocol();
+    const guide = $("[data-wim-guide]");
+    if (!guide) return;
+    const isWim = protocol?.guidedMode === "wim_hof";
+    guide.hidden = !isWim;
+    if (!isWim) return;
+
+    const elapsed = wimElapsedMs();
+    const circle = $("[data-wim-circle]");
+    const value = $("[data-wim-value]");
+    const cue = $("[data-wim-cue]");
+    const phase = $("[data-wim-phase]");
+    const note = $("[data-wim-note]");
+    const primary = $("[data-wim-primary]");
+    let progress = 0;
+    let circleState = "";
+    let canStart = !protocol.requiresSafetyAck || $("[data-protocol-ack]").checked;
+
+    $("[data-wim-round]").textContent = wimPhase === "done" ? "Hoàn tất 3 rounds" : `Round ${wimRound}/${WIM_ROUNDS}`;
+    if (wimPhase === "ready") {
+      value.textContent = String(WIM_BREATHS);
+      cue.textContent = "nhịp thở";
+      phase.textContent = "Sẵn sàng";
+      note.textContent = "Vòng tròn chỉ gợi nhịp. Hít sâu, thả ra không ép và dừng ngay nếu khó chịu.";
+      primary.textContent = `Bắt đầu round ${wimRound}`;
+      primary.disabled = !canStart;
+    } else if (wimPhase === "breathing") {
+      const breath = Math.min(WIM_BREATHS, Math.floor(elapsed / WIM_BREATH_MS) + 1);
+      const withinBreath = elapsed % WIM_BREATH_MS;
+      const inhale = withinBreath < WIM_BREATH_MS / 2;
+      progress = Math.min(1, elapsed / (WIM_BREATHS * WIM_BREATH_MS));
+      circleState = inhale ? "is-inhale" : "is-exhale";
+      value.textContent = `${breath}/${WIM_BREATHS}`;
+      cue.textContent = inhale ? "Hít sâu" : "Thả lỏng";
+      phase.textContent = "30 nhịp";
+      note.textContent = inhale ? "Hít sâu bằng mũi hoặc miệng; để bụng nở tự nhiên." : "Thả hơi ra, không ép cạn phổi.";
+      primary.textContent = "Đang dẫn nhịp";
+      primary.disabled = true;
+    } else if (wimPhase === "retention") {
+      const seconds = Math.floor(elapsed / 1000);
+      progress = (seconds % 60) / 60;
+      circleState = "is-retention";
+      value.textContent = formatProtocolTime(seconds);
+      cue.textContent = "Giữ sau thở ra";
+      phase.textContent = "Retention";
+      note.textContent = "Không chạy theo con số. Bấm ngay khi cơ thể đòi thở; app tự dừng ở 3:00 như một guardrail, không phải target.";
+      primary.textContent = "Tôi cần thở";
+      primary.disabled = false;
+    } else if (wimPhase === "recovery") {
+      const remaining = Math.max(0, Math.ceil((WIM_RECOVERY_MS - elapsed) / 1000));
+      progress = Math.min(1, elapsed / WIM_RECOVERY_MS);
+      circleState = "is-recovery";
+      value.textContent = formatProtocolTime(remaining);
+      cue.textContent = "Recovery breath";
+      phase.textContent = "Hít sâu · giữ";
+      note.textContent = "Hít sâu một lần, giữ nhẹ 15 giây. Thả ra khi vòng tròn kết thúc.";
+      primary.textContent = "Đang recovery";
+      primary.disabled = true;
+    } else {
+      progress = 1;
+      circleState = "is-recovery";
+      value.textContent = "3/3";
+      cue.textContent = "Hoàn tất";
+      phase.textContent = "Kết thúc";
+      note.textContent = "Trở lại thở bình thường. Thời gian retention chỉ là log quan sát, không phải thành tích.";
+      primary.textContent = "Làm lại 3 rounds";
+      primary.disabled = false;
+    }
+    circle.className = `wim-circle ${circleState}`.trim();
+    circle.style.setProperty("--wim-progress", `${Math.round(progress * 360)}deg`);
+    renderWimRetentions();
+  }
+
+  function startWimPhase(nextPhase) {
+    clearWimInterval();
+    wimPhase = nextPhase;
+    wimPhaseStartedAt = ["breathing", "retention", "recovery"].includes(nextPhase) ? Date.now() : 0;
+    if (wimPhaseStartedAt) wimInterval = setInterval(tickWimGuide, 100);
+    renderWimGuide();
+  }
+
+  function finishWimRetention(seconds = Math.max(1, Math.round(wimElapsedMs() / 1000))) {
+    wimRetentions.push(Math.min(180, seconds));
+    startWimPhase("recovery");
+  }
+
+  function tickWimGuide() {
+    const elapsed = wimElapsedMs();
+    if (wimPhase === "breathing" && elapsed >= WIM_BREATHS * WIM_BREATH_MS) {
+      startWimPhase("retention");
+      if (navigator.vibrate) navigator.vibrate(50);
+      return;
+    }
+    if (wimPhase === "retention" && elapsed >= WIM_RETENTION_CAP_MS) {
+      finishWimRetention(180);
+      core.showToast("Guardrail 3:00: chuyển sang recovery breath.");
+      return;
+    }
+    if (wimPhase === "recovery" && elapsed >= WIM_RECOVERY_MS) {
+      if (wimRound >= WIM_ROUNDS) startWimPhase("done");
+      else { wimRound += 1; startWimPhase("ready"); }
+      if (navigator.vibrate) navigator.vibrate(50);
+      return;
+    }
+    renderWimGuide();
+  }
+
+  function resetWimGuide() {
+    clearWimInterval();
+    wimPhase = "ready";
+    wimRound = 1;
+    wimPhaseStartedAt = 0;
+    wimRetentions = [];
+    renderWimGuide();
+  }
+
+  function wimPrimaryAction() {
+    const protocol = currentProtocol();
+    if (protocol?.guidedMode !== "wim_hof") return;
+    if (protocol.requiresSafetyAck && !$("[data-protocol-ack]").checked) { core.showToast("Đọc và xác nhận safety gate trước."); return; }
+    if (wimPhase === "ready") startWimPhase("breathing");
+    else if (wimPhase === "retention") finishWimRetention();
+    else if (wimPhase === "done") resetWimGuide();
+  }
+
   function openProtocol(id) {
     const protocol = catalog.protocols.find((item) => item.id === id);
     if (!protocol) return;
     currentProtocolId = id;
     resetProtocolTimer();
+    resetWimGuide();
     $("[data-protocol-title]").textContent = protocol.title;
     const grade = $("[data-protocol-grade]");
     grade.textContent = protocol.grade;
@@ -527,10 +680,13 @@
     const ack = $("[data-protocol-ack]");
     ackWrap.hidden = !protocol.requiresSafetyAck;
     ack.checked = false;
+    renderWimGuide();
     const checkin = $("[data-protocol-checkin]");
     checkin.hidden = protocol.category !== "meditation";
     if (!checkin.hidden) $$('[data-protocol-before], [data-protocol-after]', checkin).forEach((control) => { control.value = "3"; });
-    $("[data-protocol-start]").disabled = Boolean(protocol.requiresSafetyAck);
+    const complete = $("[data-protocol-start]");
+    complete.disabled = Boolean(protocol.requiresSafetyAck);
+    complete.textContent = protocol.guidedMode === "wim_hof" ? "Ghi buổi thở" : "Đánh dấu đã thực hiện";
     const source = $("[data-protocol-source]");
     source.href = protocol.source;
     source.textContent = `${protocol.sourceLabel} ↗`;
@@ -546,9 +702,11 @@
       log.before = protocolCheckin("before");
       log.after = protocolCheckin("after");
     }
+    if (protocol.guidedMode === "wim_hof") log.retentions = wimRetentions.slice(0, WIM_ROUNDS);
     coach().protocolLogs.push(log);
     core.save(false);
     pauseProtocolTimer();
+    resetWimGuide();
     core.closeDialog("protocolDialog");
     renderLab();
     core.showToast(protocol.category === "meditation" ? "Đã ghi phiên tĩnh tâm và thay đổi trạng thái." : "Đã ghi protocol. Calorie không thay đổi.");
@@ -591,6 +749,8 @@
       case "protocol": openProtocol(action.dataset.protocolId); break;
       case "toggle-protocol-timer": toggleProtocolTimer(); break;
       case "reset-protocol-timer": resetProtocolTimer(); break;
+      case "wim-primary": wimPrimaryAction(); break;
+      case "wim-reset": resetWimGuide(); break;
       case "complete-protocol": completeProtocol(); break;
     }
   });
@@ -611,14 +771,14 @@
   $("[data-recovery-soreness]").addEventListener("input", (event) => { $("[data-soreness-output]").textContent = `${event.target.value}/10`; });
   $("[data-recovery-form]").addEventListener("submit", (event) => { event.preventDefault(); saveRecovery(event.currentTarget); });
   $("[data-workout-minutes]").addEventListener("input", updateWorkoutKcalPreview);
-  $("[data-protocol-ack]").addEventListener("change", (event) => { $("[data-protocol-start]").disabled = !event.target.checked; });
-  $("#protocolDialog").addEventListener("close", pauseProtocolTimer);
+  $("[data-protocol-ack]").addEventListener("change", (event) => { $("[data-protocol-start]").disabled = !event.target.checked; renderWimGuide(); });
+  $("#protocolDialog").addEventListener("close", () => { pauseProtocolTimer(); resetWimGuide(); });
   $("#equipmentDialog").addEventListener("close", () => {
     if (!returnToWorkout || !coach().activeWorkout) return;
     returnToWorkout = false;
     setTimeout(() => { renderWorkout(); core.openDialog("workoutDialog"); }, 40);
   });
-  window.addEventListener("pagehide", () => { pauseProtocolTimer(); if (coach().activeWorkout) core.save(false); });
+  window.addEventListener("pagehide", () => { pauseProtocolTimer(); clearWimInterval(); if (coach().activeWorkout) core.save(false); });
 
   window.RootbodyCoach = Object.freeze({ render, startOrResumeWorkout });
   render();

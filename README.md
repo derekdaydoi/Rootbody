@@ -1,10 +1,10 @@
-# Rootbody V5
+# Rootbody V6
 
-Rootbody là PWA local-first để ước tính calorie deficit, gợi ý bữa ăn theo ngân sách còn lại, theo dõi xu hướng cân nặng, hướng dẫn tập gym và hỗ trợ tĩnh tâm. V5 ưu tiên model giải thích được, sai số nhìn thấy được và dữ liệu có thể dùng ngay; app không phụ thuộc Apple Health, backend hay tài khoản.
+Rootbody là PWA local-first để ước tính calorie deficit, gợi ý bữa ăn theo ngân sách còn lại, theo dõi xu hướng cân nặng, hướng dẫn tập gym và hỗ trợ tĩnh tâm. V6 ưu tiên model giải thích được, sai số nhìn thấy được và dữ liệu có thể dùng ngay; app không phụ thuộc Apple Health, backend hay tài khoản.
 
-V5 thêm `Tĩnh tâm 10 phút`, sửa khoảng cách thumbnail/title và hiển thị trọn ảnh bài tập. Ảnh phòng gym gốc không được publish vì có người/phản chiếu; app dùng 19 minh họa riêng theo từng bài tập, không có nhân vật mẫu.
+V6 bổ sung guided circle cho Wim Hof breathing và khóa viewer bài tập theo tỷ lệ thật để không crop ảnh trên mobile. Ảnh phòng gym gốc không được publish vì có người/phản chiếu; app dùng 19 minh họa riêng theo từng bài tập, không có nhân vật mẫu.
 
-## V5 có gì
+## V6 có gì
 
 - Hồ sơ cá nhân: cân nặng, chiều cao, BMI và lựa chọn `Asian action points` / `International`.
 - Ghi vận động thủ công:
@@ -18,6 +18,7 @@ V5 thêm `Tĩnh tâm 10 phút`, sửa khoảng cách thumbnail/title và hiển 
 - Hướng dẫn nhận diện/setup/cues/lỗi cho 9 nhóm thiết bị; mỗi bài có WebP riêng thể hiện điểm bắt đầu, kết thúc và hướng chuyển động.
 - Recovery gate theo ngủ, năng lượng, đau mỏi, illness và red flags; trạng thái xấu sẽ giảm volume hoặc chặn buổi tập.
 - Tĩnh tâm 10 phút có timer chịu được app background/foreground, visual-or-breath anchor và check-in trước/sau cho bình tĩnh, tập trung, tỉnh táo trên thang 1–5.
+- Wim Hof guided flow: vòng tròn dẫn 30 nhịp, retention đếm lên không có target, recovery breath 15 giây và tối đa 3 rounds; safety acknowledgement là điều kiện bắt đầu.
 - Evidence-first Lab cho sleep anchor, caffeine, ánh sáng, thở chậm, Wim Hof breathing và cold finish.
 - Food Engine gồm 57 món/nguyên liệu Việt Nam, tìm kiếm không dấu, khẩu phần 1/2–3 phần và modifier luộc/xào/chiên.
 - Mỗi ước tính đồ ăn lưu calorie, protein, khoảng thấp–cao và confidence; calorie ghi vào deficit được làm tròn lên có chủ đích.
