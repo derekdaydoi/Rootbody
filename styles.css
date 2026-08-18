@@ -449,10 +449,10 @@ dialog::backdrop { background: rgba(16,17,16,.48); backdrop-filter: blur(4px); }
 .session-day small { margin-top: 4px; color: var(--subtle); font-size: 10px; }
 .session-day.is-active { border-color: var(--green); background: var(--green-soft); box-shadow: inset 0 0 0 1px var(--green); }
 .exercise-list { display: grid; gap: 8px; margin-top: 15px; }
-.exercise-row { display: grid; grid-template-columns: 26px 54px minmax(0, 1fr) 44px; align-items: center; gap: 8px; min-width: 0; padding: 9px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface-2); }
+.exercise-row { display: grid; grid-template-columns: 26px 68px minmax(0, 1fr) 44px; align-items: center; gap: 10px; min-width: 0; padding: 9px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface-2); }
 .exercise-index { color: var(--subtle); font-size: 9px; font-weight: 800; text-align: center; }
 .exercise-row img { width: 68px; height: 68px; border-radius: 12px; background: var(--green-soft); object-fit: cover; }
-.exercise-copy { min-width: 0; }
+.exercise-copy { min-width: 0; padding-left: 2px; }
 .exercise-copy strong, .exercise-copy small, .exercise-copy span { display: block; overflow-wrap: anywhere; }
 .exercise-copy strong { font-size: 12px; line-height: 1.3; }
 .exercise-copy small { margin-top: 3px; color: var(--green); font-size: 10px; font-weight: 700; line-height: 1.35; }
@@ -466,6 +466,17 @@ dialog::backdrop { background: rgba(16,17,16,.48); backdrop-filter: blur(4px); }
 .grade-key { display: flex; flex-wrap: wrap; gap: 7px; }
 .grade-key span { padding: 6px 8px; border: 1px solid rgba(255,255,255,.14); border-radius: 9px; color: rgba(255,255,255,.68); font-size: 9px; }
 .grade-key b { color: white; }
+.meditation-hub { display: grid; gap: 16px; overflow: hidden; padding: 21px; border: 1px solid rgba(20,97,74,.16); border-radius: var(--radius-xl); background: linear-gradient(145deg, #F8F5ED 0%, #E6F0EA 100%); box-shadow: 0 16px 36px rgba(16,17,16,.06); }
+.meditation-hub-top, .meditation-heading { display: flex; min-width: 0; align-items: center; justify-content: space-between; gap: 12px; }
+.meditation-status { color: var(--green); font-size: 9px; font-weight: 800; text-align: right; }
+.meditation-heading { justify-content: flex-start; }
+.meditation-heading h2 { margin: 4px 0 0; font: 800 24px/1.08 var(--display); letter-spacing: -.035em; }
+.meditation-mark { position: relative; width: 58px; height: 58px; flex: 0 0 auto; border: 1px solid rgba(20,97,74,.2); border-radius: 50%; background: rgba(255,255,255,.55); }
+.meditation-mark::before, .meditation-mark::after { content: ""; position: absolute; inset: 10px; border: 1px solid rgba(20,97,74,.38); border-radius: 50%; }
+.meditation-mark::after { inset: 22px; border: 0; background: var(--green); }
+.meditation-hub > p { margin: -2px 0 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
+.meditation-outcomes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; }
+.meditation-outcomes span { display: grid; min-height: 38px; place-items: center; padding: 6px; border: 1px solid rgba(20,97,74,.13); border-radius: 11px; background: rgba(255,255,255,.5); color: var(--green); font-size: 9px; font-weight: 800; text-align: center; }
 .protocol-list { display: grid; gap: 10px; }
 .protocol-card { padding: 18px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface); }
 .protocol-card-head > span:last-child { color: var(--subtle); font-size: 9px; font-weight: 700; }
@@ -485,8 +496,8 @@ dialog::backdrop { background: rgba(16,17,16,.48); backdrop-filter: blur(4px); }
 
 dialog.full-page-dialog { width: min(100%, 620px); height: var(--visual-viewport-height, 100dvh); max-height: var(--visual-viewport-height, 100dvh); margin: auto; border-radius: 0; }
 dialog.full-page-dialog .full-page-card { width: 100%; height: var(--visual-viewport-height, 100dvh); max-height: var(--visual-viewport-height, 100dvh); padding-top: env(safe-area-inset-top, 0px); border-radius: 0; }
-.equipment-guide-visual { margin: 0; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--green-soft); }
-.equipment-guide-visual img { display: block; width: 100%; aspect-ratio: 1; max-height: 420px; object-fit: cover; }
+.equipment-guide-visual { margin: 0; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius-lg); background: #F7F3EA; }
+.equipment-guide-visual img { display: block; width: 100%; height: auto; aspect-ratio: 1; max-height: none; object-fit: contain; object-position: center; background: #F7F3EA; }
 .equipment-guide-visual figcaption { padding: 10px 13px; border-top: 1px solid rgba(20,97,74,.12); background: var(--surface); color: var(--muted); font-size: 10px; font-weight: 700; }
 .guide-block { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 11px; padding: 15px; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface-2); }
 .guide-index { color: var(--green); font-size: 10px; font-weight: 900; }
@@ -500,7 +511,7 @@ dialog.full-page-dialog .full-page-card { width: 100%; height: var(--visual-view
 .workout-progress-track { height: 6px; flex: 0 0 auto; overflow: hidden; border-radius: 99px; background: var(--surface-3); }
 .workout-progress-track span { display: block; width: 0; height: 100%; background: var(--green); transition: width .25s ease; }
 .workout-equipment { position: relative; overflow: hidden; min-height: 215px; border-radius: var(--radius-lg); background: var(--green-soft); }
-.workout-equipment img { display: block; width: 100%; height: 250px; object-fit: cover; }
+.workout-equipment img { display: block; width: 100%; height: 250px; object-fit: contain; background: #F7F3EA; }
 .image-action { position: absolute; right: 10px; bottom: 10px; padding: 0 12px; background: rgba(255,253,249,.94); box-shadow: 0 7px 20px rgba(16,17,16,.1); }
 .workout-copy { padding: 2px 2px 0; }
 .set-badge { display: inline-flex; padding: 5px 9px; border-radius: 99px; background: var(--green); color: white; font-size: 10px; font-weight: 800; }
@@ -521,8 +532,24 @@ dialog.full-page-dialog .full-page-card { width: 100%; height: var(--visual-view
 .protocol-detail { gap: 16px; }
 .protocol-meta { display: flex; align-items: center; gap: 11px; padding: 14px; border-radius: 14px; background: var(--surface-2); color: var(--green); font-size: 11px; font-weight: 800; }
 .protocol-summary { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+.protocol-timer { display: grid; gap: 14px; padding: 18px; border: 1px solid rgba(20,97,74,.18); border-radius: var(--radius-lg); background: var(--green-soft); }
+.protocol-timer[hidden] { display: none; }
+.protocol-timer > div:first-child { display: flex; align-items: end; justify-content: space-between; gap: 12px; }
+.protocol-timer span { color: var(--muted); font-size: 10px; font-weight: 700; }
+.protocol-timer strong { color: var(--green); font: 800 38px/1 var(--display); font-variant-numeric: tabular-nums; letter-spacing: -.045em; }
+.protocol-timer-actions { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: 8px; }
+.protocol-timer-actions button { min-height: 45px; }
 .protocol-steps { margin: 0; padding: 18px 18px 18px 40px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface-2); color: var(--ink); font-size: 12px; line-height: 1.6; }
 .protocol-steps li + li { margin-top: 8px; }
+.state-checkin { display: grid; gap: 13px; padding: 16px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface); }
+.state-checkin[hidden] { display: none; }
+.state-checkin h3 { margin: 3px 0 0; font-size: 15px; }
+.state-checkin-grid { display: grid; gap: 7px; }
+.state-checkin-head, .state-checkin-row { display: grid; grid-template-columns: minmax(90px, 1fr) 68px 68px; align-items: center; gap: 7px; }
+.state-checkin-head b { color: var(--subtle); font-size: 9px; text-align: center; text-transform: uppercase; }
+.state-checkin-row > span { color: var(--ink); font-size: 11px; font-weight: 800; }
+.state-checkin-row select { width: 100%; min-height: 40px; padding: 0 8px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface-2); color: var(--ink); font: 800 12px var(--body); text-align: center; }
+.state-checkin > small { color: var(--subtle); font-size: 9px; line-height: 1.45; }
 .protocol-safety { padding: 16px; border-left: 4px solid var(--danger); border-radius: 0 14px 14px 0; background: #FAF2EF; }
 .protocol-safety strong { color: var(--danger); font-size: 12px; }
 .protocol-safety p { margin: 6px 0 0; color: var(--muted); font-size: 11px; line-height: 1.55; }
@@ -565,7 +592,7 @@ body:has(dialog.full-page-dialog[open]) .tab-bar { visibility: hidden; pointer-e
   .coach-section { padding: 16px; }
   .recovery-form-grid { grid-template-columns: 1fr; }
   .recovery-form-grid .control-span { grid-column: auto; }
-  .exercise-row { grid-template-columns: 24px 48px minmax(0, 1fr) 44px; gap: 6px; }
+  .exercise-row { grid-template-columns: 24px 60px minmax(0, 1fr) 44px; gap: 8px; }
   .exercise-row img { width: 60px; height: 60px; }
   .workout-equipment img { height: 220px; }
   .food-control-grid { grid-template-columns: 1fr; }
@@ -585,12 +612,12 @@ body:has(dialog.full-page-dialog[open]) .tab-bar { visibility: hidden; pointer-e
   .plan-stats b { display: inline; }
   .set-entry { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .set-entry .field:last-child { grid-column: 1 / -1; }
-  .exercise-row { grid-template-columns: 24px 44px minmax(0, 1fr); }
-  .exercise-row img { width: 56px; height: 56px; }
+  .exercise-row { grid-template-columns: 24px 52px minmax(0, 1fr); gap: 7px; }
+  .exercise-row img { width: 52px; height: 52px; }
   .exercise-row .row-action { grid-column: 2 / -1; width: 100%; min-height: 40px; }
+  .state-checkin-head, .state-checkin-row { grid-template-columns: minmax(76px, 1fr) 60px 60px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
 }
-

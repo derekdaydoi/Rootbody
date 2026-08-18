@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=32">
+  <link rel="stylesheet" href="./styles.css?v=33">
 </head>
 <body>
   <div class="app-shell">
@@ -241,6 +241,13 @@
         </div>
 
         <div id="coachLab" class="coach-panel" role="tabpanel" data-activity-panel="lab" hidden>
+          <section class="meditation-hub" aria-labelledby="meditationTitle">
+            <div class="meditation-hub-top"><span class="evidence-pill">Tĩnh tâm · Grade B</span><span class="meditation-status" data-meditation-status>Chưa có phiên</span></div>
+            <div class="meditation-heading"><span class="meditation-mark" aria-hidden="true"></span><div><p class="eyebrow">Attention reset</p><h2 id="meditationTitle">10 phút ít kích thích</h2></div></div>
+            <p>Không cần “trống đầu”. Chỉ nhận ra attention đã đi xa và đưa nó về một điểm nhìn hoặc nhịp thở.</p>
+            <div class="meditation-outcomes" aria-label="Các trạng thái tự đánh giá"><span>Bình tĩnh</span><span>Tập trung</span><span>Tỉnh táo</span></div>
+            <button class="primary-button" type="button" data-coach-action="protocol" data-protocol-id="wall_focus_10">Bắt đầu tĩnh tâm 10 phút</button>
+          </section>
           <article class="lab-intro">
             <span class="evidence-pill">Không guru worship</span>
             <h2>Biohack chỉ được vào đây nếu claim và rủi ro đều rõ</h2>
@@ -425,7 +432,21 @@
       <div class="dialog-heading"><div><p class="eyebrow">Rootbody Lab</p><h2 data-protocol-title>Protocol</h2></div><button class="dialog-close" type="button" data-close-dialog="protocolDialog" aria-label="Đóng">×</button></div>
       <div class="protocol-meta"><span class="grade-badge" data-protocol-grade>B</span><span data-protocol-dose></span></div>
       <p class="protocol-summary" data-protocol-summary></p>
+      <section class="protocol-timer" data-protocol-timer hidden aria-live="polite">
+        <div><span>Thời gian còn lại</span><strong data-protocol-timer-value>10:00</strong></div>
+        <div class="protocol-timer-actions"><button class="primary-button" type="button" data-coach-action="toggle-protocol-timer" data-protocol-timer-toggle>Bắt đầu</button><button class="secondary-button" type="button" data-coach-action="reset-protocol-timer">Đặt lại</button></div>
+      </section>
       <ol class="protocol-steps" data-protocol-steps></ol>
+      <section class="state-checkin" data-protocol-checkin hidden>
+        <div class="section-line"><div><p class="eyebrow">Self-report · 1–5</p><h3>Trạng thái trước / sau</h3></div></div>
+        <div class="state-checkin-grid">
+          <div class="state-checkin-head" aria-hidden="true"><span></span><b>Trước</b><b>Sau</b></div>
+          <div class="state-checkin-row"><span>Bình tĩnh</span><select aria-label="Bình tĩnh trước" data-protocol-before="calm"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select><select aria-label="Bình tĩnh sau" data-protocol-after="calm"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select></div>
+          <div class="state-checkin-row"><span>Tập trung</span><select aria-label="Tập trung trước" data-protocol-before="focus"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select><select aria-label="Tập trung sau" data-protocol-after="focus"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select></div>
+          <div class="state-checkin-row"><span>Tỉnh táo</span><select aria-label="Tỉnh táo trước" data-protocol-before="energy"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select><select aria-label="Tỉnh táo sau" data-protocol-after="energy"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select></div>
+        </div>
+        <small>Đây là cảm nhận chủ quan, không phải chỉ số sinh học.</small>
+      </section>
       <div class="protocol-safety" data-protocol-safety></div>
       <label class="safety-check protocol-ack" data-protocol-ack-wrap hidden><input type="checkbox" data-protocol-ack><span><strong>Tôi đã đọc safety gate</strong><small>Tôi sẽ không thực hiện trong/gần nước, khi lái xe, đứng hoặc vận hành máy móc.</small></span></label>
       <a class="source-link" href="#" target="_blank" rel="noopener noreferrer" data-protocol-source>Nguồn gốc ↗</a>
@@ -463,10 +484,9 @@
   </dialog>
 
   <div class="toast" role="status" aria-live="polite" data-toast></div>
-  <script src="./food-data.js?v=32" defer></script>
-  <script src="./coach-data.js?v=32" defer></script>
-  <script src="./app.js?v=32" defer></script>
-  <script src="./coach.js?v=32" defer></script>
+  <script src="./food-data.js?v=33" defer></script>
+  <script src="./coach-data.js?v=33" defer></script>
+  <script src="./app.js?v=33" defer></script>
+  <script src="./coach.js?v=33" defer></script>
 </body>
 </html>
-

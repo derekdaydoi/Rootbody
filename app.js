@@ -181,8 +181,16 @@
       minutes: safeNumber(item.minutes, 1, 300, 45), completedAt: String(item.completedAt || new Date().toISOString()),
       completedSets: safeNumber(item.completedSets, 0, 100, 0), kcal: safeNumber(item.kcal, 0, 5000, 0)
     })) : [];
+    const normalizeProtocolCheckin = (checkin) => checkin && typeof checkin === "object" ? {
+      calm: safeNumber(checkin.calm, 1, 5, 3),
+      focus: safeNumber(checkin.focus, 1, 5, 3),
+      energy: safeNumber(checkin.energy, 1, 5, 3)
+    } : null;
     const protocolLogs = Array.isArray(value.protocolLogs) ? value.protocolLogs.filter(Boolean).slice(-200).map((item) => ({
-      id: String(item.id || "").slice(0, 60), completedAt: String(item.completedAt || new Date().toISOString())
+      id: String(item.id || "").slice(0, 60),
+      completedAt: String(item.completedAt || new Date().toISOString()),
+      before: normalizeProtocolCheckin(item.before),
+      after: normalizeProtocolCheckin(item.after)
     })).filter((item) => item.id) : [];
     return {
       settings: { goal, daysPerWeek, minutes, experience, hasPain: Boolean(value.settings?.hasPain) },
@@ -1140,4 +1148,3 @@
     window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js?v=32").catch((error) => console.warn("Service worker chưa sẵn sàng.", error)));
   }
 })();
-

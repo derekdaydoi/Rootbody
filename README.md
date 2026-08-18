@@ -1,10 +1,10 @@
-# Rootbody V4
+# Rootbody V5
 
-Rootbody là PWA local-first để ước tính calorie deficit, gợi ý bữa ăn theo ngân sách còn lại, theo dõi xu hướng cân nặng và hướng dẫn tập gym theo mục tiêu. V4 ưu tiên model giải thích được, sai số nhìn thấy được và dữ liệu có thể dùng ngay; app không phụ thuộc Apple Health, backend hay tài khoản.
+Rootbody là PWA local-first để ước tính calorie deficit, gợi ý bữa ăn theo ngân sách còn lại, theo dõi xu hướng cân nặng, hướng dẫn tập gym và hỗ trợ tĩnh tâm. V5 ưu tiên model giải thích được, sai số nhìn thấy được và dữ liệu có thể dùng ngay; app không phụ thuộc Apple Health, backend hay tài khoản.
 
-V4 thêm `Food Engine` vào hệ thống Body OS hiện có. Ảnh phòng gym gốc không được publish vì có người/phản chiếu; app dùng 19 minh họa riêng theo từng bài tập, không có nhân vật mẫu.
+V5 thêm `Tĩnh tâm 10 phút`, sửa khoảng cách thumbnail/title và hiển thị trọn ảnh bài tập. Ảnh phòng gym gốc không được publish vì có người/phản chiếu; app dùng 19 minh họa riêng theo từng bài tập, không có nhân vật mẫu.
 
-## V4 có gì
+## V5 có gì
 
 - Hồ sơ cá nhân: cân nặng, chiều cao, BMI và lựa chọn `Asian action points` / `International`.
 - Ghi vận động thủ công:
@@ -17,6 +17,7 @@ V4 thêm `Food Engine` vào hệ thống Body OS hiện có. Ảnh phòng gym g�
 - Workout mode lưu sau mỗi set, resume sau reload và chỉ tạo **một** activity calorie khi hoàn tất.
 - Hướng dẫn nhận diện/setup/cues/lỗi cho 9 nhóm thiết bị; mỗi bài có WebP riêng thể hiện điểm bắt đầu, kết thúc và hướng chuyển động.
 - Recovery gate theo ngủ, năng lượng, đau mỏi, illness và red flags; trạng thái xấu sẽ giảm volume hoặc chặn buổi tập.
+- Tĩnh tâm 10 phút có timer chịu được app background/foreground, visual-or-breath anchor và check-in trước/sau cho bình tĩnh, tập trung, tỉnh táo trên thang 1–5.
 - Evidence-first Lab cho sleep anchor, caffeine, ánh sáng, thở chậm, Wim Hof breathing và cold finish.
 - Food Engine gồm 57 món/nguyên liệu Việt Nam, tìm kiếm không dấu, khẩu phần 1/2–3 phần và modifier luộc/xào/chiên.
 - Mỗi ước tính đồ ăn lưu calorie, protein, khoảng thấp–cao và confidence; calorie ghi vào deficit được làm tròn lên có chủ đích.
@@ -85,7 +86,9 @@ Evidence grade là phân loại nội bộ của Rootbody:
 - `B`: controlled human evidence hoặc official best practice còn giới hạn.
 - `C`: bằng chứng nhỏ/ngắn hạn/mechanistic; hiển thị là experimental khi phù hợp.
 
-Biohack log không cộng calorie và không tự thay đổi recovery. Wim Hof breathing yêu cầu safety acknowledgement: chỉ ngồi/nằm, không bao giờ ở trong/gần nước, dưới vòi sen, khi lái xe, đứng hoặc vận hành máy móc; không có leaderboard nín thở hay claim giảm mỡ/tăng miễn dịch. Cold exposure trong MVP chỉ là kết thúc tắm bằng nước mát tối đa 2 phút, không hướng dẫn ice bath/open-water immersion.
+Biohack log không cộng calorie và không tự thay đổi recovery. Protocol tĩnh tâm dùng focused attention: bức tường chỉ là visual anchor ít kích thích, không được mô tả như một tác nhân tự tạo năng lượng. Một RCT nhỏ cho thấy 10 phút mindfulness có thể cải thiện một số chỉ số attention ở người mới tập; bằng chứng tổng thể vẫn có effect nhỏ và heterogeneity, nên app giữ Grade B và chỉ đo self-report trước/sau ([RCT 10 phút](https://pubmed.ncbi.nlm.nih.gov/30127731/), [meta-analysis brief mindfulness](https://pubmed.ncbi.nlm.nih.gov/32739799/)).
+
+Wim Hof breathing yêu cầu safety acknowledgement: chỉ ngồi/nằm, không bao giờ ở trong/gần nước, dưới vòi sen, khi lái xe, đứng hoặc vận hành máy móc; không có leaderboard nín thở hay claim giảm mỡ/tăng miễn dịch. Cold exposure trong MVP chỉ là kết thúc tắm bằng nước mát tối đa 2 phút, không hướng dẫn ice bath/open-water immersion.
 
 ### BMI
 
@@ -146,4 +149,3 @@ Rootbody/
 ├── sw.js                    # offline cache
 └── manifest.webmanifest     # install metadata
 ```
-

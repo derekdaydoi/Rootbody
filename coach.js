@@ -17,6 +17,9 @@
   let currentProtocolId = null;
   let pendingWorkoutStart = false;
   let returnToWorkout = false;
+  let protocolTimerInterval = null;
+  let protocolTimerEndAt = 0;
+  let protocolTimerRemaining = 0;
 
   function state() { return core.getState(); }
   function coach() { return state().coach; }
@@ -187,7 +190,18 @@
 
   function renderLab() {
     const logs = coach().protocolLogs;
-    $("[data-protocol-list]").innerHTML = catalog.protocols.map((protocol) => {
+    const meditation = catalog.protocols.find((protocol) => protocol.category === "meditation");
+    const lastMeditation = meditation ? [...logs].reverse().find((item) => item.id === meditation.id) : null;
+    const status = $("[data-meditation-status]");
+    if (status) {
+      if (lastMeditation?.before && lastMeditation?.after) {
+        const delta = (key) => lastMeditation.after[key] - lastMeditation.before[key];
+        const signed = (value) => value > 0 ? `+${value}` : String(value);
+        status.textContent = `Δ bình tĩnh ${signed(delta("calm"))} · focus ${signed(delta("focus"))} · tỉnh táo ${signed(delta("energy"))}`;
+      } else if (lastMeditation) status.textContent = "Đã hoàn thành phiên gần nhất";
+      else status.textContent = "Chưa có phiên";
+    }
+    $("[data-protocol-list]").innerHTML = catalog.protocols.filter((protocol) => protocol.category !== "meditation").map((protocol) => {
       const last = [...logs].reverse().find((item) => item.id === protocol.id);
       const status = last ? `Đã làm ${new Intl.DateTimeFormat("vi-VN", { day: "2-digit", month: "2-digit" }).format(new Date(last.completedAt))}` : protocol.tag;
       return `<article class="protocol-card" data-protocol-card><div class="protocol-card-head"><span class="grade-badge grade-${protocol.grade.toLowerCase()}" data-protocol-evidence>${protocol.grade}</span><span>${escapeHtml(status)}</span></div><h2>${escapeHtml(protocol.title)}</h2><p>${escapeHtml(protocol.dose)}</p><small>${escapeHtml(protocol.summary)}</small><button class="secondary-button" type="button" data-coach-action="protocol" data-protocol-id="${escapeHtml(protocol.id)}">Mở protocol</button></article>`;
@@ -425,10 +439,82 @@
     } else core.openDialog("equipmentDialog");
   }
 
+  function currentProtocol() {
+    return catalog.protocols.find((item) => item.id === currentProtocolId);
+  }
+
+  function formatProtocolTime(seconds) {
+    const safe = Math.max(0, Math.ceil(seconds));
+    return `${String(Math.floor(safe / 60)).padStart(2, "0")}:${String(safe % 60).padStart(2, "0")}`;
+  }
+
+  function clearProtocolTimerInterval() {
+    if (protocolTimerInterval) clearInterval(protocolTimerInterval);
+    protocolTimerInterval = null;
+  }
+
+  function renderProtocolTimer() {
+    const protocol = currentProtocol();
+    const timer = $("[data-protocol-timer]");
+    if (!timer) return;
+    const hasTimer = Number(protocol?.timerSeconds) > 0;
+    timer.hidden = !hasTimer;
+    if (!hasTimer) return;
+    $("[data-protocol-timer-value]").textContent = formatProtocolTime(protocolTimerRemaining);
+    const toggle = $("[data-protocol-timer-toggle]");
+    toggle.textContent = protocolTimerEndAt ? "Tạm dừng" : protocolTimerRemaining <= 0 ? "Làm lại" : protocolTimerRemaining < protocol.timerSeconds ? "Tiếp tục" : "Bắt đầu";
+  }
+
+  function pauseProtocolTimer() {
+    if (protocolTimerEndAt) protocolTimerRemaining = Math.max(0, Math.ceil((protocolTimerEndAt - Date.now()) / 1000));
+    protocolTimerEndAt = 0;
+    clearProtocolTimerInterval();
+    renderProtocolTimer();
+  }
+
+  function tickProtocolTimer() {
+    if (!protocolTimerEndAt) return;
+    protocolTimerRemaining = Math.max(0, Math.ceil((protocolTimerEndAt - Date.now()) / 1000));
+    if (protocolTimerRemaining <= 0) {
+      protocolTimerEndAt = 0;
+      clearProtocolTimerInterval();
+      core.showToast("Đủ thời gian. Ghi trạng thái sau rồi hoàn tất.");
+      if (navigator.vibrate) navigator.vibrate(80);
+    }
+    renderProtocolTimer();
+  }
+
+  function toggleProtocolTimer() {
+    const protocol = currentProtocol();
+    if (!protocol?.timerSeconds) return;
+    if (protocolTimerEndAt) { pauseProtocolTimer(); return; }
+    if (protocolTimerRemaining <= 0) protocolTimerRemaining = protocol.timerSeconds;
+    protocolTimerEndAt = Date.now() + protocolTimerRemaining * 1000;
+    clearProtocolTimerInterval();
+    protocolTimerInterval = setInterval(tickProtocolTimer, 250);
+    renderProtocolTimer();
+  }
+
+  function resetProtocolTimer() {
+    const protocol = currentProtocol();
+    clearProtocolTimerInterval();
+    protocolTimerEndAt = 0;
+    protocolTimerRemaining = Number(protocol?.timerSeconds) || 0;
+    renderProtocolTimer();
+  }
+
+  function protocolCheckin(phase) {
+    return ["calm", "focus", "energy"].reduce((result, key) => {
+      result[key] = Number($(`[data-protocol-${phase}="${key}"]`)?.value) || 3;
+      return result;
+    }, {});
+  }
+
   function openProtocol(id) {
     const protocol = catalog.protocols.find((item) => item.id === id);
     if (!protocol) return;
     currentProtocolId = id;
+    resetProtocolTimer();
     $("[data-protocol-title]").textContent = protocol.title;
     const grade = $("[data-protocol-grade]");
     grade.textContent = protocol.grade;
@@ -441,6 +527,9 @@
     const ack = $("[data-protocol-ack]");
     ackWrap.hidden = !protocol.requiresSafetyAck;
     ack.checked = false;
+    const checkin = $("[data-protocol-checkin]");
+    checkin.hidden = protocol.category !== "meditation";
+    if (!checkin.hidden) $$('[data-protocol-before], [data-protocol-after]', checkin).forEach((control) => { control.value = "3"; });
     $("[data-protocol-start]").disabled = Boolean(protocol.requiresSafetyAck);
     const source = $("[data-protocol-source]");
     source.href = protocol.source;
@@ -452,11 +541,17 @@
     const protocol = catalog.protocols.find((item) => item.id === currentProtocolId);
     if (!protocol) return;
     if (protocol.requiresSafetyAck && !$("[data-protocol-ack]").checked) { core.showToast("Đọc và xác nhận safety gate trước."); return; }
-    coach().protocolLogs.push({ id: protocol.id, completedAt: new Date().toISOString() });
+    const log = { id: protocol.id, completedAt: new Date().toISOString() };
+    if (protocol.category === "meditation") {
+      log.before = protocolCheckin("before");
+      log.after = protocolCheckin("after");
+    }
+    coach().protocolLogs.push(log);
     core.save(false);
+    pauseProtocolTimer();
     core.closeDialog("protocolDialog");
     renderLab();
-    core.showToast("Đã ghi protocol. Calorie không thay đổi.");
+    core.showToast(protocol.category === "meditation" ? "Đã ghi phiên tĩnh tâm và thay đổi trạng thái." : "Đã ghi protocol. Calorie không thay đổi.");
   }
 
   function updateSettingsFromControls() {
@@ -494,6 +589,8 @@
       case "skip-exercise": skipExercise(); break;
       case "finish-workout": finishWorkout(); break;
       case "protocol": openProtocol(action.dataset.protocolId); break;
+      case "toggle-protocol-timer": toggleProtocolTimer(); break;
+      case "reset-protocol-timer": resetProtocolTimer(); break;
       case "complete-protocol": completeProtocol(); break;
     }
   });
@@ -515,14 +612,14 @@
   $("[data-recovery-form]").addEventListener("submit", (event) => { event.preventDefault(); saveRecovery(event.currentTarget); });
   $("[data-workout-minutes]").addEventListener("input", updateWorkoutKcalPreview);
   $("[data-protocol-ack]").addEventListener("change", (event) => { $("[data-protocol-start]").disabled = !event.target.checked; });
+  $("#protocolDialog").addEventListener("close", pauseProtocolTimer);
   $("#equipmentDialog").addEventListener("close", () => {
     if (!returnToWorkout || !coach().activeWorkout) return;
     returnToWorkout = false;
     setTimeout(() => { renderWorkout(); core.openDialog("workoutDialog"); }, 40);
   });
-  window.addEventListener("pagehide", () => { if (coach().activeWorkout) core.save(false); });
+  window.addEventListener("pagehide", () => { pauseProtocolTimer(); if (coach().activeWorkout) core.save(false); });
 
   window.RootbodyCoach = Object.freeze({ render, startOrResumeWorkout });
   render();
 })();
-
