@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" role="img" aria-labelledby="title desc">
+  <title id="title">Máy chạy bộ</title><desc id="desc">Minh họa máy chạy bộ có băng chạy, tay vịn và màn hình điều khiển.</desc>
+  <rect width="240" height="160" rx="20" fill="#F7F5EF"/>
+  <path d="M42 127h139l25 15H60z" fill="#24332D"/><path d="M51 120h126" stroke="#E2EEE8" stroke-width="9" stroke-linecap="round"/>
+  <path d="M171 122 193 46M194 47h-60M134 47l-18 48" fill="none" stroke="#14614A" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="162" y="18" width="62" height="43" rx="9" fill="#31463D"/><rect x="174" y="29" width="38" height="13" rx="4" fill="#E2EEE8"/>
+  <circle cx="64" cy="138" r="8" fill="#14614A"/><circle cx="181" cy="138" r="8" fill="#14614A"/>
+</svg>
+

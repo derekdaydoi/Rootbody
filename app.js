@@ -1,9 +1,10 @@
 (() => {
   "use strict";
 
-  const STORAGE_KEY = "rootbody.v2";
+  const STORAGE_KEY = "rootbody.v3";
+  const V2_KEY = "rootbody.v2";
   const LEGACY_KEY = "rootbody.v1";
-  const MODEL_VERSION = "0.3";
+  const MODEL_VERSION = "0.4";
   const KCAL_PER_KG = 7700;
   const number = new Intl.NumberFormat("vi-VN", { maximumFractionDigits: 1 });
   const integer = new Intl.NumberFormat("vi-VN", { maximumFractionDigits: 0 });
@@ -28,10 +29,11 @@
 
   const ACTIVITY_NAMES = {
     walk: "Đi bộ", run: "Chạy", badminton: "Cầu lông",
-    gym_bike: "Đạp xe", gym_treadmill: "Máy chạy",
-    gym_shoulder: "Máy tập cơ vai", gym_alpha: "Máy cơ Alpha",
+    gym_bike: "Đạp xe", gym_treadmill: "Máy chạy", gym_stair: "Máy leo cầu thang",
+    gym_shoulder: "Máy tập cơ vai", gym_alpha: "Máy đa năng (chưa xác minh)",
     gym_dumbbell: "Tạ đơn", gym_bench: "Nằm nâng ngực",
     gym_adductor: "Máy khép đùi", gym_abductor: "Máy mở đùi",
+    gym_session: "Giáo án Rootbody",
     legacy: "Vận động V1"
   };
   const LEVELS = {
@@ -64,12 +66,20 @@
 
   function defaultState() {
     return {
-      version: 2,
+      version: 3,
       modelVersion: MODEL_VERSION,
       profile: { weightKg: null, heightCm: null, bmiStandard: "asian" },
-      settings: { baselineKcal: 1600, targetDeficit: 400 },
+      settings: { baselineKcal: 1600, targetDeficit: 500 },
       days: {},
-      weights: []
+      weights: [],
+      coach: {
+        settings: { goal: "recomp", daysPerWeek: 3, minutes: 45, experience: "beginner", hasPain: false },
+        ui: { activityTab: "today" },
+        recoveryByDate: {},
+        activeWorkout: null,
+        workoutHistory: [],
+        protocolLogs: []
+      }
     };
   }
 
@@ -93,6 +103,12 @@
     try {
       const current = localStorage.getItem(STORAGE_KEY);
       if (current) return normalizeState(JSON.parse(current));
+      const v2 = localStorage.getItem(V2_KEY);
+      if (v2) {
+        const migrated = normalizeState(JSON.parse(v2));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
+        return migrated;
+      }
       const legacy = localStorage.getItem(LEGACY_KEY);
       if (legacy) {
         const migrated = migrateV1(JSON.parse(legacy));
@@ -108,7 +124,7 @@
   function migrateV1(old) {
     const next = defaultState();
     next.settings.baselineKcal = safeNumber(old?.settings?.baselineKcal, 800, 4000, 1600);
-    next.settings.targetDeficit = safeNumber(old?.settings?.targetDeficit, 100, 1000, 400);
+    next.settings.targetDeficit = safeNumber(old?.settings?.targetDeficit, 100, 1000, 500);
     next.weights = normalizeWeights(old?.weights);
     if (next.weights.length) next.profile.weightKg = next.weights[next.weights.length - 1].kg;
     Object.entries(old?.days || {}).forEach(([date, day]) => {
@@ -131,13 +147,72 @@
     fresh.profile.heightCm = nullableNumber(value.profile?.heightCm, 120, 230);
     fresh.profile.bmiStandard = value.profile?.bmiStandard === "international" ? "international" : "asian";
     fresh.settings.baselineKcal = safeNumber(value.settings?.baselineKcal, 800, 4000, 1600);
-    fresh.settings.targetDeficit = safeNumber(value.settings?.targetDeficit, 100, 1000, 400);
+    fresh.settings.targetDeficit = safeNumber(value.settings?.targetDeficit, 100, 1000, 500);
     fresh.weights = normalizeWeights(value.weights);
     Object.entries(value.days || {}).forEach(([date, day]) => {
       if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
       fresh.days[date] = { meals: normalizeMeals(day?.meals), activities: normalizeActivities(day?.activities) };
     });
+    fresh.coach = normalizeCoach(value.coach);
     return fresh;
+  }
+
+  function normalizeCoach(value) {
+    const base = defaultState().coach;
+    if (!value || typeof value !== "object") return base;
+    const goal = ["fat", "muscle", "recomp"].includes(value.settings?.goal) ? value.settings.goal : "recomp";
+    const daysPerWeek = [2, 3, 4].includes(Number(value.settings?.daysPerWeek)) ? Number(value.settings.daysPerWeek) : 3;
+    const minutes = [30, 45, 60].includes(Number(value.settings?.minutes)) ? Number(value.settings.minutes) : 45;
+    const experience = value.settings?.experience === "intermediate" ? "intermediate" : "beginner";
+    const activityTab = ["today", "plan", "lab"].includes(value.ui?.activityTab) ? value.ui.activityTab : "today";
+    const recoveryByDate = {};
+    Object.entries(value.recoveryByDate || {}).forEach(([date, item]) => {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !item || typeof item !== "object") return;
+      recoveryByDate[date] = {
+        sleepHours: safeNumber(item.sleepHours, 0, 16, 7),
+        energy: safeNumber(item.energy, 1, 5, 3),
+        soreness: safeNumber(item.soreness, 0, 10, 3),
+        illness: Boolean(item.illness), sharpPain: Boolean(item.sharpPain), redFlag: Boolean(item.redFlag),
+        checkedAt: String(item.checkedAt || `${date}T12:00:00`)
+      };
+    });
+    const workoutHistory = Array.isArray(value.workoutHistory) ? value.workoutHistory.filter(Boolean).slice(-100).map((item) => ({
+      sessionId: String(item.sessionId || uid()), name: String(item.name || "Giáo án Rootbody").slice(0, 80),
+      goal: ["fat", "muscle", "recomp"].includes(item.goal) ? item.goal : "recomp",
+      minutes: safeNumber(item.minutes, 1, 300, 45), completedAt: String(item.completedAt || new Date().toISOString()),
+      completedSets: safeNumber(item.completedSets, 0, 100, 0), kcal: safeNumber(item.kcal, 0, 5000, 0)
+    })) : [];
+    const protocolLogs = Array.isArray(value.protocolLogs) ? value.protocolLogs.filter(Boolean).slice(-200).map((item) => ({
+      id: String(item.id || "").slice(0, 60), completedAt: String(item.completedAt || new Date().toISOString())
+    })).filter((item) => item.id) : [];
+    return {
+      settings: { goal, daysPerWeek, minutes, experience, hasPain: Boolean(value.settings?.hasPain) },
+      ui: { activityTab }, recoveryByDate,
+      activeWorkout: normalizeActiveWorkout(value.activeWorkout), workoutHistory, protocolLogs
+    };
+  }
+
+  function normalizeActiveWorkout(value) {
+    if (!value || typeof value !== "object" || !value.sessionId || !Array.isArray(value.exercises)) return null;
+    return {
+      sessionId: String(value.sessionId), templateId: String(value.templateId || "full_a"),
+      name: String(value.name || "Giáo án Rootbody").slice(0, 80),
+      goal: ["fat", "muscle", "recomp"].includes(value.goal) ? value.goal : "recomp",
+      startedAt: String(value.startedAt || new Date().toISOString()),
+      exerciseIndex: safeNumber(value.exerciseIndex, 0, Math.max(0, value.exercises.length), 0),
+      reduced: Boolean(value.reduced),
+      exercises: value.exercises.slice(0, 12).map((exercise) => ({
+        id: String(exercise.id || "").slice(0, 60), name: String(exercise.name || "Bài tập").slice(0, 80),
+        equipment: String(exercise.equipment || "core").slice(0, 40), kind: ["strength", "timed", "cardio"].includes(exercise.kind) ? exercise.kind : "strength",
+        sets: safeNumber(exercise.sets, 1, 8, 2), reps: String(exercise.reps || "8–12").slice(0, 30),
+        rir: safeNumber(exercise.rir, 0, 6, 2), rest: safeNumber(exercise.rest, 0, 300, 60),
+        cue: String(exercise.cue || "").slice(0, 240), skipped: Boolean(exercise.skipped),
+        logs: Array.isArray(exercise.logs) ? exercise.logs.slice(0, 8).map((log) => ({
+          load: nullableNumber(log.load, 0, 1000), reps: nullableNumber(log.reps, 0, 200),
+          effort: nullableNumber(log.effort, 0, 10), completedAt: String(log.completedAt || new Date().toISOString())
+        })) : []
+      }))
+    };
   }
 
   function normalizeMeals(items) {
@@ -163,6 +238,7 @@
       resistance: nullableNumber(item.resistance, 1, 30), cadenceRpm: nullableNumber(item.cadenceRpm, 30, 140),
       inclinePct: nullableNumber(item.inclinePct, 0, 20),
       distanceKm: nullableNumber(item.distanceKm, 0, 100), speedKmh: nullableNumber(item.speedKmh, 0, 50),
+      sourceWorkoutSessionId: item.sourceWorkoutSessionId ? String(item.sourceWorkoutSessionId).slice(0, 100) : null,
       createdAt: String(item.createdAt || new Date().toISOString())
     }));
   }
@@ -189,9 +265,16 @@
   }
 
   function saveState() {
-    state.version = 2;
+    state.version = 3;
     state.modelVersion = MODEL_VERSION;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      return true;
+    } catch (error) {
+      console.warn("Rootbody không lưu được dữ liệu local.", error);
+      showToast("Không lưu được dữ liệu. Kiểm tra dung lượng trình duyệt.");
+      return false;
+    }
   }
 
   function dayData(date = localDateKey()) {
@@ -236,6 +319,7 @@
     renderProfile();
     renderHistory();
     prefillForms();
+    window.RootbodyCoach?.render?.();
   }
 
   function renderToday() {
@@ -485,6 +569,11 @@
     return clamp(base + (STRENGTH_LEVELS[intensity] || STRENGTH_LEVELS.gym_medium).offset, 2.5, 6.0);
   }
 
+  function estimateNetKcal(met, weightKg, minutes) {
+    const rawKcal = Math.max(0, (Number(met) - 1) * 3.5 * Number(weightKg) / 200 * Number(minutes));
+    return Math.floor(rawKcal / 10) * 10;
+  }
+
   function readActivityInput(form) {
     return {
       steps: Number(form.elements.steps.value), minutes: Number(form.elements.minutes.value),
@@ -513,6 +602,8 @@
       speedKmh = treadmillSpeed;
       distanceKm = treadmillSpeed * minutes / 60;
       met = treadmillMet(treadmillSpeed, inclinePct);
+    } else if (type === "gym_stair") {
+      met = ({ gym_light: 4.5, gym_medium: 6.0, gym_heavy: 8.0 })[intensity] || 6.0;
     } else if (STRENGTH_TYPES.has(type)) {
       met = strengthMet(type, intensity);
     } else {
@@ -524,8 +615,7 @@
       if ((type === "walk" && speedKmh > 10) || (type === "run" && speedKmh > 30)) return { error: "Bước/phút tạo tốc độ phi thực tế. Kiểm tra lại." };
       met = type === "walk" ? walkingMet(speedKmh) : runningMet(speedKmh);
     }
-    const rawKcal = Math.max(0, (met - 1) * 3.5 * weight / 200 * minutes);
-    const kcal = Math.floor(rawKcal / 10) * 10;
+    const kcal = estimateNetKcal(met, weight, minutes);
     return { kcal, met, distanceKm, speedKmh };
   }
 
@@ -536,10 +626,11 @@
     const usesSteps = type === "walk" || type === "run";
     const isBike = type === "gym_bike";
     const isTreadmill = type === "gym_treadmill";
+    const isStair = type === "gym_stair";
     const isStrength = STRENGTH_TYPES.has(type);
     $("[data-steps-field]").hidden = !usesSteps;
     $("[data-level-field]").hidden = !isBadminton;
-    $("[data-strength-field]").hidden = !isStrength;
+    $("[data-strength-field]").hidden = !(isStrength || isStair);
     $("[data-bike-resistance-field]").hidden = !isBike;
     $("[data-bike-cadence-field]").hidden = !isBike;
     $("[data-treadmill-speed-field]").hidden = !isTreadmill;
@@ -560,7 +651,7 @@
       if (type === "badminton") meta = ` · ${LEVELS[input.level].label}`;
       else if (type === "gym_bike") meta = ` · level ${integer.format(input.resistance)}/30 · ${integer.format(input.cadenceRpm)} RPM`;
       else if (type === "gym_treadmill") meta = ` · ${number.format(input.treadmillSpeed)} km/h · dốc ${number.format(input.inclinePct)}%`;
-      else if (isStrength) meta = ` · ${STRENGTH_LEVELS[input.intensity].label}`;
+      else if (isStrength || isStair) meta = ` · ${STRENGTH_LEVELS[input.intensity].label}`;
       else if (result.speedKmh) meta = ` · ~${number.format(result.speedKmh)} km/h`;
       preview.innerHTML = `<span>MET ${number.format(result.met)}${meta}</span><strong>${integer.format(result.kcal)} kcal ròng</strong><small>${kg3.format(kcalToKg(result.kcal))} kg eq.</small>`;
     }
@@ -720,7 +811,7 @@
     const steps = type === "walk" || type === "run" ? input.steps : 0;
     const result = estimateActivity(type, input);
     if (result.error) { showToast(result.error); return; }
-    const level = type === "badminton" ? input.level : STRENGTH_TYPES.has(type) ? input.intensity : null;
+    const level = type === "badminton" ? input.level : (STRENGTH_TYPES.has(type) || type === "gym_stair") ? input.intensity : null;
     dayData().activities.push({
       id: uid(), type, name: ACTIVITY_NAMES[type], kcal: result.kcal, steps, minutes: input.minutes,
       level, met: result.met,
@@ -777,7 +868,7 @@
     event.preventDefault();
     const form = event.currentTarget;
     const baseline = safeNumber(form.elements.baselineKcal.value, 800, 4000, 1600);
-    const target = safeNumber(form.elements.targetDeficit.value, 100, 1000, 400);
+    const target = safeNumber(form.elements.targetDeficit.value, 100, 1000, 500);
     if (target >= baseline) {
       showToast("Mục tiêu thâm hụt phải thấp hơn calo nền.");
       return;
@@ -796,6 +887,33 @@
     });
   });
 
+  window.RootbodyCore = Object.freeze({
+    getState: () => state,
+    save: (shouldRender = true) => {
+      const saved = saveState();
+      if (shouldRender) renderAll();
+      return saved;
+    },
+    addActivity: (activity, date = localDateKey()) => {
+      const normalized = normalizeActivities([activity])[0];
+      if (!normalized) return false;
+      const day = dayData(date);
+      if (normalized.sourceWorkoutSessionId && day.activities.some((item) => item.sourceWorkoutSessionId === normalized.sourceWorkoutSessionId)) return false;
+      day.activities.push(normalized);
+      saveState();
+      renderAll();
+      return true;
+    },
+    profileReady,
+    localDateKey,
+    calculateNetKcal: (met, minutes) => estimateNetKcal(met, state.profile.weightKg, minutes),
+    openDialog,
+    closeDialog,
+    showToast,
+    navigate,
+    renderAll
+  });
+
   window.addEventListener("hashchange", () => navigate(location.hash.slice(1)));
 
   try { if ("scrollRestoration" in history) history.scrollRestoration = "manual"; } catch (error) {}
@@ -807,6 +925,7 @@
   navigate(location.hash.slice(1) || "today");
 
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js?v=23").catch((error) => console.warn("Service worker chưa sẵn sàng.", error)));
+    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js?v=31").catch((error) => console.warn("Service worker chưa sẵn sàng.", error)));
   }
 })();
+

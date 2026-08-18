@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" role="img" aria-labelledby="title desc">
+  <title id="title">Khu tập xà</title><desc id="desc">Minh họa khung xà đơn với thanh ngang và tay nắm.</desc>
+  <rect width="240" height="160" rx="20" fill="#F7F5EF"/>
+  <path d="M58 140V30h124v110M39 31h162M76 31v20M164 31v20M46 140h31M163 140h31" fill="none" stroke="#14614A" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M92 31h56" stroke="#24332D" stroke-width="12" stroke-linecap="round"/>
+  <path d="M91 83h58M103 83v48M137 83v48" fill="none" stroke="#31463D" stroke-width="7" stroke-linecap="round"/>
+</svg>
+

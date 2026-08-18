@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" role="img" aria-labelledby="title desc">
+  <title id="title">Ghế nâng ngực</title><desc id="desc">Minh họa ghế phẳng, giá đỡ thanh tạ và đĩa tạ.</desc>
+  <rect width="240" height="160" rx="20" fill="#F7F5EF"/>
+  <path d="M63 131h113M83 129v-29M159 129v-29M72 99h98" fill="none" stroke="#14614A" stroke-width="9" stroke-linecap="round"/>
+  <rect x="66" y="86" width="111" height="20" rx="9" fill="#31463D"/>
+  <path d="M60 92V34M180 92V34M45 45h150" fill="none" stroke="#24332D" stroke-width="8" stroke-linecap="round"/>
+  <rect x="32" y="28" width="15" height="34" rx="5" fill="#14614A"/><rect x="47" y="32" width="12" height="26" rx="4" fill="#31463D"/><rect x="181" y="32" width="12" height="26" rx="4" fill="#31463D"/><rect x="193" y="28" width="15" height="34" rx="5" fill="#14614A"/>
+</svg>
+

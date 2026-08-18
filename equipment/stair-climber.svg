@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" role="img" aria-labelledby="title desc">
+  <title id="title">Máy leo cầu thang</title><desc id="desc">Minh họa stair climber có bậc chuyển động, tay vịn và bảng điều khiển.</desc>
+  <rect width="240" height="160" rx="20" fill="#F7F5EF"/>
+  <path d="M61 136h130l-18-73h-53l-15 19H87z" fill="#24332D"/>
+  <path d="M88 128h78M94 113h68M100 98h58M107 83h47" fill="none" stroke="#E2EEE8" stroke-width="8" stroke-linecap="round"/>
+  <path d="M78 119 57 38M171 82l22-44" fill="none" stroke="#14614A" stroke-width="8" stroke-linecap="round"/>
+  <path d="M56 40h38M193 40h-38" stroke="#14614A" stroke-width="8" stroke-linecap="round"/>
+  <rect x="156" y="18" width="54" height="38" rx="9" fill="#31463D"/><rect x="166" y="27" width="34" height="14" rx="4" fill="#E2EEE8"/>
+</svg>
+

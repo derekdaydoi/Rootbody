@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=23">
+  <link rel="stylesheet" href="./styles.css?v=31">
 </head>
 <body>
   <div class="app-shell">
@@ -63,8 +63,8 @@
 
         <article class="budget-panel">
           <div class="section-line">
-            <div><p class="budget-label">Ngân sách ăn còn lại</p><p class="budget-value"><span data-budget-remaining>1.200</span> kcal</p></div>
-            <span class="budget-context" data-budget-context>Mục tiêu −400</span>
+            <div><p class="budget-label">Ngân sách ăn còn lại</p><p class="budget-value"><span data-budget-remaining>1.100</span> kcal</p></div>
+            <span class="budget-context" data-budget-context>Mục tiêu −500</span>
           </div>
           <div class="progress-track" role="progressbar" aria-label="Calo đã ăn so với ngân sách" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-budget-progress><span data-budget-fill></span></div>
         </article>
@@ -110,46 +110,130 @@
       </section>
 
       <section class="view" id="activity" data-view="activity" aria-labelledby="activityTitle">
-        <div class="screen-heading">
-          <h1 id="activityTitle">Vận động</h1>
+        <div class="screen-heading coach-heading">
+          <div><p class="eyebrow">Body OS · evidence-first</p><h1 id="activityTitle">Vận động</h1></div>
           <span class="date-chip" data-today-short></span>
         </div>
 
-        <article class="activity-summary">
-          <div><span>Hôm nay</span><strong><b data-activity-steps>0</b> bước</strong></div>
-          <div><span>Ước tính ròng</span><strong><b data-activity-total>0</b> kcal</strong></div>
-          <div><span>Tương đương</span><strong><b data-activity-kg>0,000</b> kg</strong></div>
-        </article>
+        <div class="coach-tabs" role="tablist" aria-label="Khu vực vận động" data-activity-tabs>
+          <button class="coach-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="coachToday" data-activity-tab="today">Hôm nay</button>
+          <button class="coach-tab" type="button" role="tab" aria-selected="false" aria-controls="coachPlan" data-activity-tab="plan" tabindex="-1">Giáo án</button>
+          <button class="coach-tab" type="button" role="tab" aria-selected="false" aria-controls="coachLab" data-activity-tab="lab" tabindex="-1">Lab</button>
+        </div>
 
-        <section class="section-block" aria-labelledby="activityPickTitle">
-          <div class="section-line"><h2 id="activityPickTitle">Ghi buổi tập</h2></div>
-          <div class="activity-options">
-            <button class="activity-option" type="button" data-activity-type="walk"><span class="activity-glyph">W</span><span><strong>Đi bộ</strong><small>Số bước · số phút</small></span><b>↗</b></button>
-            <button class="activity-option" type="button" data-activity-type="run"><span class="activity-glyph">R</span><span><strong>Chạy</strong><small>Số bước · số phút</small></span><b>↗</b></button>
-            <button class="activity-option" type="button" data-activity-type="badminton"><span class="activity-glyph">B</span><span><strong>Cầu lông</strong><small>Số phút · trình độ</small></span><b>↗</b></button>
-          </div>
-        </section>
+        <div id="coachToday" class="coach-panel" role="tabpanel" data-activity-panel="today">
+          <article class="coach-hero" data-coach-today>
+            <div class="coach-hero-top"><span class="evidence-pill">ACSM-informed</span><span data-coach-session-index>Buổi 1/3</span></div>
+            <p class="coach-kicker">Buổi tiếp theo</p>
+            <h2 data-today-workout-title>Full body A</h2>
+            <p data-today-workout-meta>5 bài · khoảng 45 phút · RIR 2–3</p>
+            <div class="coach-hero-stats"><span data-coach-goal-label>Giảm mỡ + tăng cơ</span><span data-coach-recovery-label>Check-in trước khi tập</span></div>
+            <button class="coach-cta" type="button" data-coach-action="start" data-start-workout>Bắt đầu buổi tập</button>
+          </article>
 
-        <section class="section-block" aria-labelledby="gymPickTitle">
-          <div class="section-line"><h2 id="gymPickTitle">Gym</h2></div>
-          <div class="activity-options gym-options">
-            <button class="activity-option" type="button" data-activity-type="gym_bike"><span class="activity-glyph">XE</span><span><strong>Đạp xe</strong><small>Phút · level 1–30 · RPM</small></span><b>↗</b></button>
-            <button class="activity-option" type="button" data-activity-type="gym_treadmill"><span class="activity-glyph">D</span><span><strong>Máy chạy</strong><small>Phút · tốc độ · độ dốc</small></span><b>↗</b></button>
-            <button class="activity-option" type="button" data-activity-type="gym_shoulder"><span class="activity-glyph">V</span><span><strong>Máy tập cơ vai</strong><small>Phút · cường độ</small></span><b>↗</b></button>
-            <button class="activity-option" type="button" data-activity-type="gym_alpha"><span class="activity-glyph">α</span><span><strong>Máy cơ Alpha</strong><small>Phút · cường độ</small></span><b>↗</b></button>
-            <button class="activity-option" type="button" data-activity-type="gym_dumbbell"><span class="activity-glyph">T</span><span><strong>Tạ đơn</strong><small>Phút · cường độ</small></span><b>↗</b></button>
-            <button class="activity-option" type="button" data-activity-type="gym_bench"><span class="activity-glyph">N</span><span><strong>Nằm nâng ngực</strong><small>Phút · cường độ</small></span><b>↗</b></button>
-            <button class="activity-option" type="button" data-activity-type="gym_adductor"><span class="activity-glyph">K</span><span><strong>Máy khép đùi</strong><small>Phút · cường độ</small></span><b>↗</b></button>
-            <button class="activity-option" type="button" data-activity-type="gym_abductor"><span class="activity-glyph">M</span><span><strong>Máy mở đùi</strong><small>Phút · cường độ</small></span><b>↗</b></button>
-          </div>
-        </section>
+          <section class="coach-section" aria-labelledby="todayEquipmentTitle">
+            <div class="section-line"><h2 id="todayEquipmentTitle">Bài sẽ tập</h2><button class="text-button" type="button" data-coach-action="show-plan">Xem giáo án</button></div>
+            <div class="equipment-row" data-today-equipment></div>
+          </section>
 
-        <section class="section-block" aria-labelledby="activityLogTitle">
-          <div class="section-line"><h2 id="activityLogTitle">Đã ghi hôm nay</h2></div>
-          <div class="log-list" data-activity-log></div>
-        </section>
+          <article class="recovery-card" data-recovery-gate>
+            <div class="recovery-head"><div><span class="recovery-dot" data-recovery-dot></span><strong data-recovery-status>Chưa check-in</strong></div><button class="text-button" type="button" data-coach-action="recovery">Check-in</button></div>
+            <p data-recovery-reason>Ngủ, năng lượng, đau mỏi và red flags quyết định giữ nguyên, giảm volume hay chặn buổi tập.</p>
+            <div class="recovery-metrics" data-recovery-metrics hidden>
+              <span><b data-recovery-sleep>—</b> ngủ</span><span><b data-recovery-energy>—</b> năng lượng</span><span><b data-recovery-soreness>—</b> đau mỏi</span>
+            </div>
+            <small data-recovery-adjustment>Không dùng điểm readiness giả chính xác.</small>
+          </article>
 
-        <aside class="model-note"><strong>Cách tính bảo thủ</strong><p>Rootbody chọn MET theo dữ liệu buổi tập, trừ 1 MET nghỉ rồi làm tròn calorie xuống. Level xe 1–30 chỉ là thang tương đối vì mỗi hãng máy dùng lực cản khác nhau.</p></aside>
+          <article class="activity-summary">
+            <div><span>Hôm nay</span><strong><b data-activity-steps>0</b> bước</strong></div>
+            <div><span>Ước tính ròng</span><strong><b data-activity-total>0</b> kcal</strong></div>
+            <div><span>Tương đương</span><strong><b data-activity-kg>0,000</b> kg</strong></div>
+          </article>
+
+          <details class="manual-loggers">
+            <summary>Ghi vận động thủ công</summary>
+            <section class="section-block" aria-labelledby="activityPickTitle">
+              <div class="section-line"><h2 id="activityPickTitle">Ngoài phòng gym</h2></div>
+              <div class="activity-options">
+                <button class="activity-option" type="button" data-activity-type="walk"><span class="activity-glyph">W</span><span><strong>Đi bộ</strong><small>Số bước · số phút</small></span><b>↗</b></button>
+                <button class="activity-option" type="button" data-activity-type="run"><span class="activity-glyph">R</span><span><strong>Chạy</strong><small>Số bước · số phút</small></span><b>↗</b></button>
+                <button class="activity-option" type="button" data-activity-type="badminton"><span class="activity-glyph">B</span><span><strong>Cầu lông</strong><small>Số phút · trình độ</small></span><b>↗</b></button>
+              </div>
+            </section>
+
+            <section class="section-block" aria-labelledby="gymPickTitle">
+              <div class="section-line"><h2 id="gymPickTitle">Gym · ước tính theo phút</h2></div>
+              <div class="activity-options gym-options">
+                <button class="activity-option" type="button" data-activity-type="gym_bike"><span class="activity-glyph">XE</span><span><strong>Đạp xe</strong><small>Phút · level 1–30 · RPM</small></span><b>↗</b></button>
+                <button class="activity-option" type="button" data-activity-type="gym_stair"><span class="activity-glyph">BẬC</span><span><strong>Máy leo cầu thang</strong><small>Phút · cường độ</small></span><b>↗</b></button>
+                <button class="activity-option" type="button" data-activity-type="gym_treadmill"><span class="activity-glyph">D</span><span><strong>Máy chạy</strong><small>Phút · tốc độ · độ dốc</small></span><b>↗</b></button>
+                <button class="activity-option" type="button" data-activity-type="gym_shoulder"><span class="activity-glyph">V</span><span><strong>Máy multi-press</strong><small>Phút · cường độ</small></span><b>↗</b></button>
+                <button class="activity-option" type="button" data-activity-type="gym_dumbbell"><span class="activity-glyph">T</span><span><strong>Tạ đơn</strong><small>Phút · cường độ</small></span><b>↗</b></button>
+                <button class="activity-option" type="button" data-activity-type="gym_bench"><span class="activity-glyph">N</span><span><strong>Nằm nâng ngực</strong><small>Phút · cường độ</small></span><b>↗</b></button>
+                <button class="activity-option" type="button" data-activity-type="gym_adductor"><span class="activity-glyph">K</span><span><strong>Máy khép đùi</strong><small>Phút · cường độ</small></span><b>↗</b></button>
+                <button class="activity-option" type="button" data-activity-type="gym_abductor"><span class="activity-glyph">M</span><span><strong>Máy mở đùi</strong><small>Phút · cường độ</small></span><b>↗</b></button>
+              </div>
+            </section>
+          </details>
+
+          <section class="section-block" aria-labelledby="activityLogTitle">
+            <div class="section-line"><h2 id="activityLogTitle">Đã ghi hôm nay</h2></div>
+            <div class="log-list" data-activity-log></div>
+          </section>
+
+          <aside class="model-note"><strong>Một buổi, một lần cộng calorie</strong><p>Workout theo giáo án chỉ tạo một activity khi hoàn tất. Rootbody trừ 1 MET nghỉ và làm tròn xuống; set/reps dùng để tiến bộ, không được biến thành calorie giả.</p></aside>
+        </div>
+
+        <div id="coachPlan" class="coach-panel" role="tabpanel" data-activity-panel="plan" hidden>
+          <section class="coach-section plan-builder" data-plan-builder aria-labelledby="goalTitle">
+            <div class="section-line"><div><p class="eyebrow">01 · Mục tiêu</p><h2 id="goalTitle">Tập để làm gì?</h2></div></div>
+            <div class="goal-grid">
+              <button class="goal-option" type="button" data-goal-option="fat"><strong>Giảm mỡ</strong><small>Giữ cơ · cardio steady</small></button>
+              <button class="goal-option" type="button" data-goal-option="muscle"><strong>Tăng cơ</strong><small>Volume và progression</small></button>
+              <button class="goal-option" type="button" data-goal-option="recomp"><strong>Cả hai</strong><small>Balanced mặc định</small></button>
+            </div>
+          </section>
+
+          <section class="coach-section plan-controls" aria-labelledby="planSetupTitle">
+            <div class="section-line"><div><p class="eyebrow">02 · Lịch thực tế</p><h2 id="planSetupTitle">Tần suất và thời lượng</h2></div></div>
+            <div class="control-grid">
+              <label class="field"><span>Buổi / tuần</span><select data-plan-frequency><option value="2">2 buổi</option><option value="3">3 buổi</option><option value="4">4 buổi</option></select></label>
+              <label class="field"><span>Phút / buổi</span><select data-plan-duration><option value="30">30 phút</option><option value="45">45 phút</option><option value="60">60 phút</option></select></label>
+              <label class="field control-span"><span>Kinh nghiệm</span><select data-plan-experience><option value="beginner">Mới / quay lại tập</option><option value="intermediate">Đã tập đều ≥6 tháng</option></select></label>
+            </div>
+            <label class="safety-check"><input type="checkbox" data-plan-limitations><span><strong>Đang có đau nhói hoặc chấn thương chưa đánh giá</strong><small>Bật mục này sẽ chặn việc bắt đầu giáo án.</small></span></label>
+          </section>
+
+          <article class="plan-summary" data-plan-preview>
+            <span class="evidence-pill">Evidence grade A</span>
+            <h2 data-plan-title>Giảm mỡ + tăng cơ</h2>
+            <p data-plan-description></p>
+            <div class="plan-stats"><span><b data-plan-days>3</b> buổi/tuần</span><span><b data-plan-minutes>45</b> phút/buổi</span><span>RIR <b data-plan-rir>2–3</b></span></div>
+          </article>
+
+          <section class="coach-section" aria-labelledby="weekTitle">
+            <div class="section-line"><div><p class="eyebrow">03 · Giáo án</p><h2 id="weekTitle">Tuần tập</h2></div></div>
+            <div class="week-grid" data-plan-week></div>
+          </section>
+
+          <section class="coach-section" aria-labelledby="exerciseTitle">
+            <div class="section-line"><h2 id="exerciseTitle" data-selected-session-title>Chi tiết buổi</h2></div>
+            <div class="exercise-list" data-plan-exercises></div>
+          </section>
+
+          <aside class="model-note"><strong>Double progression</strong><p data-progression-rule></p></aside>
+        </div>
+
+        <div id="coachLab" class="coach-panel" role="tabpanel" data-activity-panel="lab" hidden>
+          <article class="lab-intro">
+            <span class="evidence-pill">Không guru worship</span>
+            <h2>Biohack chỉ được vào đây nếu claim và rủi ro đều rõ</h2>
+            <p>Huberman/Eric Berg có thể gợi ý câu hỏi; nguồn quyết định là guideline và nghiên cứu gốc. Protocol Lab không cộng calorie, không chẩn đoán và không thay thế điều trị.</p>
+            <div class="grade-key"><span><b>A</b> guideline</span><span><b>B</b> human evidence</span><span><b>C</b> experimental</span></div>
+          </article>
+          <div class="protocol-list" data-protocol-list></div>
+        </div>
       </section>
 
       <section class="view" id="profile" data-view="profile" aria-labelledby="profileTitle">
@@ -175,7 +259,7 @@
           <div class="section-line"><h2 id="profileFactsTitle">Model đang dùng</h2></div>
           <dl>
             <div><dt>Calo nền</dt><dd><span data-profile-baseline>1.600</span> kcal/ngày</dd></div>
-            <div><dt>Mục tiêu thâm hụt</dt><dd><span data-profile-target>400</span> kcal/ngày</dd></div>
+            <div><dt>Mục tiêu thâm hụt</dt><dd><span data-profile-target>500</span> kcal/ngày</dd></div>
             <div><dt>Quy đổi năng lượng</dt><dd>7.700 kcal = 1 kg eq.</dd></div>
           </dl>
           <button class="secondary-button" type="button" data-open-dialog="settingsDialog">Chỉnh model nền</button>
@@ -218,7 +302,7 @@
   <dialog id="activityDialog">
     <form method="dialog" class="dialog-card" data-activity-form>
       <div class="dialog-heading"><h2 data-activity-dialog-title>Thêm vận động</h2><button class="dialog-close" type="button" data-close-dialog="activityDialog" aria-label="Đóng">×</button></div>
-      <label class="field"><span>Loại vận động</span><select name="activityType"><optgroup label="Hằng ngày & thể thao"><option value="walk">Đi bộ</option><option value="run">Chạy</option><option value="badminton">Cầu lông</option></optgroup><optgroup label="Gym"><option value="gym_bike">Đạp xe</option><option value="gym_treadmill">Máy chạy</option><option value="gym_shoulder">Máy tập cơ vai</option><option value="gym_alpha">Máy cơ Alpha</option><option value="gym_dumbbell">Tạ đơn</option><option value="gym_bench">Nằm nâng ngực</option><option value="gym_adductor">Máy khép đùi</option><option value="gym_abductor">Máy mở đùi</option></optgroup></select></label>
+      <label class="field"><span>Loại vận động</span><select name="activityType"><optgroup label="Hằng ngày & thể thao"><option value="walk">Đi bộ</option><option value="run">Chạy</option><option value="badminton">Cầu lông</option></optgroup><optgroup label="Gym"><option value="gym_bike">Đạp xe</option><option value="gym_stair">Máy leo cầu thang</option><option value="gym_treadmill">Máy chạy</option><option value="gym_shoulder">Máy multi-press</option><option value="gym_dumbbell">Tạ đơn</option><option value="gym_bench">Nằm nâng ngực</option><option value="gym_adductor">Máy khép đùi</option><option value="gym_abductor">Máy mở đùi</option></optgroup></select></label>
       <label class="field" data-steps-field><span>Số bước</span><span class="input-with-unit"><input name="steps" type="number" inputmode="numeric" min="1" max="100000" step="1" placeholder="5000"><b>bước</b></span></label>
       <label class="field"><span>Thời lượng</span><span class="input-with-unit"><input name="minutes" type="number" inputmode="numeric" min="1" max="600" step="1" placeholder="45" required><b>phút</b></span></label>
       <label class="field" data-level-field hidden><span>Trình độ / cường độ</span><select name="level"><option value="weak">Yếu</option><option value="poor">Kém</option><option value="medium" selected>Trung bình</option><option value="medium_plus">Trung bình +</option><option value="good">Khá</option><option value="strong">Giỏi</option></select></label>
@@ -230,6 +314,84 @@
       <div class="estimate-preview" data-activity-preview><span>Ước tính sau khi nhập</span><strong>— kcal ròng</strong><small>— kg eq.</small></div>
       <button class="primary-button" type="submit" value="default">Lưu buổi tập</button>
     </form>
+  </dialog>
+
+  <dialog id="recoveryDialog" class="coach-dialog">
+    <form class="dialog-card" data-recovery-form>
+      <div class="dialog-heading"><div><p class="eyebrow">Safety gate</p><h2>Check-in trước buổi tập</h2></div><button class="dialog-close" type="button" data-close-dialog="recoveryDialog" aria-label="Đóng">×</button></div>
+      <div class="recovery-form-grid">
+        <label class="field"><span>Đã ngủ bao lâu?</span><span class="input-with-unit"><input name="sleepHours" data-recovery-sleep-hours type="number" inputmode="decimal" min="0" max="16" step="0.5" value="7" required><b>giờ</b></span></label>
+        <label class="field"><span>Năng lượng hiện tại</span><select name="energy" data-recovery-energy><option value="1">1 · Rất thấp</option><option value="2">2 · Thấp</option><option value="3" selected>3 · Bình thường</option><option value="4">4 · Tốt</option><option value="5">5 · Rất tốt</option></select></label>
+        <label class="field control-span"><span>Đau mỏi toàn thân: <b data-soreness-output>3/10</b></span><input class="range-input" name="soreness" data-recovery-soreness type="range" min="0" max="10" value="3"></label>
+      </div>
+      <div class="safety-list">
+        <label class="safety-check"><input name="illness" type="checkbox"><span><strong>Đang sốt hoặc không khỏe</strong><small>Không bắt đầu buổi cường độ cao.</small></span></label>
+        <label class="safety-check"><input name="sharpPain" data-recovery-pain-flag type="checkbox"><span><strong>Đau nhói hoặc đau đang tăng</strong><small>Dừng tải lên vùng đau và đánh giá nguyên nhân.</small></span></label>
+        <label class="safety-check safety-critical"><input name="redFlag" type="checkbox"><span><strong>Đau/tức ngực, khó thở bất thường, choáng hoặc sắp ngất</strong><small>Rootbody sẽ chặn buổi tập. Triệu chứng nghiêm trọng hoặc không giảm cần cấp cứu địa phương.</small></span></label>
+      </div>
+      <button class="primary-button" type="submit" data-recovery-confirm>Lưu check-in</button>
+      <button class="secondary-button" type="button" data-close-dialog="recoveryDialog" data-recovery-cancel>Để sau</button>
+    </form>
+  </dialog>
+
+  <dialog id="equipmentDialog" class="full-page-dialog" data-equipment-guide>
+    <div class="dialog-card full-page-card">
+      <div class="dialog-heading"><div><p class="eyebrow">Minh họa bài tập</p><h2 data-equipment-title>Bài tập</h2></div><button class="dialog-close" type="button" data-close-dialog="equipmentDialog" data-equipment-back aria-label="Đóng">×</button></div>
+      <figure class="equipment-guide-visual"><img src="./equipment/dumbbell.svg" alt="Minh họa thiết bị" data-equipment-image><figcaption data-equipment-verification>Thiết bị người dùng xác nhận</figcaption></figure>
+      <section class="guide-block"><span class="guide-index">01</span><div><h3>Setup</h3><ul data-equipment-setup></ul></div></section>
+      <section class="guide-block"><span class="guide-index">02</span><div><h3>Cues</h3><ul data-equipment-cues></ul></div></section>
+      <section class="guide-block guide-errors"><span class="guide-index">03</span><div><h3>Lỗi cần tránh</h3><ul data-equipment-errors></ul></div></section>
+      <p class="form-help">Minh họa dùng để nhận đúng nhóm máy và setup cơ bản; không thay cho hướng dẫn trực tiếp khi thiết bị có cấu hình khác.</p>
+    </div>
+  </dialog>
+
+  <dialog id="workoutDialog" class="full-page-dialog workout-dialog" data-workout-shell>
+    <div class="dialog-card full-page-card workout-card">
+      <div class="dialog-heading workout-heading"><div><p class="eyebrow" data-workout-progress>Buổi tập</p><h2 data-workout-session-title>Full body</h2></div><button class="dialog-close" type="button" data-close-dialog="workoutDialog" data-workout-close aria-label="Lưu và đóng">×</button></div>
+      <div class="workout-progress-track" aria-hidden="true"><span data-workout-progress-fill></span></div>
+
+      <div data-workout-active>
+        <div class="workout-equipment"><img src="./exercise-art/goblet-squat.webp" alt="Minh họa bài tập đang thực hiện" data-current-equipment-image><button class="image-action" type="button" data-coach-action="exercise-current">Minh họa bài ↗</button></div>
+        <div class="workout-copy" data-current-exercise>
+          <span class="set-badge" data-workout-round>Set 1/3</span>
+          <h3 data-current-exercise-name>Bài tập</h3>
+          <p data-current-prescription>3 × 8–12 · RIR 2</p>
+          <small data-current-cue></small>
+        </div>
+        <div class="completed-set-list" data-set-list></div>
+        <div class="set-entry" data-set-row>
+          <label class="field" data-load-field><span>Mức tạ</span><span class="input-with-unit"><input data-set-load type="text" inputmode="decimal" placeholder="0"><b>kg</b></span></label>
+          <label class="field"><span data-reps-label>Reps</span><input data-set-reps type="number" inputmode="numeric" min="1" max="200" placeholder="10"></label>
+          <label class="field"><span data-effort-label>RIR</span><input data-set-rir type="number" inputmode="numeric" min="0" max="10" value="2"></label>
+        </div>
+        <div class="rest-note"><span>Nghỉ gợi ý</span><strong data-rest-remaining>90 giây</strong></div>
+        <button class="primary-button" type="button" data-coach-action="complete-set" data-complete-set>Hoàn thành set</button>
+        <button class="secondary-button" type="button" data-coach-action="skip-exercise">Bỏ qua bài này</button>
+      </div>
+
+      <div class="workout-finish" data-workout-summary hidden>
+        <span class="finish-mark">✓</span>
+        <h3>Đủ dữ liệu để chốt buổi</h3>
+        <p data-workout-summary-copy></p>
+        <label class="field"><span>Thời lượng thực tế</span><span class="input-with-unit"><input data-workout-minutes type="number" inputmode="numeric" min="5" max="300" step="1" value="45"><b>phút</b></span></label>
+        <div class="estimate-preview"><span>Ước tính bảo thủ</span><strong data-workout-kcal-preview>— kcal ròng</strong><small>Một activity cho toàn buổi</small></div>
+        <button class="primary-button" type="button" data-coach-action="finish-workout" data-save-workout>Hoàn tất & ghi calorie</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="protocolDialog" class="full-page-dialog">
+    <div class="dialog-card full-page-card protocol-detail">
+      <div class="dialog-heading"><div><p class="eyebrow">Rootbody Lab</p><h2 data-protocol-title>Protocol</h2></div><button class="dialog-close" type="button" data-close-dialog="protocolDialog" aria-label="Đóng">×</button></div>
+      <div class="protocol-meta"><span class="grade-badge" data-protocol-grade>B</span><span data-protocol-dose></span></div>
+      <p class="protocol-summary" data-protocol-summary></p>
+      <ol class="protocol-steps" data-protocol-steps></ol>
+      <div class="protocol-safety" data-protocol-safety></div>
+      <label class="safety-check protocol-ack" data-protocol-ack-wrap hidden><input type="checkbox" data-protocol-ack><span><strong>Tôi đã đọc safety gate</strong><small>Tôi sẽ không thực hiện trong/gần nước, khi lái xe, đứng hoặc vận hành máy móc.</small></span></label>
+      <a class="source-link" href="#" target="_blank" rel="noopener noreferrer" data-protocol-source>Nguồn gốc ↗</a>
+      <button class="primary-button" type="button" data-coach-action="complete-protocol" data-protocol-start>Đánh dấu đã thực hiện</button>
+      <p class="form-help">Protocol log không thay đổi calorie, deficit hay recovery.</p>
+    </div>
   </dialog>
 
   <dialog id="weightDialog">
@@ -261,6 +423,9 @@
   </dialog>
 
   <div class="toast" role="status" aria-live="polite" data-toast></div>
-  <script src="./app.js?v=23" defer></script>
+  <script src="./coach-data.js?v=31" defer></script>
+  <script src="./app.js?v=31" defer></script>
+  <script src="./coach.js?v=31" defer></script>
 </body>
 </html>
+
