@@ -1,11 +1,12 @@
-const CACHE_NAME = "rootbody-2026-08-19-v3-art";
+const CACHE_NAME = "rootbody-2026-08-19-v4-food";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./styles.css?v=31",
-  "./coach-data.js?v=31",
-  "./app.js?v=31",
-  "./coach.js?v=31",
+  "./styles.css?v=32",
+  "./food-data.js?v=32",
+  "./coach-data.js?v=32",
+  "./app.js?v=32",
+  "./coach.js?v=32",
   "./manifest.webmanifest",
   "./brand/rootbody-symbol.svg",
   "./brand/rootbody-logo.svg",

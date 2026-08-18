@@ -1,10 +1,11 @@
 (() => {
   "use strict";
 
-  const STORAGE_KEY = "rootbody.v3";
+  const STORAGE_KEY = "rootbody.v4";
+  const V3_KEY = "rootbody.v3";
   const V2_KEY = "rootbody.v2";
   const LEGACY_KEY = "rootbody.v1";
-  const MODEL_VERSION = "0.4";
+  const MODEL_VERSION = "0.5";
   const KCAL_PER_KG = 7700;
   const number = new Intl.NumberFormat("vi-VN", { maximumFractionDigits: 1 });
   const integer = new Intl.NumberFormat("vi-VN", { maximumFractionDigits: 0 });
@@ -12,20 +13,10 @@
   const longDate = new Intl.DateTimeFormat("vi-VN", { weekday: "long", day: "numeric", month: "long" });
   const shortDate = new Intl.DateTimeFormat("vi-VN", { day: "2-digit", month: "2-digit" });
 
-  const FOOD_SAMPLES = [
-    { id: "rice", name: "Cơm trắng", serving: "1 bát vừa", kcal: 250 },
-    { id: "milk-coffee", name: "Cà phê sữa", serving: "1 ly", kcal: 100 },
-    { id: "black-coffee", name: "Cà phê đen", serving: "không đường", kcal: 10 },
-    { id: "boiled-egg", name: "Trứng luộc", serving: "1 quả", kcal: 80 },
-    { id: "fried-egg", name: "Trứng chiên", serving: "1 quả", kcal: 120 },
-    { id: "boiled-veg", name: "Rau luộc", serving: "1 đĩa", kcal: 80 },
-    { id: "stir-veg", name: "Rau xào", serving: "1 đĩa", kcal: 200 },
-    { id: "boiled-beef", name: "Bò luộc / áp chảo", serving: "100 g", kcal: 250 },
-    { id: "stir-beef", name: "Thịt bò xào", serving: "1 đĩa", kcal: 400 },
-    { id: "minced-pork", name: "Thịt lợn băm", serving: "100 g", kcal: 300 },
-    { id: "boiled-pork", name: "Thịt lợn luộc", serving: "100 g", kcal: 260 },
-    { id: "stir-oil", name: "Dầu / sốt món xào", serving: "phần cộng thêm", kcal: 150 }
-  ];
+  const foodData = window.ROOTBODY_FOOD_DATA || { foods: [], quickIds: [], cookingMethods: {}, mealTemplates: [] };
+  const FOOD_INDEX = new Map(foodData.foods.map((item) => [item.id, item]));
+  const FOOD_SAMPLES = foodData.quickIds.map((id) => FOOD_INDEX.get(id)).filter(Boolean);
+  const CONFIDENCE_LABELS = { high: "Tin cậy cao", medium: "Tin cậy vừa", low: "Sai số rộng" };
 
   const ACTIVITY_NAMES = {
     walk: "Đi bộ", run: "Chạy", badminton: "Cầu lông",
@@ -63,10 +54,12 @@
   let toastTimer;
   let lockedScrollY = 0;
   let viewportCleanup = null;
+  let selectedFoodId = null;
+  let suggestionOffset = 0;
 
   function defaultState() {
     return {
-      version: 3,
+      version: 4,
       modelVersion: MODEL_VERSION,
       profile: { weightKg: null, heightCm: null, bmiStandard: "asian" },
       settings: { baselineKcal: 1600, targetDeficit: 500 },
@@ -103,6 +96,12 @@
     try {
       const current = localStorage.getItem(STORAGE_KEY);
       if (current) return normalizeState(JSON.parse(current));
+      const v3 = localStorage.getItem(V3_KEY);
+      if (v3) {
+        const migrated = normalizeState(JSON.parse(v3));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
+        return migrated;
+      }
       const v2 = localStorage.getItem(V2_KEY);
       if (v2) {
         const migrated = normalizeState(JSON.parse(v2));
@@ -217,14 +216,21 @@
 
   function normalizeMeals(items) {
     if (!Array.isArray(items)) return [];
-    return items.filter(Boolean).map((item) => ({
-      id: String(item.id || uid()),
-      name: String(item.name || "Món ăn").slice(0, 60),
-      kcal: safeNumber(item.kcal, 1, 5000, 1),
-      serving: item.serving ? String(item.serving).slice(0, 60) : "",
-      source: item.source === "sample" ? "sample" : "manual",
-      createdAt: String(item.createdAt || new Date().toISOString())
-    }));
+    return items.filter(Boolean).map((item) => {
+      const kcal = safeNumber(item.kcal, 1, 5000, 1);
+      return {
+        id: String(item.id || uid()),
+        name: String(item.name || "Món ăn").slice(0, 80),
+        kcal,
+        kcalLow: safeNumber(item.kcalLow, 0, 5000, kcal),
+        kcalHigh: safeNumber(item.kcalHigh, 1, 6000, kcal),
+        proteinG: safeNumber(item.proteinG, 0, 500, 0),
+        confidence: ["high", "medium", "low"].includes(item.confidence) ? item.confidence : "low",
+        serving: item.serving ? String(item.serving).slice(0, 180) : "",
+        source: ["sample", "estimator", "suggestion"].includes(item.source) ? item.source : "manual",
+        createdAt: String(item.createdAt || new Date().toISOString())
+      };
+    });
   }
 
   function normalizeActivities(items) {
@@ -265,7 +271,7 @@
   }
 
   function saveState() {
-    state.version = 3;
+    state.version = 4;
     state.modelVersion = MODEL_VERSION;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -287,6 +293,7 @@
   function totals(day) {
     return {
       intake: (day?.meals || []).reduce((sum, item) => sum + Number(item.kcal || 0), 0),
+      protein: (day?.meals || []).reduce((sum, item) => sum + Number(item.proteinG || 0), 0),
       activity: (day?.activities || []).reduce((sum, item) => sum + Number(item.kcal || 0), 0),
       steps: (day?.activities || []).reduce((sum, item) => sum + Number(item.steps || 0), 0)
     };
@@ -311,6 +318,172 @@
 
   function escapeHtml(value) {
     return String(value).replace(/[&<>'"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[char]));
+  }
+
+  function normalizeSearch(value) {
+    return String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").toLowerCase().trim();
+  }
+
+  function roundUpTen(value) { return Math.ceil(Number(value || 0) / 10) * 10; }
+
+  function proteinTarget() {
+    const weight = Number(state.profile.weightKg);
+    return Number.isFinite(weight) ? Math.round(clamp(weight * 1.6, 80, 180)) : 100;
+  }
+
+  function foodEstimate(food, amount = 1, methodId = "as_served") {
+    const multiplier = clamp(Number(amount) || 1, 0.25, 5);
+    const method = food.allowCooking
+      ? (foodData.cookingMethods[methodId] || foodData.cookingMethods.as_served)
+      : foodData.cookingMethods.as_served;
+    const nominal = food.kcal * multiplier + method.kcal * multiplier;
+    const low = food.low * multiplier + method.low * multiplier;
+    const high = food.high * multiplier + method.high * multiplier;
+    const factor = food.confidence === "high" ? 0.25 : food.confidence === "medium" ? 0.4 : 0.55;
+    return {
+      kcal: roundUpTen(nominal + Math.max(0, high - nominal) * factor),
+      nominal: Math.round(nominal),
+      low: Math.round(low),
+      high: Math.round(high),
+      protein: Math.round(food.protein * multiplier),
+      confidence: food.confidence,
+      method: method.name,
+      amount: multiplier
+    };
+  }
+
+  function mealFromFood(food, amount = 1, methodId = "as_served", source = "estimator") {
+    const estimate = foodEstimate(food, amount, methodId);
+    const portion = amount === 1 ? food.serving : `${String(amount).replace(".", ",")} × ${food.serving}`;
+    const methodCopy = food.allowCooking && methodId !== "as_served" ? ` · ${estimate.method}` : "";
+    return {
+      id: uid(), name: food.name, serving: `${portion}${methodCopy}`,
+      kcal: estimate.kcal, kcalLow: estimate.low, kcalHigh: estimate.high,
+      proteinG: estimate.protein, confidence: estimate.confidence, source,
+      createdAt: new Date().toISOString()
+    };
+  }
+
+  function quickMeal(food) {
+    return {
+      id: uid(), name: food.name, serving: food.serving,
+      kcal: roundUpTen(food.kcal), kcalLow: food.low, kcalHigh: food.high,
+      proteinG: food.protein, confidence: food.confidence, source: "sample",
+      createdAt: new Date().toISOString()
+    };
+  }
+
+  function templateNutrition(template) {
+    const details = template.items.map((part) => {
+      const food = FOOD_INDEX.get(part.id);
+      if (!food) return null;
+      return { food, amount: part.amount, estimate: foodEstimate(food, part.amount, "as_served") };
+    }).filter(Boolean);
+    const nominal = details.reduce((sum, item) => sum + item.estimate.nominal, 0);
+    const low = details.reduce((sum, item) => sum + item.estimate.low, 0);
+    const high = details.reduce((sum, item) => sum + item.estimate.high, 0);
+    const protein = details.reduce((sum, item) => sum + item.estimate.protein, 0);
+    return {
+      kcal: roundUpTen(nominal + Math.max(0, high - nominal) * 0.35),
+      nominal, low, high, protein,
+      serving: details.map(({ food, amount }) => `${amount === 1 ? "" : `${String(amount).replace(".", ",")} × `}${food.name}`).join(" · ")
+    };
+  }
+
+  function mealFromTemplate(template) {
+    const nutrition = templateNutrition(template);
+    return {
+      id: uid(), name: template.name, serving: nutrition.serving,
+      kcal: nutrition.kcal, kcalLow: nutrition.low, kcalHigh: nutrition.high,
+      proteinG: nutrition.protein, confidence: "medium", source: "suggestion",
+      createdAt: new Date().toISOString()
+    };
+  }
+
+  function renderMealSuggestions(day, sum, targetBudget, remaining) {
+    const targetProtein = proteinTarget();
+    const proteinRemaining = Math.max(0, targetProtein - sum.protein);
+    const mealsLeft = Math.max(1, 3 - day.meals.length);
+    const idealKcal = clamp(Math.max(0, remaining) / mealsLeft, 280, 700);
+    const idealProtein = clamp(proteinRemaining / mealsLeft, 20, 50);
+    const candidates = foodData.mealTemplates.map((template) => ({ template, nutrition: templateNutrition(template) }));
+    candidates.sort((a, b) => {
+      const score = (item) => {
+        const over = Math.max(0, item.nutrition.kcal - Math.max(250, remaining));
+        return Math.abs(item.nutrition.kcal - idealKcal) + over * 3 - Math.min(item.nutrition.protein, idealProtein) * 4;
+      };
+      return score(a) - score(b);
+    });
+    const chosen = [];
+    for (let index = 0; index < candidates.length && chosen.length < 3; index += 1) {
+      chosen.push(candidates[(index + suggestionOffset) % candidates.length]);
+    }
+
+    $("[data-protein-consumed]").textContent = integer.format(sum.protein);
+    $("[data-protein-target]").textContent = integer.format(targetProtein);
+    $("[data-protein-fill]").style.width = `${clamp(sum.protein / targetProtein * 100, 0, 100)}%`;
+    $("[data-meal-budget]").textContent = remaining > 0 ? `${integer.format(remaining)} kcal còn lại` : `Vượt ${integer.format(Math.abs(remaining))} kcal`;
+    $("[data-meal-guidance]").textContent = remaining <= 0
+      ? "Ngân sách calorie đã hết. Nếu vẫn đói, ưu tiên một bữa nhỏ giàu đạm và rau; không nhịn cực đoan để bù."
+      : `Mỗi bữa tiếp theo nên quanh ${integer.format(idealKcal)} kcal và ${integer.format(idealProtein)} g protein.`;
+    $("[data-meal-suggestions]").innerHTML = chosen.map(({ template, nutrition }) => `
+      <article class="meal-suggestion-card">
+        <div class="meal-suggestion-top"><span>${integer.format(nutrition.protein)} g protein</span><strong>${integer.format(nutrition.kcal)} kcal</strong></div>
+        <h3>${escapeHtml(template.name)}</h3>
+        <p>${escapeHtml(template.description)}</p>
+        <small>${escapeHtml(nutrition.serving)} · khoảng ${integer.format(nutrition.low)}–${integer.format(nutrition.high)} kcal</small>
+        <button class="meal-add-button" type="button" data-suggested-meal="${escapeHtml(template.id)}">Thêm bữa này</button>
+      </article>`).join("");
+  }
+
+  function renderFoodSearch(query = "") {
+    const normalized = normalizeSearch(query);
+    const results = foodData.foods.filter((food) => {
+      if (!normalized) return true;
+      return normalizeSearch(`${food.name} ${food.keywords} ${food.category}`).includes(normalized);
+    }).slice(0, 12);
+    const target = $("[data-food-results]");
+    if (!results.length) {
+      target.innerHTML = '<div class="empty-state">Chưa có món khớp. Dùng phần “Nhập calorie thủ công” bên dưới.</div>';
+      return;
+    }
+    target.innerHTML = results.map((food) => `<button class="food-result${food.id === selectedFoodId ? " is-selected" : ""}" type="button" data-select-food="${escapeHtml(food.id)}"><span><strong>${escapeHtml(food.name)}</strong><small>${escapeHtml(food.serving)} · ${escapeHtml(food.category)}</small></span><b>${integer.format(food.kcal)} kcal</b></button>`).join("");
+  }
+
+  function selectFood(id) {
+    const food = FOOD_INDEX.get(id);
+    if (!food) return;
+    selectedFoodId = id;
+    const form = $("[data-food-estimator-form]");
+    form.elements.portion.value = "1";
+    form.elements.cookingMethod.value = "as_served";
+    $("[data-food-selection]").hidden = false;
+    $("[data-selected-food-name]").textContent = food.name;
+    $("[data-selected-food-serving]").textContent = food.serving;
+    $("[data-cooking-field]").hidden = !food.allowCooking;
+    $("[data-add-estimated-food]").disabled = false;
+    renderFoodSearch(form.elements.foodSearch.value);
+    updateFoodEstimatePreview();
+  }
+
+  function updateFoodEstimatePreview() {
+    const food = FOOD_INDEX.get(selectedFoodId);
+    if (!food) return;
+    const form = $("[data-food-estimator-form]");
+    const estimate = foodEstimate(food, Number(form.elements.portion.value), form.elements.cookingMethod.value);
+    $("[data-food-estimate-kcal]").textContent = `${integer.format(estimate.kcal)} kcal`;
+    $("[data-food-estimate-range]").textContent = `Khoảng ${integer.format(estimate.low)}–${integer.format(estimate.high)} kcal`;
+    $("[data-food-estimate-protein]").textContent = `${integer.format(estimate.protein)} g protein · ${CONFIDENCE_LABELS[estimate.confidence]}`;
+  }
+
+  function openMealEstimator() {
+    selectedFoodId = null;
+    const form = $("[data-food-estimator-form]");
+    form.reset();
+    $("[data-food-selection]").hidden = true;
+    $("[data-add-estimated-food]").disabled = true;
+    renderFoodSearch();
+    openDialog("mealDialog");
   }
 
   function renderAll() {
@@ -366,8 +539,9 @@
       }
     }
 
+    renderMealSuggestions(day, sum, targetBudget, remaining);
     const grid = $("[data-food-grid]");
-    grid.innerHTML = FOOD_SAMPLES.map((item) => `<button class="food-chip" type="button" data-food-id="${item.id}"><strong>${escapeHtml(item.name)}</strong><span>${integer.format(item.kcal)} kcal</span><small>${escapeHtml(item.serving)}</small></button>`).join("");
+    grid.innerHTML = FOOD_SAMPLES.map((item) => `<button class="food-chip" type="button" data-food-id="${item.id}"><strong>${escapeHtml(item.name)}</strong><span>${integer.format(item.kcal)} kcal · ${integer.format(item.protein)} g đạm</span><small>${escapeHtml(item.serving)} · ${escapeHtml(CONFIDENCE_LABELS[item.confidence])}</small></button>`).join("");
     renderTodayLog(day);
   }
 
@@ -383,7 +557,8 @@
     }
     target.innerHTML = entries.map((item) => {
       const isMeal = item.kind === "meal";
-      const detail = isMeal ? (item.serving || "Ước tính thủ công") : activityDetail(item);
+      const mealDetail = [item.serving || "Ước tính thủ công", item.proteinG ? `${integer.format(item.proteinG)} g protein` : "", item.confidence ? CONFIDENCE_LABELS[item.confidence] : ""].filter(Boolean).join(" · ");
+      const detail = isMeal ? mealDetail : activityDetail(item);
       const kg = kcalToKg(item.kcal);
       return `<article class="log-item"><span class="log-mark">${isMeal ? "ĂN" : "TẬP"}</span><div class="log-copy"><strong>${escapeHtml(item.name)}</strong><small>${escapeHtml(detail)}</small></div><div class="log-number"><strong>${isMeal ? "+" : "−"}${integer.format(item.kcal)} kcal</strong><small>${isMeal ? "+" : "−"}${kg3.format(kg)} kg eq.</small></div><button class="delete-entry" type="button" data-delete-kind="${item.kind}" data-delete-id="${escapeHtml(item.id)}" aria-label="Xóa ${escapeHtml(item.name)}">×</button></article>`;
     }).join("");
@@ -768,6 +943,7 @@
     const opener = event.target.closest("[data-open-dialog]");
     if (opener) {
       if (opener.dataset.openDialog === "activityDialog") openActivityDialog("walk");
+      else if (opener.dataset.openDialog === "mealDialog") openMealEstimator();
       else openDialog(opener.dataset.openDialog);
       return;
     }
@@ -779,8 +955,29 @@
     if (foodButton) {
       const sample = FOOD_SAMPLES.find((item) => item.id === foodButton.dataset.foodId);
       if (!sample) return;
-      dayData().meals.push({ id: uid(), name: sample.name, serving: sample.serving, kcal: sample.kcal, source: "sample", createdAt: new Date().toISOString() });
-      saveState(); renderAll(); showToast(`Đã thêm ${sample.name}: ${sample.kcal} kcal.`); return;
+      const meal = quickMeal(sample);
+      dayData().meals.push(meal);
+      saveState(); renderAll(); showToast(`Đã thêm ${sample.name}: ${meal.kcal} kcal.`); return;
+    }
+    const foodResult = event.target.closest("[data-select-food]");
+    if (foodResult) { selectFood(foodResult.dataset.selectFood); return; }
+    const suggestion = event.target.closest("[data-suggested-meal]");
+    if (suggestion) {
+      const template = foodData.mealTemplates.find((item) => item.id === suggestion.dataset.suggestedMeal);
+      if (!template) return;
+      const meal = mealFromTemplate(template);
+      dayData().meals.push(meal);
+      suggestionOffset = 0;
+      saveState(); renderAll(); showToast(`Đã thêm ${template.name}: ${meal.kcal} kcal.`); return;
+    }
+    const refreshMeals = event.target.closest("[data-refresh-meals]");
+    if (refreshMeals) {
+      suggestionOffset = (suggestionOffset + 3) % Math.max(1, foodData.mealTemplates.length);
+      const day = dayData();
+      const sum = totals(day);
+      const targetBudget = state.settings.baselineKcal - state.settings.targetDeficit + sum.activity;
+      renderMealSuggestions(day, sum, targetBudget, targetBudget - sum.intake);
+      return;
     }
     const deleteButton = event.target.closest("[data-delete-kind]");
     if (deleteButton) {
@@ -791,14 +988,29 @@
     }
   });
 
-  $("[data-meal-form]").addEventListener("submit", (event) => {
+  $("[data-food-search]").addEventListener("input", (event) => renderFoodSearch(event.target.value));
+  $("[data-food-estimator-form]").addEventListener("input", updateFoodEstimatePreview);
+  $("[data-food-estimator-form]").addEventListener("change", updateFoodEstimatePreview);
+  $("[data-food-estimator-form]").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const food = FOOD_INDEX.get(selectedFoodId);
+    if (!food) { showToast("Chọn một món trước."); return; }
+    const meal = mealFromFood(food, Number(form.elements.portion.value), form.elements.cookingMethod.value);
+    dayData().meals.push(meal);
+    saveState(); form.reset(); closeDialog("mealDialog"); renderAll(); showToast(`Đã thêm ${food.name}: ${meal.kcal} kcal.`);
+  });
+
+  $("[data-manual-meal-form]").addEventListener("submit", (event) => {
     event.preventDefault();
     const form = event.currentTarget;
     const name = form.elements.mealName.value.trim();
     const kcal = Number(form.elements.mealKcal.value);
-    if (!name || !Number.isFinite(kcal) || kcal < 1) return;
-    dayData().meals.push({ id: uid(), name, serving: "Ước tính thủ công", kcal: Math.ceil(kcal / 10) * 10, source: "manual", createdAt: new Date().toISOString() });
-    saveState(); form.reset(); closeDialog("mealDialog"); renderAll(); showToast("Đã thêm món và làm tròn calorie lên.");
+    const protein = Number(form.elements.mealProtein.value || 0);
+    if (!name || !Number.isFinite(kcal) || kcal < 1 || !Number.isFinite(protein) || protein < 0) return;
+    const counted = roundUpTen(kcal);
+    dayData().meals.push({ id: uid(), name, serving: "Người dùng nhập calorie", kcal: counted, kcalLow: counted, kcalHigh: counted, proteinG: Math.round(protein), confidence: "low", source: "manual", createdAt: new Date().toISOString() });
+    saveState(); form.reset(); closeDialog("mealDialog"); renderAll(); showToast("Đã thêm món thủ công và làm tròn calorie lên.");
   });
 
   $("[data-activity-form]").addEventListener("input", updateActivityForm);
@@ -925,7 +1137,7 @@
   navigate(location.hash.slice(1) || "today");
 
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js?v=31").catch((error) => console.warn("Service worker chưa sẵn sàng.", error)));
+    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js?v=32").catch((error) => console.warn("Service worker chưa sẵn sàng.", error)));
   }
 })();
 

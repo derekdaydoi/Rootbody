@@ -1,10 +1,10 @@
-# Rootbody V3
+# Rootbody V4
 
-Rootbody là PWA local-first để ước tính calorie deficit, theo dõi xu hướng cân nặng và hướng dẫn tập gym theo mục tiêu. V3 ưu tiên model giải thích được, set/reps/RIR có thể thực thi và safety gate rõ ràng; app không phụ thuộc Apple Health, backend hay tài khoản.
+Rootbody là PWA local-first để ước tính calorie deficit, gợi ý bữa ăn theo ngân sách còn lại, theo dõi xu hướng cân nặng và hướng dẫn tập gym theo mục tiêu. V4 ưu tiên model giải thích được, sai số nhìn thấy được và dữ liệu có thể dùng ngay; app không phụ thuộc Apple Health, backend hay tài khoản.
 
-V3 biến tab Vận động thành một `Body OS` gồm Hôm nay, Giáo án và Lab. Ảnh phòng gym gốc không được publish vì có người/phản chiếu; app dùng 19 minh họa riêng theo từng bài tập, không có nhân vật mẫu.
+V4 thêm `Food Engine` vào hệ thống Body OS hiện có. Ảnh phòng gym gốc không được publish vì có người/phản chiếu; app dùng 19 minh họa riêng theo từng bài tập, không có nhân vật mẫu.
 
-## V3 có gì
+## V4 có gì
 
 - Hồ sơ cá nhân: cân nặng, chiều cao, BMI và lựa chọn `Asian action points` / `International`.
 - Ghi vận động thủ công:
@@ -13,15 +13,18 @@ V3 biến tab Vận động thành một `Body OS` gồm Hôm nay, Giáo án và
   - Cầu lông: số phút + trình độ từ Yếu đến Giỏi.
   - Gym thủ công: xe đạp, máy leo cầu thang, máy chạy có độ dốc, multi-press, tạ đơn, nằm nâng ngực, máy khép đùi và máy mở đùi.
 - Gym Coach theo ba mục tiêu: `Giảm mỡ + giữ cơ`, `Tăng cơ`, `Giảm mỡ + tăng cơ`.
-- Giáo án 2/3/4 buổi mỗi tuần, 30/45/60 phút, có sets, reps, RIR, rest và double progression.
+- Giáo án 2/3/4 buổi mỗi tuần, 30/45/60 phút, có sets, reps, RIR, rest và double progression; lịch 4 buổi dùng Upper/Lower A/B.
 - Workout mode lưu sau mỗi set, resume sau reload và chỉ tạo **một** activity calorie khi hoàn tất.
 - Hướng dẫn nhận diện/setup/cues/lỗi cho 9 nhóm thiết bị; mỗi bài có WebP riêng thể hiện điểm bắt đầu, kết thúc và hướng chuyển động.
 - Recovery gate theo ngủ, năng lượng, đau mỏi, illness và red flags; trạng thái xấu sẽ giảm volume hoặc chặn buổi tập.
 - Evidence-first Lab cho sleep anchor, caffeine, ánh sáng, thở chậm, Wim Hof breathing và cold finish.
-- 12 món/khẩu phần mẫu thêm bằng một chạm, calorie được làm tròn lên có chủ đích.
+- Food Engine gồm 57 món/nguyên liệu Việt Nam, tìm kiếm không dấu, khẩu phần 1/2–3 phần và modifier luộc/xào/chiên.
+- Mỗi ước tính đồ ăn lưu calorie, protein, khoảng thấp–cao và confidence; calorie ghi vào deficit được làm tròn lên có chủ đích.
+- `Hôm nay ăn gì?` xếp hạng 12 bữa mẫu theo calorie và protein còn lại, cập nhật ngay sau mỗi lần ghi món.
+- 12 món thường ăn vẫn thêm bằng một chạm; món ngoài catalog vẫn có fallback nhập tay.
 - Dashboard hiển thị calorie và `kg eq.` — kg tương đương năng lượng.
 - Chart cân nặng tối đa 20 lần ghi gần nhất và chart số bước 14 ngày.
-- Migration không phá dữ liệu từ `rootbody.v1` / `rootbody.v2` sang `rootbody.v3`; key V2 vẫn được giữ làm rollback.
+- Migration không phá dữ liệu từ `rootbody.v1` / `rootbody.v2` / `rootbody.v3` sang `rootbody.v4`; các key cũ vẫn được giữ làm rollback.
 - Cài lên iPhone Home Screen và hoạt động offline sau lần tải đầu.
 
 ## Model năng lượng
@@ -33,7 +36,7 @@ deficit_kcal = baseline_kcal + activity_net_kcal - intake_kcal
 predicted_weight_change_kg = -deficit_kcal / 7,700
 ```
 
-`baseline_kcal` mặc định là 1.600 kcal/ngày và mục tiêu deficit mặc định là 500 kcal/ngày theo product assumption hiện tại, không phải BMR được cá nhân hóa. V3 chưa hỏi tuổi/giới tính nên không tự suy ra BMR.
+`baseline_kcal` mặc định là 1.600 kcal/ngày và mục tiêu deficit mặc định là 500 kcal/ngày theo product assumption hiện tại, không phải BMR được cá nhân hóa. V4 chưa hỏi tuổi/giới tính nên không tự suy ra BMR.
 
 `kg eq.` không phải dự báo số cân ngày mai. Nó chỉ là năng lượng quy đổi; nước, glycogen, muối, tiêu hóa và sai số khẩu phần khiến cân thực tế lệch đáng kể. Chart cân thật được dùng để đánh giá xu hướng.
 
@@ -96,7 +99,11 @@ BMI chỉ là screening, không phải chẩn đoán sức khỏe.
 
 ## Quy tắc ước tính
 
-- Đồ ăn: làm tròn lên; ví dụ cà phê sữa được cố định 100 kcal.
+- Món đơn giản có confidence cao; món hoàn chỉnh/ăn ngoài có khoảng sai số rộng hơn.
+- Food Estimator cộng modifier dầu theo cách nấu và dùng một phần của biên trên để tạo calorie ghi nhận bảo thủ.
+- Món thường ăn giữ product shortcut; ví dụ cà phê sữa một ly được cố định 100 kcal.
+- Protein target là product heuristic `1,6 g/kg`, giới hạn 80–180 g/ngày; khi chưa có cân nặng dùng 100 g.
+- Gợi ý bữa ăn không phải medical nutrition therapy và không tự chẩn đoán dị ứng/bệnh lý.
 - Vận động: tính phần ròng và làm tròn xuống.
 - Ngày chưa ghi món ăn không tạo dự báo kg, vì coi lượng ăn là 0 sẽ tạo thâm hụt giả.
 - Mọi sample đều có khẩu phần cố định; bấm nhiều lần tương ứng nhiều khẩu phần.
@@ -132,6 +139,7 @@ Rootbody/
 ├── .github/workflows/       # GitHub Pages deployment
 ├── index.html               # PWA shell
 ├── styles.css               # Root family design system
+├── food-data.js              # catalog thực phẩm, cách nấu và bữa gợi ý
 ├── coach-data.js            # catalog máy, bài tập, giáo án và evidence
 ├── coach.js                 # Coach UI, recovery, workout và Lab
 ├── app.js                   # energy model, storage, charts và bridge

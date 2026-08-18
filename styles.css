@@ -184,6 +184,27 @@ h2 { margin: 0; font-size: 18px; line-height: 1.25; overflow-wrap: anywhere; }
 .progress-track { height: 8px; margin-top: 17px; overflow: hidden; border-radius: 99px; background: var(--surface-3); }
 .progress-track > span { display: block; width: 0; height: 100%; border-radius: inherit; background: var(--green); transition: width .35s ease; }
 
+.meal-plan-panel { margin-top: 12px; padding: 19px; overflow: hidden; border: 1px solid rgba(20, 97, 74, .22); border-radius: var(--radius-xl); background: linear-gradient(150deg, #F7FBF8 0%, var(--surface) 68%); }
+.meal-plan-heading { align-items: flex-start; }
+.meal-plan-heading .eyebrow { margin-bottom: 4px; }
+.meal-balance { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 17px; }
+.meal-balance > div { min-width: 0; padding: 11px 12px; border-radius: 13px; background: var(--green-soft); }
+.meal-balance span, .meal-balance strong { display: block; }
+.meal-balance span { color: var(--muted); font-size: 10px; }
+.meal-balance strong { margin-top: 4px; color: var(--green-strong); font: 800 13px/1.3 var(--display); overflow-wrap: anywhere; }
+.protein-track { height: 6px; margin: 9px 2px 0; overflow: hidden; border-radius: 99px; background: var(--surface-3); }
+.protein-track > span { display: block; width: 0; height: 100%; border-radius: inherit; background: var(--green); transition: width .35s ease; }
+.meal-guidance { margin: 13px 1px 12px; color: var(--muted); font-size: 12px; line-height: 1.45; }
+.meal-suggestions { display: grid; gap: 9px; }
+.meal-suggestion-card { min-width: 0; padding: 14px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
+.meal-suggestion-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.meal-suggestion-top span { color: var(--green); font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; }
+.meal-suggestion-top strong { font-size: 12px; white-space: nowrap; }
+.meal-suggestion-card h3 { margin: 9px 0 4px; font: 800 15px/1.25 var(--display); letter-spacing: -.02em; overflow-wrap: anywhere; }
+.meal-suggestion-card p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.4; }
+.meal-suggestion-card small { display: block; margin-top: 7px; color: var(--subtle); font-size: 10px; line-height: 1.4; overflow-wrap: anywhere; }
+.meal-add-button { width: 100%; min-height: 42px; margin-top: 11px; border: 0; border-radius: 12px; background: var(--green); color: white; font-size: 12px; font-weight: 800; cursor: pointer; }
+
 .text-button, .primary-small { min-height: 44px; border: 0; border-radius: 12px; padding: 9px 12px; background: var(--green-soft); color: var(--green-strong); font-size: 12px; font-weight: 800; cursor: pointer; }
 .primary-small { background: var(--green); color: white; }
 .square-add { width: 36px; height: 36px; border-radius: 11px; background: var(--green); color: white; font: 700 22px/1 var(--ui); }
@@ -196,6 +217,31 @@ h2 { margin: 0; font-size: 18px; line-height: 1.25; overflow-wrap: anywhere; }
 .food-chip span { margin-top: 5px; color: var(--green); font-size: 12px; font-weight: 800; }
 .food-chip small { margin-top: 2px; color: var(--subtle); font-size: 10px; line-height: 1.35; overflow-wrap: anywhere; }
 .microcopy, .form-help { margin: 12px 0 0; color: var(--subtle); font-size: 11px; line-height: 1.45; }
+
+.food-dialog-card { max-height: min(88dvh, 760px); overflow-y: auto; overscroll-behavior: contain; }
+.food-results { display: grid; gap: 7px; max-height: 260px; margin-top: 10px; overflow-y: auto; overscroll-behavior: contain; }
+.food-result { display: flex; min-width: 0; align-items: center; justify-content: space-between; gap: 12px; width: 100%; padding: 11px 12px; border: 1px solid var(--line); border-radius: 13px; background: var(--surface-2); text-align: left; cursor: pointer; }
+.food-result.is-selected { border-color: var(--green); background: var(--green-soft); }
+.food-result > span { min-width: 0; }
+.food-result strong, .food-result small { display: block; overflow-wrap: anywhere; }
+.food-result strong { font: 800 13px/1.3 var(--display); }
+.food-result small { margin-top: 3px; color: var(--subtle); font-size: 10px; line-height: 1.35; }
+.food-result > b { flex: 0 0 auto; color: var(--green); font-size: 11px; white-space: nowrap; }
+.food-selection { margin-top: 13px; padding-top: 14px; border-top: 1px solid var(--line); }
+.food-selection-title span, .food-selection-title strong, .food-selection-title small { display: block; }
+.food-selection-title span { color: var(--subtle); font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+.food-selection-title strong { margin-top: 3px; font: 800 17px/1.3 var(--display); }
+.food-selection-title small { margin-top: 3px; color: var(--muted); font-size: 11px; }
+.food-control-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+.food-control-grid .field { min-width: 0; }
+.food-estimate-preview { margin: 12px 0; padding: 14px; border-radius: 14px; background: var(--green-soft); }
+.food-estimate-preview span, .food-estimate-preview strong, .food-estimate-preview small { display: block; }
+.food-estimate-preview span { color: var(--muted); font-size: 10px; }
+.food-estimate-preview strong { margin-top: 4px; color: var(--green-strong); font: 800 24px/1.1 var(--display); letter-spacing: -.04em; }
+.food-estimate-preview small { margin-top: 5px; color: var(--green-strong); font-size: 11px; }
+.manual-meal { margin-top: 15px; padding-top: 13px; border-top: 1px solid var(--line); }
+.manual-meal summary { min-height: 44px; color: var(--green); font-size: 12px; font-weight: 800; cursor: pointer; }
+.manual-meal form { padding-top: 4px; }
 
 .log-list, .history-list { display: grid; gap: 8px; margin-top: 16px; }
 .log-item, .history-item { display: flex; align-items: center; gap: 11px; padding: 12px; border-radius: 14px; background: var(--surface-2); }
@@ -522,6 +568,7 @@ body:has(dialog.full-page-dialog[open]) .tab-bar { visibility: hidden; pointer-e
   .exercise-row { grid-template-columns: 24px 48px minmax(0, 1fr) 44px; gap: 6px; }
   .exercise-row img { width: 60px; height: 60px; }
   .workout-equipment img { height: 220px; }
+  .food-control-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 370px) {

@@ -110,9 +110,9 @@
   };
 
   const schedules = {
-    fat: { 2: ["full_a", "full_b"], 3: ["full_a", "full_b", "full_c"], 4: ["full_a", "cardio_core", "full_b", "full_c"] },
+    fat: { 2: ["full_a", "full_b"], 3: ["full_a", "full_b", "full_c"], 4: ["upper_a", "lower_a", "upper_b", "lower_b"] },
     muscle: { 2: ["full_a", "full_b"], 3: ["full_a", "full_b", "full_c"], 4: ["upper_a", "lower_a", "upper_b", "lower_b"] },
-    recomp: { 2: ["full_a", "full_b"], 3: ["full_a", "full_b", "full_c"], 4: ["full_a", "cardio_core", "full_b", "full_c"] }
+    recomp: { 2: ["full_a", "full_b"], 3: ["full_a", "full_b", "full_c"], 4: ["upper_a", "lower_a", "upper_b", "lower_b"] }
   };
 
   const goals = {
