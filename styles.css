@@ -496,9 +496,10 @@ dialog::backdrop { background: rgba(16,17,16,.48); backdrop-filter: blur(4px); }
 
 dialog.full-page-dialog { width: min(100%, 620px); height: var(--visual-viewport-height, 100dvh); max-height: var(--visual-viewport-height, 100dvh); margin: auto; border-radius: 0; }
 dialog.full-page-dialog .full-page-card { width: 100%; height: var(--visual-viewport-height, 100dvh); max-height: var(--visual-viewport-height, 100dvh); padding-top: env(safe-area-inset-top, 0px); border-radius: 0; }
-.equipment-guide-visual { display: grid; justify-items: center; margin: 0; overflow: hidden; padding: 10px 10px 0; border: 1px solid var(--line); border-radius: var(--radius-lg); background: #F7F3EA; }
-.equipment-guide-visual img { display: block; width: min(100%, 520px); height: auto !important; aspect-ratio: auto; max-width: 100%; max-height: none !important; object-fit: contain !important; object-position: center; border-radius: 14px; background: #F7F3EA; }
-.equipment-guide-visual figcaption { width: calc(100% + 20px); margin: 10px -10px 0; padding: 10px 13px; border-top: 1px solid rgba(20,97,74,.12); background: var(--surface); color: var(--muted); font-size: 10px; font-weight: 700; }
+.equipment-guide-visual { display: grid; justify-items: stretch; margin: 0; overflow: hidden; padding: 0; border: 1px solid var(--line); border-radius: var(--radius-lg); background: #F7F3EA; }
+.equipment-image-frame { box-sizing: border-box; min-width: 0; padding: 10px; background: #F7F3EA; }
+.equipment-image-frame img { min-width: 0; max-width: 100%; max-height: 100%; border-radius: 14px; background: #F7F3EA; }
+.equipment-guide-visual figcaption { width: 100%; margin: 0; padding: 10px 13px; border-top: 1px solid rgba(20,97,74,.12); background: var(--surface); color: var(--muted); font-size: 10px; font-weight: 700; }
 .guide-block { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 11px; padding: 15px; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface-2); }
 .guide-index { color: var(--green); font-size: 10px; font-weight: 900; }
 .guide-block h3 { margin: 0; font-size: 14px; }
