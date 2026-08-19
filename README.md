@@ -2,7 +2,7 @@
 
 Rootbody là PWA local-first để ước tính calorie deficit, gợi ý bữa ăn theo ngân sách còn lại, theo dõi xu hướng cân nặng, xây giáo án tập và hỗ trợ tĩnh tâm. V7 ưu tiên model giải thích được, sai số nhìn thấy được và dữ liệu có thể dùng ngay; app không phụ thuộc Apple Health, backend hay tài khoản.
 
-V7 tách rõ ba training engine, cho chọn tối đa hai nhóm cơ ưu tiên và bổ sung 22 minh họa kỹ thuật có người ở hai pha động tác. Viewer dùng `object-fit: contain`, ảnh kết thúc trọn vẹn trước phần Setup/Cues; người dùng có thể đổi giữa minh họa kỹ thuật và hình thiết bị. Ảnh phòng gym gốc không được publish vì có người/phản chiếu.
+V7 tách rõ ba training engine, cho chọn tối đa hai nhóm cơ ưu tiên và bổ sung 22 minh họa kỹ thuật có người ở hai pha động tác. Viewer dùng `object-fit: contain`, ảnh kết thúc trọn vẹn trước phần Setup/Cues và chỉ hiển thị minh họa kỹ thuật có người. Ảnh phòng gym gốc không được publish vì có người/phản chiếu.
 
 ## V7 có gì
 

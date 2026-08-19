@@ -540,9 +540,6 @@ dialog.full-page-dialog { width: min(100%, 620px); height: var(--visual-viewport
 dialog.full-page-dialog .full-page-card { width: 100%; height: var(--visual-viewport-height, 100dvh); max-height: var(--visual-viewport-height, 100dvh); padding-top: env(safe-area-inset-top, 0px); border-radius: 0; }
 .equipment-guide-card { align-content: start; overflow-y: auto; overscroll-behavior-y: contain; }
 .equipment-guide-card > * { flex: 0 0 auto; }
-.guide-media-toggle { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; padding: 4px; border: 1px solid var(--line); border-radius: 13px; background: var(--surface-2); }
-.guide-media-toggle button { min-height: 40px; border: 0; border-radius: 9px; background: transparent; color: var(--muted); font-size: 11px; font-weight: 800; cursor: pointer; }
-.guide-media-toggle button.is-active { background: var(--green); color: white; box-shadow: 0 5px 12px rgba(20,97,74,.16); }
 .equipment-guide-visual { display: grid; justify-items: stretch; margin: 0; overflow: hidden; padding: 0; border: 1px solid var(--line); border-radius: var(--radius-lg); background: #F7F3EA; }
 .equipment-image-frame { display: grid; box-sizing: border-box; width: 100%; min-width: 0; aspect-ratio: 1; place-items: center; overflow: hidden; padding: 8px; background: #F7F3EA; }
 .equipment-image-frame img { display: block; width: 100%; height: 100%; min-width: 0; object-fit: contain; object-position: center; border-radius: 14px; background: #F7F3EA; }

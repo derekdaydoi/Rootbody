@@ -1,12 +1,12 @@
-const CACHE_NAME = "rootbody-v7-training-engine-v40";
+const CACHE_NAME = "rootbody-v7-human-guides-v41";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./styles.css?v=40",
-  "./food-data.js?v=40",
-  "./coach-data.js?v=40",
-  "./app.js?v=40",
-  "./coach.js?v=40",
+  "./styles.css?v=41",
+  "./food-data.js?v=41",
+  "./coach-data.js?v=41",
+  "./app.js?v=41",
+  "./coach.js?v=41",
   "./manifest.webmanifest",
   "./brand/rootbody-symbol.svg",
   "./brand/rootbody-logo.svg",

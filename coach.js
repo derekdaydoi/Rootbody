@@ -14,7 +14,6 @@
   const int = new Intl.NumberFormat("vi-VN", { maximumFractionDigits: 0 });
   let selectedTemplate = null;
   let currentExerciseId = null;
-  let currentGuideView = "form";
   let currentProtocolId = null;
   let pendingWorkoutStart = false;
   let returnToWorkout = false;
@@ -471,8 +470,11 @@
     if (!machine) return;
     currentExerciseId = id;
     $("[data-equipment-title]").textContent = exercise.name;
-    currentGuideView = "form";
-    renderGuideMedia();
+    const image = $("[data-equipment-image]");
+    image.src = exercise.formImage || exercise.image;
+    image.alt = `Kỹ thuật bài ${exercise.name}`;
+    const muscleNames = (exercise.muscles || []).map((muscleId) => catalog.muscleGroups[muscleId]?.name).filter(Boolean);
+    $("[data-equipment-verification]").textContent = `Nhóm cơ: ${muscleNames.join(" · ")}`;
     $("[data-equipment-setup]").innerHTML = machine.setup.map((line) => `<li>${escapeHtml(line)}</li>`).join("");
     $("[data-equipment-cues]").innerHTML = [exercise.cue, ...machine.cues].map((line) => `<li>${escapeHtml(line)}</li>`).join("");
     $("[data-equipment-errors]").innerHTML = machine.errors.map((line) => `<li>${escapeHtml(line)}</li>`).join("");
@@ -481,23 +483,6 @@
       core.closeDialog("workoutDialog");
       setTimeout(() => core.openDialog("equipmentDialog"), 40);
     } else core.openDialog("equipmentDialog");
-  }
-
-  function renderGuideMedia() {
-    const exercise = catalog.exercises[currentExerciseId];
-    const machine = exercise ? catalog.equipment[exercise.equipment] : null;
-    if (!exercise || !machine) return;
-    const isForm = currentGuideView === "form";
-    const image = $("[data-equipment-image]");
-    image.src = isForm ? (exercise.formImage || exercise.image) : machine.image;
-    image.alt = isForm ? `Kỹ thuật bài ${exercise.name}` : `Thiết bị ${machine.name}`;
-    const muscleNames = (exercise.muscles || []).map((id) => catalog.muscleGroups[id]?.name).filter(Boolean);
-    $("[data-equipment-verification]").textContent = isForm ? `Nhóm cơ: ${muscleNames.join(" · ")}` : `Thiết bị: ${machine.name}`;
-    $$('[data-guide-view]').forEach((button) => {
-      const active = button.dataset.guideView === currentGuideView;
-      button.classList.toggle("is-active", active);
-      button.setAttribute("aria-pressed", String(active));
-    });
   }
 
   function currentProtocol() {
@@ -815,7 +800,6 @@
       case "select-session": selectedTemplate = action.dataset.planSession; renderPlan(); break;
       case "exercise-guide": openExerciseGuide(action.dataset.exerciseId); break;
       case "exercise-current": openExerciseGuide(currentExerciseId, true); break;
-      case "guide-view": currentGuideView = action.dataset.guideView === "equipment" ? "equipment" : "form"; renderGuideMedia(); break;
       case "complete-set": completeSet(); break;
       case "skip-exercise": skipExercise(); break;
       case "finish-workout": finishWorkout(); break;
