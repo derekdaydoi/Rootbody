@@ -1,10 +1,10 @@
-# Rootbody V6
+# Rootbody V7
 
-Rootbody là PWA local-first để ước tính calorie deficit, gợi ý bữa ăn theo ngân sách còn lại, theo dõi xu hướng cân nặng, hướng dẫn tập gym và hỗ trợ tĩnh tâm. V6 ưu tiên model giải thích được, sai số nhìn thấy được và dữ liệu có thể dùng ngay; app không phụ thuộc Apple Health, backend hay tài khoản.
+Rootbody là PWA local-first để ước tính calorie deficit, gợi ý bữa ăn theo ngân sách còn lại, theo dõi xu hướng cân nặng, xây giáo án tập và hỗ trợ tĩnh tâm. V7 ưu tiên model giải thích được, sai số nhìn thấy được và dữ liệu có thể dùng ngay; app không phụ thuộc Apple Health, backend hay tài khoản.
 
-V6 bổ sung guided circle cho Wim Hof breathing và khóa viewer bài tập theo tỷ lệ thật để không crop ảnh trên mobile. Ảnh phòng gym gốc không được publish vì có người/phản chiếu; app dùng 19 minh họa riêng theo từng bài tập, không có nhân vật mẫu.
+V7 tách rõ ba training engine, cho chọn tối đa hai nhóm cơ ưu tiên và bổ sung 22 minh họa kỹ thuật có người ở hai pha động tác. Viewer dùng `object-fit: contain`, ảnh kết thúc trọn vẹn trước phần Setup/Cues; người dùng có thể đổi giữa minh họa kỹ thuật và hình thiết bị. Ảnh phòng gym gốc không được publish vì có người/phản chiếu.
 
-## V6 có gì
+## V7 có gì
 
 - Hồ sơ cá nhân: cân nặng, chiều cao, BMI và lựa chọn `Asian action points` / `International`.
 - Ghi vận động thủ công:
@@ -12,10 +12,12 @@ V6 bổ sung guided circle cho Wim Hof breathing và khóa viewer bài tập the
   - Chạy: số bước + số phút.
   - Cầu lông: số phút + trình độ từ Yếu đến Giỏi.
   - Gym thủ công: xe đạp, máy leo cầu thang, máy chạy có độ dốc, multi-press, tạ đơn, nằm nâng ngực, máy khép đùi và máy mở đùi.
-- Gym Coach theo ba mục tiêu: `Giảm mỡ + giữ cơ`, `Tăng cơ`, `Giảm mỡ + tăng cơ`.
-- Giáo án 2/3/4 buổi mỗi tuần, 30/45/60 phút, có sets, reps, RIR, rest và double progression; lịch 4 buổi dùng Upper/Lower A/B.
+- Gym Coach theo ba mục tiêu: `Giảm mỡ`, `Giảm mỡ + tăng cơ`, `Tăng cơ toàn diện`.
+- Default tuần theo mục tiêu lần lượt là `2 tạ + 2 cardio + 1 thể thao`, `3 tạ + 1 cardio + 1 thể thao`, và `4 tạ + 0 cardio + 1 thể thao`. Người dùng vẫn chỉnh được từng thành phần.
+- Nhánh tăng cơ cho chọn tối đa hai nhóm ưu tiên trong 12 nhóm; bài khớp nhóm được cộng một set, còn các nhóm khác vẫn giữ maintenance volume.
+- Giáo án tạ 2/3/4 buổi mỗi tuần, 30/45/60 phút, có sets, reps, RIR, rest và double progression; lịch 4 buổi dùng Upper/Lower A/B thay vì full-body hằng ngày.
 - Workout mode lưu sau mỗi set, resume sau reload và chỉ tạo **một** activity calorie khi hoàn tất.
-- Hướng dẫn nhận diện/setup/cues/lỗi cho 9 nhóm thiết bị; mỗi bài có WebP riêng thể hiện điểm bắt đầu, kết thúc và hướng chuyển động.
+- Hướng dẫn nhận diện/setup/cues/lỗi cho 9 nhóm thiết bị; 22 WebP kỹ thuật thể hiện vị trí đầu–cuối, hướng chuyển động và nhóm cơ chính.
 - Recovery gate theo ngủ, năng lượng, đau mỏi, illness và red flags; trạng thái xấu sẽ giảm volume hoặc chặn buổi tập.
 - Tĩnh tâm 10 phút có timer chịu được app background/foreground, visual-or-breath anchor và check-in trước/sau cho bình tĩnh, tập trung, tỉnh táo trên thang 1–5.
 - Wim Hof guided flow: vòng tròn dẫn 30 nhịp, retention đếm lên không có target, recovery breath 15 giây và tối đa 3 rounds; safety acknowledgement là điều kiện bắt đầu.
@@ -28,6 +30,7 @@ V6 bổ sung guided circle cho Wim Hof breathing và khóa viewer bài tập the
 - Chart cân nặng tối đa 20 lần ghi gần nhất và chart số bước 14 ngày.
 - Migration không phá dữ liệu từ `rootbody.v1` / `rootbody.v2` / `rootbody.v3` sang `rootbody.v4`; các key cũ vẫn được giữ làm rollback.
 - Cài lên iPhone Home Screen và hoạt động offline sau lần tải đầu.
+- Open Sans được self-host theo OFL; footer dùng đúng chuỗi `(c) Product of derekdaydoi`.
 
 ## Model năng lượng
 
@@ -71,7 +74,9 @@ MET được chọn theo band tốc độ của [2024 Adult Compendium — Walki
 
 ## Gym Coach và recovery
 
-- Mọi nhóm cơ chính được phân bổ qua full-body hoặc upper/lower; mục tiêu là chạm mỗi nhóm ít nhất hai lần/tuần khi lịch cho phép.
+- `Giảm mỡ` không bỏ resistance training: app giữ hai buổi full-body để hạn chế mất cơ, nhưng dành nhiều slot hơn cho cardio/thể thao. Calorie deficit vẫn do cân bằng năng lượng quyết định, không phải do chọn tên bài “đốt mỡ”.
+- `Giảm mỡ + tăng cơ` dùng ba buổi full-body để tăng tần suất tiếp xúc bài trong khi vẫn chừa recovery cho cardio và thể thao.
+- `Tăng cơ toàn diện` dùng Upper/Lower A/B. Nhóm ưu tiên nhận thêm một set ở bài khớp, tối đa hai nhóm; lựa chọn ưu tiên không xóa các nhóm còn lại khỏi lịch.
 - `RIR` là số reps người dùng ước tính còn làm được với form tốt. Buổi đầu không đoán tạ từ cân nặng cơ thể; chọn tải kết thúc đúng RIR mục tiêu.
 - Double progression: khi mọi set chạm đầu trên rep range với `RIR ≥ 2` trong hai buổi liên tiếp, tăng một nấc tạ nhỏ nhất; hụt đầu dưới hoặc form hỏng hai buổi thì giảm 5–10%.
 - Nếu ngủ dưới 6 giờ, năng lượng ≤2/5 hoặc đau mỏi ≥7/10, app giảm một set mỗi bài, dùng RIR 3 và bỏ conditioning finisher.
@@ -138,8 +143,10 @@ Workflow `.github/workflows/pages.yml` deploy nhánh `main`. Trong repository, c
 ```text
 Rootbody/
 ├── brand/                   # SVG logo, symbol, wordmark
+├── fonts/                   # Open Sans self-host + OFL
 ├── equipment/               # SVG minh họa máy, không chứa ảnh người dùng
-├── exercise-art/             # 19 WebP minh họa từng bài, không có người mẫu
+├── exercise-art/             # 19 WebP nhận diện thiết bị cũ
+├── exercise-form/            # 22 WebP kỹ thuật có người, hai pha động tác
 ├── .github/workflows/       # GitHub Pages deployment
 ├── index.html               # PWA shell
 ├── styles.css               # Root family design system

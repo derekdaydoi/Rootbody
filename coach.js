@@ -14,6 +14,7 @@
   const int = new Intl.NumberFormat("vi-VN", { maximumFractionDigits: 0 });
   let selectedTemplate = null;
   let currentExerciseId = null;
+  let currentGuideView = "form";
   let currentProtocolId = null;
   let pendingWorkoutStart = false;
   let returnToWorkout = false;
@@ -73,14 +74,30 @@
     const config = settings();
     const template = catalog.sessions[templateId] || catalog.sessions.full_a;
     const maxExercises = config.minutes === 30 ? 4 : 6;
-    let ids = template.exerciseIds.slice(0, maxExercises);
+    const priorityMuscles = new Set(config.priorityMuscles || []);
+    let ids = template.exerciseIds.slice();
+    if (config.goal !== "fat" && ids.length > maxExercises && priorityMuscles.size) {
+      const selected = ids.slice(0, maxExercises);
+      const omitted = ids.slice(maxExercises);
+      priorityMuscles.forEach((muscle) => {
+        if (selected.some((id) => catalog.exercises[id]?.muscles?.includes(muscle))) return;
+        const candidate = omitted.find((id) => catalog.exercises[id]?.muscles?.includes(muscle));
+        if (!candidate) return;
+        const replaceAt = [...selected].reverse().findIndex((id) => catalog.exercises[id]?.role !== "compound");
+        const index = replaceAt < 0 ? selected.length - 1 : selected.length - 1 - replaceAt;
+        selected[index] = candidate;
+      });
+      ids = selected;
+    } else ids = ids.slice(0, maxExercises);
     if (reduced) ids = ids.filter((id) => catalog.exercises[id]?.kind !== "cardio");
     return ids.map((id) => {
       const exercise = catalog.exercises[id];
       const prescription = prescriptionFor(exercise, config);
       let sets = prescription.sets;
+      const prioritized = config.goal !== "fat" && exercise.kind === "strength" && (exercise.muscles || []).some((muscle) => priorityMuscles.has(muscle));
       if (config.minutes === 30) sets = Math.max(1, sets - 1);
       if (config.minutes === 60 && exercise.role === "compound") sets = Math.min(4, sets + 1);
+      if (prioritized) sets = Math.min(5, sets + 1);
       if (reduced) sets = Math.max(1, sets - 1);
       return {
         id,
@@ -92,6 +109,7 @@
         rir: reduced ? Math.max(3, prescription.rir) : prescription.rir,
         rest: prescription.rest,
         cue: exercise.cue,
+        prioritized,
         logs: [],
         skipped: false
       };
@@ -137,7 +155,7 @@
     $("[data-today-equipment]").innerHTML = exercises.map((exercise) => {
       const source = catalog.exercises[exercise.id];
       if (!source) return "";
-      return `<button class="exercise-art-card" type="button" data-coach-action="exercise-guide" data-exercise-id="${escapeHtml(exercise.id)}"><img src="${escapeHtml(source.image)}" alt="Minh họa bài ${escapeHtml(source.name)}"><span><strong>${escapeHtml(source.name)}</strong><small>${escapeHtml(prescriptionText(exercise))}</small></span></button>`;
+      return `<button class="exercise-art-card" type="button" data-coach-action="exercise-guide" data-exercise-id="${escapeHtml(exercise.id)}"><img src="${escapeHtml(source.formImage || source.image)}" alt="Minh họa kỹ thuật bài ${escapeHtml(source.name)}"><span><strong>${escapeHtml(source.name)}</strong><small>${escapeHtml(prescriptionText(exercise))}</small></span></button>`;
     }).join("");
   }
 
@@ -167,23 +185,40 @@
       button.setAttribute("aria-pressed", String(active));
     });
     $("[data-plan-frequency]").value = String(config.daysPerWeek);
+    $("[data-plan-cardio]").value = String(config.cardioDays);
+    $("[data-plan-sport]").value = String(config.sportDays);
     $("[data-plan-duration]").value = String(config.minutes);
     $("[data-plan-experience]").value = config.experience;
     $("[data-plan-limitations]").checked = config.hasPain;
     $("[data-plan-title]").textContent = goal.name;
     $("[data-plan-description]").textContent = goal.blurb;
     $("[data-plan-days]").textContent = config.daysPerWeek;
+    $("[data-plan-cardio-stat]").textContent = config.cardioDays;
+    $("[data-plan-sport-stat]").textContent = config.sportDays;
     $("[data-plan-minutes]").textContent = config.minutes;
     $("[data-plan-rir]").textContent = config.goal === "muscle" ? "1–3" : "2–3";
     $("[data-progression-rule]").textContent = catalog.progression;
 
+    const prioritySection = $("[data-muscle-priority-section]");
+    prioritySection.hidden = config.goal === "fat";
+    const selectedMuscles = new Set(config.priorityMuscles || []);
+    $("[data-muscle-priority-count]").textContent = `${selectedMuscles.size}/2 nhóm`;
+    $("[data-muscle-options]").innerHTML = Object.entries(catalog.muscleGroups).map(([id, muscle]) => {
+      const active = selectedMuscles.has(id);
+      return `<button class="muscle-option${active ? " is-active" : ""}" type="button" data-muscle-option="${escapeHtml(id)}" aria-pressed="${active}"><span>${escapeHtml(muscle.short)}</span><small>${active ? "Đang ưu tiên" : "Maintenance mặc định"}</small></button>`;
+    }).join("");
+
     const schedule = scheduleFor(config);
     if (!selectedTemplate || !schedule.includes(selectedTemplate)) selectedTemplate = schedule[0];
-    $("[data-plan-week]").innerHTML = schedule.map((templateId, index) => {
+    const strengthCards = schedule.map((templateId, index) => {
       const template = catalog.sessions[templateId];
       const active = templateId === selectedTemplate;
-      return `<button class="session-day${active ? " is-active" : ""}" type="button" data-coach-action="select-session" data-plan-session="${escapeHtml(templateId)}" aria-pressed="${active}"><span>Buổi ${index + 1}</span><strong>${escapeHtml(template.name)}</strong><small>${planExercises(templateId).length} bài</small></button>`;
-    }).join("");
+      return `<button class="session-day${active ? " is-active" : ""}" type="button" data-coach-action="select-session" data-plan-session="${escapeHtml(templateId)}" aria-pressed="${active}"><span>Tạ · buổi ${index + 1}</span><strong>${escapeHtml(template.name)}</strong><small>${planExercises(templateId).length} bài</small></button>`;
+    });
+    const conditioningCards = [];
+    if (config.cardioDays > 0) conditioningCards.push(`<article class="session-day mix-day"><span>Cardio · ${config.cardioDays} buổi</span><strong>Zone 2 / steady</strong><small>${escapeHtml(goal.cardio.reps)} · RPE 4–6</small></article>`);
+    if (config.sportDays > 0) conditioningCards.push(`<article class="session-day mix-day"><span>Thể thao · ${config.sportDays} buổi</span><strong>Môn người dùng chọn</strong><small>45–90 phút · tính tải theo thực tế</small></article>`);
+    $("[data-plan-week]").innerHTML = [...strengthCards, ...conditioningCards].join("");
     renderPlanExercises(selectedTemplate);
   }
 
@@ -194,7 +229,7 @@
     $("[data-plan-exercises]").innerHTML = items.map((exercise, index) => {
       const machine = catalog.equipment[exercise.equipment];
       const source = catalog.exercises[exercise.id];
-      return `<article class="exercise-row" data-plan-exercise data-exercise-id="${escapeHtml(exercise.id)}"><span class="exercise-index">${String(index + 1).padStart(2, "0")}</span><img src="${escapeHtml(source.image)}" alt="Minh họa bài ${escapeHtml(source.name)}"><div class="exercise-copy"><strong>${escapeHtml(exercise.name)}</strong><small>${escapeHtml(prescriptionText(exercise))}</small><span>${escapeHtml(machine.name)}</span></div><button class="row-action" type="button" data-coach-action="exercise-guide" data-exercise-id="${escapeHtml(exercise.id)}" aria-label="Xem minh họa bài ${escapeHtml(exercise.name)}">↗</button></article>`;
+      return `<article class="exercise-row${exercise.prioritized ? " is-priority" : ""}" data-plan-exercise data-exercise-id="${escapeHtml(exercise.id)}"><span class="exercise-index">${String(index + 1).padStart(2, "0")}</span><img src="${escapeHtml(source.formImage || source.image)}" alt="Minh họa kỹ thuật bài ${escapeHtml(source.name)}"><div class="exercise-copy"><strong>${escapeHtml(exercise.name)}</strong><small>${escapeHtml(prescriptionText(exercise))}</small><span>${escapeHtml(machine.name)}${exercise.prioritized ? " · +1 set ưu tiên" : ""}</span></div><button class="row-action" type="button" data-coach-action="exercise-guide" data-exercise-id="${escapeHtml(exercise.id)}" aria-label="Xem minh họa bài ${escapeHtml(exercise.name)}">↗</button></article>`;
     }).join("");
   }
 
@@ -339,8 +374,8 @@
     $("[data-current-exercise-name]").textContent = exercise.name;
     $("[data-current-prescription]").textContent = prescriptionText(exercise);
     $("[data-current-cue]").textContent = exercise.cue;
-    $("[data-current-equipment-image]").src = source.image;
-    $("[data-current-equipment-image]").alt = `Minh họa bài ${source.name}`;
+    $("[data-current-equipment-image]").src = source.formImage || source.image;
+    $("[data-current-equipment-image]").alt = `Minh họa kỹ thuật bài ${source.name}`;
     currentExerciseId = exercise.id;
     $("[data-rest-remaining]").textContent = exercise.rest ? `${exercise.rest} giây` : "Không áp dụng";
     $("[data-set-list]").innerHTML = exercise.logs.map((log, index) => {
@@ -436,9 +471,8 @@
     if (!machine) return;
     currentExerciseId = id;
     $("[data-equipment-title]").textContent = exercise.name;
-    $("[data-equipment-image]").src = exercise.image;
-    $("[data-equipment-image]").alt = `Minh họa bài ${exercise.name}`;
-    $("[data-equipment-verification]").textContent = `${machine.name} · ${machine.verification}`;
+    currentGuideView = "form";
+    renderGuideMedia();
     $("[data-equipment-setup]").innerHTML = machine.setup.map((line) => `<li>${escapeHtml(line)}</li>`).join("");
     $("[data-equipment-cues]").innerHTML = [exercise.cue, ...machine.cues].map((line) => `<li>${escapeHtml(line)}</li>`).join("");
     $("[data-equipment-errors]").innerHTML = machine.errors.map((line) => `<li>${escapeHtml(line)}</li>`).join("");
@@ -447,6 +481,23 @@
       core.closeDialog("workoutDialog");
       setTimeout(() => core.openDialog("equipmentDialog"), 40);
     } else core.openDialog("equipmentDialog");
+  }
+
+  function renderGuideMedia() {
+    const exercise = catalog.exercises[currentExerciseId];
+    const machine = exercise ? catalog.equipment[exercise.equipment] : null;
+    if (!exercise || !machine) return;
+    const isForm = currentGuideView === "form";
+    const image = $("[data-equipment-image]");
+    image.src = isForm ? (exercise.formImage || exercise.image) : machine.image;
+    image.alt = isForm ? `Kỹ thuật bài ${exercise.name}` : `Thiết bị ${machine.name}`;
+    const muscleNames = (exercise.muscles || []).map((id) => catalog.muscleGroups[id]?.name).filter(Boolean);
+    $("[data-equipment-verification]").textContent = isForm ? `Nhóm cơ: ${muscleNames.join(" · ")}` : `Thiết bị: ${machine.name}`;
+    $$('[data-guide-view]').forEach((button) => {
+      const active = button.dataset.guideView === currentGuideView;
+      button.classList.toggle("is-active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
   }
 
   function currentProtocol() {
@@ -715,6 +766,8 @@
   function updateSettingsFromControls() {
     const config = settings();
     config.daysPerWeek = Number($("[data-plan-frequency]").value);
+    config.cardioDays = Number($("[data-plan-cardio]").value);
+    config.sportDays = Number($("[data-plan-sport]").value);
     config.minutes = Number($("[data-plan-duration]").value);
     config.experience = $("[data-plan-experience]").value === "intermediate" ? "intermediate" : "beginner";
     config.hasPain = $("[data-plan-limitations]").checked;
@@ -728,8 +781,27 @@
     if (tab) { switchTab(tab.dataset.activityTab); return; }
     const goal = event.target.closest("[data-goal-option]");
     if (goal) {
-      settings().goal = goal.dataset.goalOption;
+      const nextGoal = goal.dataset.goalOption;
+      if (settings().goal !== nextGoal) {
+        settings().goal = nextGoal;
+        const defaults = catalog.goals[nextGoal].defaults;
+        settings().daysPerWeek = defaults.strength;
+        settings().cardioDays = defaults.cardio;
+        settings().sportDays = defaults.sport;
+      }
       selectedTemplate = null;
+      core.save(false);
+      render();
+      return;
+    }
+    const muscle = event.target.closest("[data-muscle-option]");
+    if (muscle) {
+      const priorities = settings().priorityMuscles || (settings().priorityMuscles = []);
+      const id = muscle.dataset.muscleOption;
+      const index = priorities.indexOf(id);
+      if (index >= 0) priorities.splice(index, 1);
+      else if (priorities.length >= 2) { core.showToast("Chọn tối đa 2 nhóm cơ ưu tiên."); return; }
+      else priorities.push(id);
       core.save(false);
       render();
       return;
@@ -743,6 +815,7 @@
       case "select-session": selectedTemplate = action.dataset.planSession; renderPlan(); break;
       case "exercise-guide": openExerciseGuide(action.dataset.exerciseId); break;
       case "exercise-current": openExerciseGuide(currentExerciseId, true); break;
+      case "guide-view": currentGuideView = action.dataset.guideView === "equipment" ? "equipment" : "form"; renderGuideMedia(); break;
       case "complete-set": completeSet(); break;
       case "skip-exercise": skipExercise(); break;
       case "finish-workout": finishWorkout(); break;
@@ -765,6 +838,8 @@
   });
 
   $("[data-plan-frequency]").addEventListener("change", updateSettingsFromControls);
+  $("[data-plan-cardio]").addEventListener("change", updateSettingsFromControls);
+  $("[data-plan-sport]").addEventListener("change", updateSettingsFromControls);
   $("[data-plan-duration]").addEventListener("change", updateSettingsFromControls);
   $("[data-plan-experience]").addEventListener("change", updateSettingsFromControls);
   $("[data-plan-limitations]").addEventListener("change", updateSettingsFromControls);

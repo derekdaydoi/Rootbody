@@ -1,5 +1,5 @@
 {
-  "name": "Rootbody V4",
+  "name": "Rootbody V7",
   "short_name": "Rootbody",
   "description": "Calorie deficit, gợi ý bữa ăn, Gym Coach, recovery và evidence-first Biohack Lab — local-first.",
   "lang": "vi",
@@ -15,4 +15,3 @@
     { "src": "./brand/rootbody-symbol.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
   ]
 }
-

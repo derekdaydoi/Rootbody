@@ -1,16 +1,20 @@
-const CACHE_NAME = "rootbody-2026-08-19-v8-guide-scroll";
+const CACHE_NAME = "rootbody-v7-training-engine-v40";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./styles.css?v=36",
-  "./food-data.js?v=36",
-  "./coach-data.js?v=36",
-  "./app.js?v=36",
-  "./coach.js?v=36",
+  "./styles.css?v=40",
+  "./food-data.js?v=40",
+  "./coach-data.js?v=40",
+  "./app.js?v=40",
+  "./coach.js?v=40",
   "./manifest.webmanifest",
   "./brand/rootbody-symbol.svg",
   "./brand/rootbody-logo.svg",
   "./brand/rootbody-wordmark.svg",
+  "./brand/rootbody-lab.svg",
+  "./fonts/open-sans-vietnamese.woff2",
+  "./fonts/open-sans-latin-ext.woff2",
+  "./fonts/open-sans-latin.woff2",
   "./icon-180.png",
   "./icon-192.png",
   "./icon-512.png"
@@ -45,6 +49,28 @@ const OPTIONAL_MEDIA = [
   "./exercise-art/shoulder-press.webp",
   "./exercise-art/split-squat.webp",
   "./exercise-art/stair-steady.webp"
+  ,"./exercise-form/assisted-pullup.webp"
+  ,"./exercise-form/bike-steady.webp"
+  ,"./exercise-form/calf-raise.webp"
+  ,"./exercise-form/chest-press.webp"
+  ,"./exercise-form/db-bench.webp"
+  ,"./exercise-form/db-curl.webp"
+  ,"./exercise-form/db-rdl.webp"
+  ,"./exercise-form/db-row.webp"
+  ,"./exercise-form/dead-bug.webp"
+  ,"./exercise-form/goblet-squat.webp"
+  ,"./exercise-form/hip-abduction.webp"
+  ,"./exercise-form/hip-adduction.webp"
+  ,"./exercise-form/incline-press.webp"
+  ,"./exercise-form/incline-walk.webp"
+  ,"./exercise-form/lateral-raise.webp"
+  ,"./exercise-form/plank.webp"
+  ,"./exercise-form/rear-delt-fly.webp"
+  ,"./exercise-form/reverse-crunch.webp"
+  ,"./exercise-form/shoulder-press.webp"
+  ,"./exercise-form/split-squat.webp"
+  ,"./exercise-form/stair-steady.webp"
+  ,"./exercise-form/triceps-extension.webp"
 ];
 
 self.addEventListener("install", (event) => {

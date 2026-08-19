@@ -12,17 +12,14 @@
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./brand/rootbody-symbol.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="./icon-180.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=36">
+  <link rel="stylesheet" href="./styles.css?v=40">
 </head>
 <body>
   <div class="app-shell">
     <header class="app-header">
       <a class="brand" href="#today" data-nav="today" aria-label="Rootbody — Hôm nay">
         <img src="./brand/rootbody-symbol.svg" alt="" width="56" height="56">
-        <span class="brand-name"><span>ROOT</span><strong>BODY</strong></span>
+        <span class="brand-copy"><span class="brand-name"><span>ROOT</span><strong>BODY</strong></span><small>(c) Product of derekdaydoi</small></span>
       </a>
       <div class="header-actions">
         <button class="icon-button" type="button" data-open-dialog="settingsDialog" aria-label="Mở cài đặt">
@@ -204,31 +201,39 @@
           <section class="coach-section plan-builder" data-plan-builder aria-labelledby="goalTitle">
             <div class="section-line"><div><p class="eyebrow">01 · Mục tiêu</p><h2 id="goalTitle">Tập để làm gì?</h2></div></div>
             <div class="goal-grid">
-              <button class="goal-option" type="button" data-goal-option="fat"><strong>Giảm mỡ</strong><small>Giữ cơ · cardio steady</small></button>
-              <button class="goal-option" type="button" data-goal-option="muscle"><strong>Tăng cơ</strong><small>Volume và progression</small></button>
-              <button class="goal-option" type="button" data-goal-option="recomp"><strong>Cả hai</strong><small>Balanced mặc định</small></button>
+              <button class="goal-option" type="button" data-goal-option="fat"><strong>Giảm mỡ</strong><small>Cardio chính · tạ giữ cơ</small></button>
+              <button class="goal-option" type="button" data-goal-option="recomp"><strong>Giảm mỡ + tăng cơ</strong><small>Tạ · cardio · thể thao</small></button>
+              <button class="goal-option" type="button" data-goal-option="muscle"><strong>Tăng cơ toàn diện</strong><small>Upper / Lower · progression</small></button>
             </div>
           </section>
 
           <section class="coach-section plan-controls" aria-labelledby="planSetupTitle">
             <div class="section-line"><div><p class="eyebrow">02 · Lịch thực tế</p><h2 id="planSetupTitle">Tần suất và thời lượng</h2></div></div>
             <div class="control-grid">
-              <label class="field"><span>Buổi / tuần</span><select data-plan-frequency><option value="2">2 buổi</option><option value="3">3 buổi</option><option value="4">4 buổi</option></select></label>
+              <label class="field"><span>Buổi tạ / tuần</span><select data-plan-frequency><option value="2">2 buổi</option><option value="3">3 buổi</option><option value="4">4 buổi</option></select></label>
               <label class="field"><span>Phút / buổi</span><select data-plan-duration><option value="30">30 phút</option><option value="45">45 phút</option><option value="60">60 phút</option></select></label>
+              <label class="field"><span>Cardio / tuần</span><select data-plan-cardio><option value="0">Không</option><option value="1">1 buổi</option><option value="2">2 buổi</option><option value="3">3 buổi</option></select></label>
+              <label class="field"><span>Thể thao / tuần</span><select data-plan-sport><option value="0">Không</option><option value="1">1 buổi</option><option value="2">2 buổi</option></select></label>
               <label class="field control-span"><span>Kinh nghiệm</span><select data-plan-experience><option value="beginner">Mới / quay lại tập</option><option value="intermediate">Đã tập đều ≥6 tháng</option></select></label>
             </div>
             <label class="safety-check"><input type="checkbox" data-plan-limitations><span><strong>Đang có đau nhói hoặc chấn thương chưa đánh giá</strong><small>Bật mục này sẽ chặn việc bắt đầu giáo án.</small></span></label>
+          </section>
+
+          <section class="coach-section muscle-priority" data-muscle-priority-section aria-labelledby="musclePriorityTitle">
+            <div class="section-line"><div><p class="eyebrow">03 · Nhóm cơ ưu tiên</p><h2 id="musclePriorityTitle">Chọn tối đa 2 nhóm</h2></div><span class="selection-count" data-muscle-priority-count>0/2 nhóm</span></div>
+            <p class="section-note">Nhóm được chọn nhận thêm 1 set ở bài phù hợp. Các nhóm còn lại vẫn giữ maintenance volume.</p>
+            <div class="muscle-grid" data-muscle-options></div>
           </section>
 
           <article class="plan-summary" data-plan-preview>
             <span class="evidence-pill">Evidence grade A</span>
             <h2 data-plan-title>Giảm mỡ + tăng cơ</h2>
             <p data-plan-description></p>
-            <div class="plan-stats"><span><b data-plan-days>3</b> buổi/tuần</span><span><b data-plan-minutes>45</b> phút/buổi</span><span>RIR <b data-plan-rir>2–3</b></span></div>
+            <div class="plan-stats"><span><b data-plan-days>3</b> buổi tạ</span><span><b data-plan-cardio-stat>1</b> cardio</span><span><b data-plan-sport-stat>1</b> thể thao</span><span><b data-plan-minutes>45</b> phút</span><span>RIR <b data-plan-rir>2–3</b></span></div>
           </article>
 
           <section class="coach-section" aria-labelledby="weekTitle">
-            <div class="section-line"><div><p class="eyebrow">03 · Giáo án</p><h2 id="weekTitle">Tuần tập</h2></div></div>
+            <div class="section-line"><div><p class="eyebrow">Giáo án tuần</p><h2 id="weekTitle">Tuần tập</h2></div></div>
             <div class="week-grid" data-plan-week></div>
           </section>
 
@@ -243,12 +248,13 @@
         <div id="coachLab" class="coach-panel" role="tabpanel" data-activity-panel="lab" hidden>
           <section class="meditation-hub" aria-labelledby="meditationTitle">
             <div class="meditation-hub-top"><span class="evidence-pill">Tĩnh tâm · Grade B</span><span class="meditation-status" data-meditation-status>Chưa có phiên</span></div>
-            <div class="meditation-heading"><span class="meditation-mark" aria-hidden="true"></span><div><p class="eyebrow">Attention reset</p><h2 id="meditationTitle">10 phút ít kích thích</h2></div></div>
+            <div class="meditation-heading"><img class="lab-mark" src="./brand/rootbody-lab.svg" alt="" width="58" height="58"><div><p class="eyebrow">Attention reset</p><h2 id="meditationTitle">10 phút ít kích thích</h2></div></div>
             <p>Không cần “trống đầu”. Chỉ nhận ra attention đã đi xa và đưa nó về một điểm nhìn hoặc nhịp thở.</p>
             <div class="meditation-outcomes" aria-label="Các trạng thái tự đánh giá"><span>Bình tĩnh</span><span>Tập trung</span><span>Tỉnh táo</span></div>
             <button class="primary-button" type="button" data-coach-action="protocol" data-protocol-id="wall_focus_10">Bắt đầu tĩnh tâm 10 phút</button>
           </section>
           <article class="lab-intro">
+            <div class="lab-brand"><img src="./brand/rootbody-lab.svg" alt="" width="44" height="44"><div><span>ROOTBODY</span><strong>LAB</strong></div></div>
             <span class="evidence-pill">Không guru worship</span>
             <h2>Biohack chỉ được vào đây nếu claim và rủi ro đều rõ</h2>
             <p>Huberman/Eric Berg có thể gợi ý câu hỏi; nguồn quyết định là guideline và nghiên cứu gốc. Protocol Lab không cộng calorie, không chẩn đoán và không thay thế điều trị.</p>
@@ -384,7 +390,8 @@
   <dialog id="equipmentDialog" class="full-page-dialog" data-equipment-guide>
     <div class="dialog-card full-page-card equipment-guide-card">
       <div class="dialog-heading"><div><p class="eyebrow">Minh họa bài tập</p><h2 data-equipment-title>Bài tập</h2></div><button class="dialog-close" type="button" data-close-dialog="equipmentDialog" data-equipment-back aria-label="Đóng">×</button></div>
-      <figure class="equipment-guide-visual" style="flex:0 0 auto"><div class="equipment-image-frame" style="display:grid;place-items:center;width:100%;aspect-ratio:1 / 1;overflow:hidden"><img src="./equipment/dumbbell.svg" width="720" height="720" style="display:block;width:100%!important;height:100%!important;object-fit:contain!important;object-position:center" alt="Minh họa thiết bị" data-equipment-image></div><figcaption data-equipment-verification>Thiết bị người dùng xác nhận</figcaption></figure>
+      <div class="guide-media-toggle" role="group" aria-label="Loại minh họa"><button class="is-active" type="button" data-coach-action="guide-view" data-guide-view="form" aria-pressed="true">Kỹ thuật</button><button type="button" data-coach-action="guide-view" data-guide-view="equipment" aria-pressed="false">Thiết bị</button></div>
+      <figure class="equipment-guide-visual"><div class="equipment-image-frame"><img src="./exercise-form/goblet-squat.webp" width="960" height="960" alt="Minh họa kỹ thuật" data-equipment-image></div><figcaption data-equipment-verification>Nhóm cơ</figcaption></figure>
       <section class="guide-block"><span class="guide-index">01</span><div><h3>Setup</h3><ul data-equipment-setup></ul></div></section>
       <section class="guide-block"><span class="guide-index">02</span><div><h3>Cues</h3><ul data-equipment-cues></ul></div></section>
       <section class="guide-block guide-errors"><span class="guide-index">03</span><div><h3>Lỗi cần tránh</h3><ul data-equipment-errors></ul></div></section>
@@ -398,7 +405,7 @@
       <div class="workout-progress-track" aria-hidden="true"><span data-workout-progress-fill></span></div>
 
       <div data-workout-active>
-        <div class="workout-equipment"><img src="./exercise-art/goblet-squat.webp" alt="Minh họa bài tập đang thực hiện" data-current-equipment-image><button class="image-action" type="button" data-coach-action="exercise-current">Minh họa bài ↗</button></div>
+        <div class="workout-equipment"><img src="./exercise-form/goblet-squat.webp" alt="Minh họa bài tập đang thực hiện" data-current-equipment-image><button class="image-action" type="button" data-coach-action="exercise-current">Minh họa bài ↗</button></div>
         <div class="workout-copy" data-current-exercise>
           <span class="set-badge" data-workout-round>Set 1/3</span>
           <h3 data-current-exercise-name>Bài tập</h3>
@@ -494,9 +501,9 @@
   </dialog>
 
   <div class="toast" role="status" aria-live="polite" data-toast></div>
-  <script src="./food-data.js?v=36" defer></script>
-  <script src="./coach-data.js?v=36" defer></script>
-  <script src="./app.js?v=36" defer></script>
-  <script src="./coach.js?v=36" defer></script>
+  <script src="./food-data.js?v=40" defer></script>
+  <script src="./coach-data.js?v=40" defer></script>
+  <script src="./app.js?v=40" defer></script>
+  <script src="./coach.js?v=40" defer></script>
 </body>
 </html>

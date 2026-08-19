@@ -76,36 +76,54 @@
     }
   };
 
+  const muscleGroups = {
+    chest: { name: "Ngực", short: "Ngực" },
+    lats: { name: "Cơ xô", short: "Xô" },
+    upper_back: { name: "Lưng trên", short: "Lưng" },
+    shoulders: { name: "Cơ vai", short: "Vai" },
+    biceps: { name: "Tay trước", short: "Biceps" },
+    triceps: { name: "Tay sau", short: "Triceps" },
+    quads: { name: "Đùi trước", short: "Quads" },
+    hamstrings: { name: "Đùi sau", short: "Hamstrings" },
+    glutes: { name: "Cơ mông", short: "Mông" },
+    adductors: { name: "Đùi trong", short: "Đùi trong" },
+    calves: { name: "Bắp chân", short: "Calves" },
+    core: { name: "Core", short: "Core" }
+  };
+
   const exercises = {
-    goblet_squat: { name: "Goblet squat", image: "./exercise-art/goblet-squat.webp", equipment: "dumbbell", role: "compound", kind: "strength", cue: "Gối theo hướng mũi chân; ngồi xuống trong biên độ giữ được lưng trung lập." },
-    db_rdl: { name: "Dumbbell Romanian deadlift", image: "./exercise-art/db-rdl.webp", equipment: "dumbbell", role: "compound", kind: "strength", cue: "Đẩy hông ra sau; tạ đi sát đùi; dừng trước khi lưng mất trung lập." },
-    split_squat: { name: "Split squat", image: "./exercise-art/split-squat.webp", equipment: "dumbbell", role: "compound", kind: "strength", cue: "Hai chân như hai đường ray; hạ thẳng trọng tâm, chân trước chịu lực chính." },
-    chest_press: { name: "Machine chest press", image: "./exercise-art/chest-press.webp", equipment: "multi_press", role: "compound", kind: "strength", cue: "Tay cầm ngang giữa ngực; bả vai ổn định trên tựa ghế." },
-    incline_press: { name: "Machine incline press", image: "./exercise-art/incline-press.webp", equipment: "multi_press", role: "compound", kind: "strength", cue: "Tay cầm ngang ngực trên; không nhún vai khi đẩy." },
-    shoulder_press: { name: "Machine shoulder press", image: "./exercise-art/shoulder-press.webp", equipment: "multi_press", role: "compound", kind: "strength", cue: "Tay cầm bắt đầu gần ngang tai; siết thân, không ưỡn lưng để đẩy." },
-    db_bench: { name: "Dumbbell bench press", image: "./exercise-art/db-bench.webp", equipment: "bench", role: "compound", kind: "strength", cue: "Bả vai ổn định; hạ tạ cân đối rồi đẩy lên trên ngực." },
-    db_row: { name: "One-arm dumbbell row", image: "./exercise-art/db-row.webp", equipment: "bench", role: "compound", kind: "strength", cue: "Giữ hông và vai tương đối vuông; kéo khuỷu về hông." },
-    assisted_pullup: { name: "Pull-up hỗ trợ bằng chân", image: "./exercise-art/assisted-pullup.webp", equipment: "pullup", role: "compound", kind: "strength", cue: "Dùng chân vừa đủ để giữ biên độ đầy đủ; không đá người." },
-    hip_abduction: { name: "Mở đùi", image: "./exercise-art/hip-abduction.webp", equipment: "hip_machine", role: "accessory", kind: "strength", cue: "Mở gối có kiểm soát, giữ thân tựa ghế." },
-    hip_adduction: { name: "Khép đùi", image: "./exercise-art/hip-adduction.webp", equipment: "hip_machine", role: "accessory", kind: "strength", cue: "Khép từ hông, không bật hai đệm vào nhau." },
-    lateral_raise: { name: "Dumbbell lateral raise", image: "./exercise-art/lateral-raise.webp", equipment: "dumbbell", role: "accessory", kind: "strength", cue: "Nâng theo mặt phẳng hơi chếch trước thân; dừng trước khi nhún vai." },
-    db_curl: { name: "Dumbbell curl", image: "./exercise-art/db-curl.webp", equipment: "dumbbell", role: "accessory", kind: "strength", cue: "Giữ khuỷu gần thân; không đẩy hông để vung tạ." },
-    dead_bug: { name: "Dead bug", image: "./exercise-art/dead-bug.webp", equipment: "core", role: "core", kind: "strength", cue: "Ép lưng dưới nhẹ xuống thảm; duỗi chéo tay chân mà không võng lưng." },
-    plank: { name: "Plank", image: "./exercise-art/plank.webp", equipment: "core", role: "core", kind: "timed", cue: "Siết mông và bụng; dừng khi lưng bắt đầu võng." },
-    reverse_crunch: { name: "Reverse crunch", image: "./exercise-art/reverse-crunch.webp", equipment: "core", role: "core", kind: "strength", cue: "Cuộn xương chậu khỏi ghế/thảm; không dùng đà chân." },
-    bike_steady: { name: "Đạp xe steady", image: "./exercise-art/bike-steady.webp", equipment: "bike", role: "conditioning", kind: "cardio", cue: "RPE 4–6/10; nhịp thở tăng nhưng vẫn nói được câu ngắn." },
-    stair_steady: { name: "Leo cầu thang steady", image: "./exercise-art/stair-steady.webp", equipment: "stair", role: "conditioning", kind: "cardio", cue: "RPE 4–6/10; thân cao, không treo người lên tay vịn." },
-    incline_walk: { name: "Đi bộ dốc", image: "./exercise-art/incline-walk.webp", equipment: "treadmill", role: "conditioning", kind: "cardio", cue: "RPE 4–6/10; tăng dốc trước khi tăng tốc nếu vẫn đi bộ." }
+    goblet_squat: { name: "Goblet squat", image: "./exercise-art/goblet-squat.webp", formImage: "./exercise-form/goblet-squat.webp", muscles: ["quads", "glutes", "core"], equipment: "dumbbell", role: "compound", kind: "strength", cue: "Gối theo hướng mũi chân; ngồi xuống trong biên độ giữ được lưng trung lập." },
+    db_rdl: { name: "Dumbbell Romanian deadlift", image: "./exercise-art/db-rdl.webp", formImage: "./exercise-form/db-rdl.webp", muscles: ["hamstrings", "glutes", "upper_back"], equipment: "dumbbell", role: "compound", kind: "strength", cue: "Đẩy hông ra sau; tạ đi sát đùi; dừng trước khi lưng mất trung lập." },
+    split_squat: { name: "Split squat", image: "./exercise-art/split-squat.webp", formImage: "./exercise-form/split-squat.webp", muscles: ["quads", "glutes"], equipment: "dumbbell", role: "compound", kind: "strength", cue: "Hai chân như hai đường ray; hạ thẳng trọng tâm, chân trước chịu lực chính." },
+    chest_press: { name: "Machine chest press", image: "./exercise-art/chest-press.webp", formImage: "./exercise-form/chest-press.webp", muscles: ["chest", "triceps", "shoulders"], equipment: "multi_press", role: "compound", kind: "strength", cue: "Tay cầm ngang giữa ngực; bả vai ổn định trên tựa ghế." },
+    incline_press: { name: "Machine incline press", image: "./exercise-art/incline-press.webp", formImage: "./exercise-form/incline-press.webp", muscles: ["chest", "shoulders", "triceps"], equipment: "multi_press", role: "compound", kind: "strength", cue: "Tay cầm ngang ngực trên; không nhún vai khi đẩy." },
+    shoulder_press: { name: "Machine shoulder press", image: "./exercise-art/shoulder-press.webp", formImage: "./exercise-form/shoulder-press.webp", muscles: ["shoulders", "triceps"], equipment: "multi_press", role: "compound", kind: "strength", cue: "Tay cầm bắt đầu gần ngang tai; siết thân, không ưỡn lưng để đẩy." },
+    db_bench: { name: "Dumbbell bench press", image: "./exercise-art/db-bench.webp", formImage: "./exercise-form/db-bench.webp", muscles: ["chest", "triceps", "shoulders"], equipment: "bench", role: "compound", kind: "strength", cue: "Bả vai ổn định; hạ tạ cân đối rồi đẩy lên trên ngực." },
+    db_row: { name: "One-arm dumbbell row", image: "./exercise-art/db-row.webp", formImage: "./exercise-form/db-row.webp", muscles: ["upper_back", "lats", "biceps"], equipment: "bench", role: "compound", kind: "strength", cue: "Giữ hông và vai tương đối vuông; kéo khuỷu về hông." },
+    assisted_pullup: { name: "Pull-up hỗ trợ bằng chân", image: "./exercise-art/assisted-pullup.webp", formImage: "./exercise-form/assisted-pullup.webp", muscles: ["lats", "upper_back", "biceps"], equipment: "pullup", role: "compound", kind: "strength", cue: "Dùng chân vừa đủ để giữ biên độ đầy đủ; không đá người." },
+    hip_abduction: { name: "Mở đùi", image: "./exercise-art/hip-abduction.webp", formImage: "./exercise-form/hip-abduction.webp", muscles: ["glutes"], equipment: "hip_machine", role: "accessory", kind: "strength", cue: "Mở gối có kiểm soát, giữ thân tựa ghế." },
+    hip_adduction: { name: "Khép đùi", image: "./exercise-art/hip-adduction.webp", formImage: "./exercise-form/hip-adduction.webp", muscles: ["adductors"], equipment: "hip_machine", role: "accessory", kind: "strength", cue: "Khép từ hông, không bật hai đệm vào nhau." },
+    lateral_raise: { name: "Dumbbell lateral raise", image: "./exercise-art/lateral-raise.webp", formImage: "./exercise-form/lateral-raise.webp", muscles: ["shoulders"], equipment: "dumbbell", role: "accessory", kind: "strength", cue: "Nâng theo mặt phẳng hơi chếch trước thân; dừng trước khi nhún vai." },
+    rear_delt_fly: { name: "Rear-delt fly", image: "./exercise-form/rear-delt-fly.webp", formImage: "./exercise-form/rear-delt-fly.webp", muscles: ["shoulders", "upper_back"], equipment: "dumbbell", role: "accessory", kind: "strength", cue: "Giữ hip hinge ổn định; mở tay ra sau nhẹ, không nhún vai hoặc vung tạ." },
+    db_curl: { name: "Dumbbell curl", image: "./exercise-art/db-curl.webp", formImage: "./exercise-form/db-curl.webp", muscles: ["biceps"], equipment: "dumbbell", role: "accessory", kind: "strength", cue: "Giữ khuỷu gần thân; không đẩy hông để vung tạ." },
+    triceps_extension: { name: "Overhead triceps extension", image: "./exercise-form/triceps-extension.webp", formImage: "./exercise-form/triceps-extension.webp", muscles: ["triceps"], equipment: "bench", role: "accessory", kind: "strength", cue: "Giữ khuỷu hướng lên; hạ tạ có kiểm soát và không ưỡn lưng." },
+    calf_raise: { name: "Dumbbell calf raise", image: "./exercise-form/calf-raise.webp", formImage: "./exercise-form/calf-raise.webp", muscles: ["calves"], equipment: "dumbbell", role: "accessory", kind: "strength", cue: "Hạ gót có kiểm soát rồi nâng cao; không nảy nhanh ở đáy." },
+    dead_bug: { name: "Dead bug", image: "./exercise-art/dead-bug.webp", formImage: "./exercise-form/dead-bug.webp", muscles: ["core"], equipment: "core", role: "core", kind: "strength", cue: "Ép lưng dưới nhẹ xuống thảm; duỗi chéo tay chân mà không võng lưng." },
+    plank: { name: "Plank", image: "./exercise-art/plank.webp", formImage: "./exercise-form/plank.webp", muscles: ["core", "glutes"], equipment: "core", role: "core", kind: "timed", cue: "Siết mông và bụng; dừng khi lưng bắt đầu võng." },
+    reverse_crunch: { name: "Reverse crunch", image: "./exercise-art/reverse-crunch.webp", formImage: "./exercise-form/reverse-crunch.webp", muscles: ["core"], equipment: "core", role: "core", kind: "strength", cue: "Cuộn xương chậu khỏi ghế/thảm; không dùng đà chân." },
+    bike_steady: { name: "Đạp xe steady", image: "./exercise-art/bike-steady.webp", formImage: "./exercise-form/bike-steady.webp", muscles: ["quads", "glutes"], equipment: "bike", role: "conditioning", kind: "cardio", cue: "RPE 4–6/10; nhịp thở tăng nhưng vẫn nói được câu ngắn." },
+    stair_steady: { name: "Leo cầu thang steady", image: "./exercise-art/stair-steady.webp", formImage: "./exercise-form/stair-steady.webp", muscles: ["quads", "glutes", "calves"], equipment: "stair", role: "conditioning", kind: "cardio", cue: "RPE 4–6/10; thân cao, không treo người lên tay vịn." },
+    incline_walk: { name: "Đi bộ dốc", image: "./exercise-art/incline-walk.webp", formImage: "./exercise-form/incline-walk.webp", muscles: ["glutes", "hamstrings", "calves"], equipment: "treadmill", role: "conditioning", kind: "cardio", cue: "RPE 4–6/10; tăng dốc trước khi tăng tốc nếu vẫn đi bộ." }
   };
 
   const sessions = {
-    full_a: { name: "Full body A", exerciseIds: ["goblet_squat", "chest_press", "db_row", "hip_abduction", "dead_bug"] },
-    full_b: { name: "Full body B", exerciseIds: ["db_rdl", "shoulder_press", "assisted_pullup", "hip_adduction", "plank"] },
-    full_c: { name: "Full body C", exerciseIds: ["split_squat", "incline_press", "db_row", "lateral_raise", "reverse_crunch"] },
-    upper_a: { name: "Upper A", exerciseIds: ["chest_press", "db_row", "shoulder_press", "assisted_pullup", "db_curl"] },
-    lower_a: { name: "Lower A", exerciseIds: ["goblet_squat", "db_rdl", "hip_abduction", "hip_adduction", "dead_bug"] },
-    upper_b: { name: "Upper B", exerciseIds: ["incline_press", "db_row", "assisted_pullup", "lateral_raise", "db_curl"] },
-    lower_b: { name: "Lower B", exerciseIds: ["split_squat", "db_rdl", "hip_abduction", "hip_adduction", "plank"] },
+    full_a: { name: "Full body A", exerciseIds: ["goblet_squat", "chest_press", "db_row", "triceps_extension", "dead_bug"] },
+    full_b: { name: "Full body B", exerciseIds: ["db_rdl", "shoulder_press", "assisted_pullup", "calf_raise", "plank"] },
+    full_c: { name: "Full body C", exerciseIds: ["split_squat", "incline_press", "rear_delt_fly", "db_curl", "reverse_crunch"] },
+    upper_a: { name: "Upper A · đẩy/kéo", exerciseIds: ["chest_press", "db_row", "shoulder_press", "assisted_pullup", "lateral_raise", "triceps_extension"] },
+    lower_a: { name: "Lower A · squat", exerciseIds: ["goblet_squat", "db_rdl", "hip_abduction", "hip_adduction", "calf_raise", "dead_bug"] },
+    upper_b: { name: "Upper B · ngực/lưng/tay", exerciseIds: ["incline_press", "db_row", "assisted_pullup", "rear_delt_fly", "db_curl", "triceps_extension"] },
+    lower_b: { name: "Lower B · unilateral", exerciseIds: ["split_squat", "db_rdl", "hip_abduction", "hip_adduction", "calf_raise", "plank"] },
     cardio_core: { name: "Cardio + core", exerciseIds: ["bike_steady", "dead_bug", "plank", "reverse_crunch"] }
   };
 
@@ -116,9 +134,9 @@
   };
 
   const goals = {
-    fat: { name: "Giảm mỡ + giữ cơ", blurb: "Full-body, nghỉ vừa và cardio steady; deficit vẫn đến chủ yếu từ lượng ăn.", compound: { sets: 3, reps: "8–15", rir: 3, rest: 75 }, accessory: { sets: 2, reps: "12–20", rir: 3, rest: 45 }, core: { sets: 2, reps: "8–15", rir: 3, rest: 45 }, cardio: { sets: 1, reps: "15–25 phút", rir: 5, rest: 0 }, met: 4.5 },
-    muscle: { name: "Tăng cơ", blurb: "Nhiều straight sets hơn, nghỉ dài hơn và dùng double progression.", compound: { sets: 3, reps: "6–12", rir: 2, rest: 120 }, accessory: { sets: 2, reps: "10–20", rir: 2, rest: 75 }, core: { sets: 2, reps: "8–15", rir: 2, rest: 60 }, cardio: { sets: 1, reps: "10–15 phút", rir: 6, rest: 0 }, met: 3.5 },
-    recomp: { name: "Giảm mỡ + tăng cơ", blurb: "Ưu tiên compound, volume vừa và cardio đủ để duy trì hiệu suất.", compound: { sets: 3, reps: "8–12", rir: 2, rest: 105 }, accessory: { sets: 2, reps: "12–15", rir: 2, rest: 60 }, core: { sets: 2, reps: "8–15", rir: 3, rest: 45 }, cardio: { sets: 1, reps: "15–20 phút", rir: 5, rest: 0 }, met: 4.0 }
+    fat: { name: "Giảm mỡ", blurb: "2 buổi full-body để giữ cơ; cardio và thể thao tăng chi tiêu năng lượng. Deficit vẫn đến chủ yếu từ lượng ăn.", defaults: { strength: 2, cardio: 2, sport: 1 }, compound: { sets: 2, reps: "8–15", rir: 3, rest: 75 }, accessory: { sets: 2, reps: "12–20", rir: 3, rest: 45 }, core: { sets: 2, reps: "8–15", rir: 3, rest: 45 }, cardio: { sets: 1, reps: "20–35 phút", rir: 5, rest: 0 }, met: 4.5 },
+    muscle: { name: "Tăng cơ toàn diện", blurb: "4 buổi Upper/Lower phủ toàn thân; tối đa 2 nhóm ưu tiên được cộng volume. Một buổi thể thao vẫn khả thi nếu recovery ổn.", defaults: { strength: 4, cardio: 0, sport: 1 }, compound: { sets: 3, reps: "6–12", rir: 2, rest: 120 }, accessory: { sets: 3, reps: "10–20", rir: 2, rest: 75 }, core: { sets: 2, reps: "8–15", rir: 2, rest: 60 }, cardio: { sets: 1, reps: "15–25 phút", rir: 6, rest: 0 }, met: 3.5 },
+    recomp: { name: "Giảm mỡ + tăng cơ", blurb: "3 buổi full-body, 1 cardio và 1 thể thao; volume vừa để tiến bộ mà vẫn giữ deficit và recovery.", defaults: { strength: 3, cardio: 1, sport: 1 }, compound: { sets: 3, reps: "8–12", rir: 2, rest: 105 }, accessory: { sets: 2, reps: "12–15", rir: 2, rest: 60 }, core: { sets: 2, reps: "8–15", rir: 3, rest: 45 }, cardio: { sets: 1, reps: "20–30 phút", rir: 5, rest: 0 }, met: 4.0 }
   };
 
   const protocols = [
@@ -134,6 +152,7 @@
   window.ROOTBODY_COACH_DATA = Object.freeze({
     equipment,
     exercises,
+    muscleGroups,
     sessions,
     schedules,
     goals,

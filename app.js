@@ -59,14 +59,14 @@
 
   function defaultState() {
     return {
-      version: 4,
+      version: 5,
       modelVersion: MODEL_VERSION,
       profile: { weightKg: null, heightCm: null, bmiStandard: "asian" },
       settings: { baselineKcal: 1600, targetDeficit: 500 },
       days: {},
       weights: [],
       coach: {
-        settings: { goal: "recomp", daysPerWeek: 3, minutes: 45, experience: "beginner", hasPain: false },
+        settings: { goal: "recomp", daysPerWeek: 3, cardioDays: 1, sportDays: 1, priorityMuscles: [], minutes: 45, experience: "beginner", hasPain: false },
         ui: { activityTab: "today" },
         recoveryByDate: {},
         activeWorkout: null,
@@ -161,6 +161,10 @@
     if (!value || typeof value !== "object") return base;
     const goal = ["fat", "muscle", "recomp"].includes(value.settings?.goal) ? value.settings.goal : "recomp";
     const daysPerWeek = [2, 3, 4].includes(Number(value.settings?.daysPerWeek)) ? Number(value.settings.daysPerWeek) : 3;
+    const cardioDays = [0, 1, 2, 3].includes(Number(value.settings?.cardioDays)) ? Number(value.settings.cardioDays) : goal === "fat" ? 2 : goal === "recomp" ? 1 : 0;
+    const sportDays = [0, 1, 2].includes(Number(value.settings?.sportDays)) ? Number(value.settings.sportDays) : 1;
+    const validMuscles = new Set(["chest", "lats", "upper_back", "shoulders", "biceps", "triceps", "quads", "hamstrings", "glutes", "adductors", "calves", "core"]);
+    const priorityMuscles = Array.isArray(value.settings?.priorityMuscles) ? [...new Set(value.settings.priorityMuscles.filter((item) => validMuscles.has(item)))].slice(0, 2) : [];
     const minutes = [30, 45, 60].includes(Number(value.settings?.minutes)) ? Number(value.settings.minutes) : 45;
     const experience = value.settings?.experience === "intermediate" ? "intermediate" : "beginner";
     const activityTab = ["today", "plan", "lab"].includes(value.ui?.activityTab) ? value.ui.activityTab : "today";
@@ -194,7 +198,7 @@
       retentions: Array.isArray(item.retentions) ? item.retentions.slice(0, 3).map((seconds) => safeNumber(seconds, 0, 180, 0)) : []
     })).filter((item) => item.id) : [];
     return {
-      settings: { goal, daysPerWeek, minutes, experience, hasPain: Boolean(value.settings?.hasPain) },
+      settings: { goal, daysPerWeek, cardioDays, sportDays, priorityMuscles, minutes, experience, hasPain: Boolean(value.settings?.hasPain) },
       ui: { activityTab }, recoveryByDate,
       activeWorkout: normalizeActiveWorkout(value.activeWorkout), workoutHistory, protocolLogs
     };
@@ -1146,6 +1150,6 @@
   navigate(location.hash.slice(1) || "today");
 
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js?v=32").catch((error) => console.warn("Service worker chưa sẵn sàng.", error)));
+    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js?v=40").catch((error) => console.warn("Service worker chưa sẵn sàng.", error)));
   }
 })();
