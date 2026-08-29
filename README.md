@@ -18,7 +18,7 @@ Live: [derekdaydoi.github.io/Rootbody](https://derekdaydoi.github.io/Rootbody/)
 - **Xu hướng:** cân nặng, bước chân, vòng eo, resting heart rate, giấc ngủ, thời lượng tập và 5K pace khi có đủ dữ liệu.
 - **Bạn:** hồ sơ, mục tiêu, kế hoạch, dinh dưỡng/phục hồi, local data và Experiments (meditation/Wim Hof/Biohack Lab).
 
-Giao diện hỗ trợ Light/Dark, ghi nhớ lựa chọn ngay trên thiết bị. Typography dùng scale tối thiểu 11 px cho nhãn phụ và 16 px cho body để vẫn đọc được ở màn hình 320 px.
+Giao diện hỗ trợ Light/Dark, ghi nhớ lựa chọn ngay trên thiết bị. Nút đổi nhanh nằm ở góc phải màn hình Hôm nay; control đầy đủ nằm trong tab Bạn. Typography dùng scale tối thiểu 11 px cho nhãn phụ và 16 px cho body để vẫn đọc được ở màn hình 320 px.
 
 Profile Setup là detail flow, không phải tab thứ sáu.
 
@@ -141,7 +141,7 @@ Mở `http://localhost:8765`.
 
 ## Deploy
 
-Workflow `.github/workflows/pages.yml` deploy nhánh `main` lên GitHub Pages. Service Worker dùng cache riêng `rootbody-v8-theme-local-v53` để nhận đúng theme, typography và icon mới.
+Workflow `.github/workflows/pages.yml` deploy nhánh `main` lên GitHub Pages. Service Worker dùng cache riêng `rootbody-v8-theme-contrast-v54` để nhận đúng theme, contrast, typography và icon mới.
 
 ## Brand
 
