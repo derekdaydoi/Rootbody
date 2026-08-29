@@ -1,7 +1,8 @@
 (() => {
   "use strict";
 
-  const STORAGE_KEY = "rootbody.v4";
+  const STORAGE_KEY = "rootbody.v5";
+  const V4_KEY = "rootbody.v4";
   const V3_KEY = "rootbody.v3";
   const V2_KEY = "rootbody.v2";
   const LEGACY_KEY = "rootbody.v1";
@@ -61,10 +62,16 @@
     return {
       version: 5,
       modelVersion: MODEL_VERSION,
-      profile: { weightKg: null, heightCm: null, bmiStandard: "asian" },
+      profile: {
+        name: "", age: null, biologicalSex: "unknown", weightKg: null, heightCm: null, waistCm: null,
+        systolic: null, diastolic: null, restingHr: null, activityLevel: "moderate", smoking: "unknown",
+        alcohol: "unknown", knownConditions: "", medications: "", familyHistory: "", bmiStandard: "asian"
+      },
       settings: { baselineKcal: 1600, targetDeficit: 500 },
       days: {},
       weights: [],
+      measurements: { waist: [], restingHr: [], bloodPressure: [] },
+      labs: { hepatitisStatus: "unknown", measuredDate: "", alt: null, ast: null, ggt: null },
       coach: {
         settings: { goal: "recomp", daysPerWeek: 3, cardioDays: 1, sportDays: 1, priorityMuscles: [], minutes: 45, experience: "beginner", hasPain: false },
         ui: { activityTab: "today" },
@@ -96,6 +103,12 @@
     try {
       const current = localStorage.getItem(STORAGE_KEY);
       if (current) return normalizeState(JSON.parse(current));
+      const v4 = localStorage.getItem(V4_KEY);
+      if (v4) {
+        const migrated = normalizeState(JSON.parse(v4));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
+        return migrated;
+      }
       const v3 = localStorage.getItem(V3_KEY);
       if (v3) {
         const migrated = normalizeState(JSON.parse(v3));
@@ -142,18 +155,80 @@
   function normalizeState(value) {
     const fresh = defaultState();
     if (!value || typeof value !== "object") return fresh;
+    fresh.profile.name = String(value.profile?.name || "").trim().slice(0, 60);
+    fresh.profile.age = nullableNumber(value.profile?.age, 18, 100);
+    fresh.profile.biologicalSex = ["male", "female", "intersex", "unknown"].includes(value.profile?.biologicalSex) ? value.profile.biologicalSex : "unknown";
     fresh.profile.weightKg = nullableNumber(value.profile?.weightKg, 30, 300);
     fresh.profile.heightCm = nullableNumber(value.profile?.heightCm, 120, 230);
+    fresh.profile.waistCm = nullableNumber(value.profile?.waistCm, 40, 250);
+    fresh.profile.systolic = nullableNumber(value.profile?.systolic, 60, 260);
+    fresh.profile.diastolic = nullableNumber(value.profile?.diastolic, 35, 160);
+    fresh.profile.restingHr = nullableNumber(value.profile?.restingHr, 30, 220);
+    fresh.profile.activityLevel = ["low", "moderate", "high"].includes(value.profile?.activityLevel) ? value.profile.activityLevel : "moderate";
+    fresh.profile.smoking = ["never", "former", "current", "unknown"].includes(value.profile?.smoking) ? value.profile.smoking : "unknown";
+    fresh.profile.alcohol = ["none", "one_three", "four_seven", "eight_plus", "unknown"].includes(value.profile?.alcohol) ? value.profile.alcohol : "unknown";
+    fresh.profile.knownConditions = String(value.profile?.knownConditions || "").trim().slice(0, 500);
+    fresh.profile.medications = String(value.profile?.medications || "").trim().slice(0, 500);
+    fresh.profile.familyHistory = String(value.profile?.familyHistory || "").trim().slice(0, 500);
     fresh.profile.bmiStandard = value.profile?.bmiStandard === "international" ? "international" : "asian";
     fresh.settings.baselineKcal = safeNumber(value.settings?.baselineKcal, 800, 4000, 1600);
     fresh.settings.targetDeficit = safeNumber(value.settings?.targetDeficit, 100, 1000, 500);
     fresh.weights = normalizeWeights(value.weights);
+    fresh.measurements = normalizeMeasurements(value.measurements);
+    fresh.labs = normalizeLabs(value.labs);
     Object.entries(value.days || {}).forEach(([date, day]) => {
       if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
       fresh.days[date] = { meals: normalizeMeals(day?.meals), activities: normalizeActivities(day?.activities) };
     });
     fresh.coach = normalizeCoach(value.coach);
     return fresh;
+  }
+
+  function normalizeMeasurements(value) {
+    const base = { waist: [], restingHr: [], bloodPressure: [] };
+    if (!value || typeof value !== "object") return base;
+    const byDate = (items, mapper) => {
+      const found = new Map();
+      (Array.isArray(items) ? items : []).forEach((item) => {
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(item?.date)) return;
+        const next = mapper(item);
+        if (next) found.set(item.date, { date: item.date, ...next });
+      });
+      return [...found.values()].sort((a, b) => a.date.localeCompare(b.date)).slice(-180);
+    };
+    base.waist = byDate(value.waist, (item) => {
+      const cm = nullableNumber(item.cm, 40, 250);
+      return cm === null ? null : { cm: Math.round(cm * 10) / 10 };
+    });
+    base.restingHr = byDate(value.restingHr, (item) => {
+      const bpm = nullableNumber(item.bpm, 30, 220);
+      return bpm === null ? null : { bpm: Math.round(bpm) };
+    });
+    base.bloodPressure = byDate(value.bloodPressure, (item) => {
+      const systolic = nullableNumber(item.systolic, 60, 260);
+      const diastolic = nullableNumber(item.diastolic, 35, 160);
+      return systolic === null || diastolic === null ? null : { systolic: Math.round(systolic), diastolic: Math.round(diastolic) };
+    });
+    return base;
+  }
+
+  function normalizeLabs(value) {
+    const marker = (item) => {
+      if (!item || typeof item !== "object") return null;
+      const result = nullableNumber(item.value, 0, 10000);
+      if (result === null) return null;
+      return {
+        value: Math.round(result * 10) / 10,
+        unit: String(item.unit || "U/L").slice(0, 20),
+        refLow: nullableNumber(item.refLow, 0, 10000),
+        refHigh: nullableNumber(item.refHigh, 0, 10000)
+      };
+    };
+    return {
+      hepatitisStatus: ["unknown", "not_tested", "negative", "positive"].includes(value?.hepatitisStatus) ? value.hepatitisStatus : "unknown",
+      measuredDate: /^\d{4}-\d{2}-\d{2}$/.test(value?.measuredDate) ? value.measuredDate : "",
+      alt: marker(value?.alt), ast: marker(value?.ast), ggt: marker(value?.ggt)
+    };
   }
 
   function normalizeCoach(value) {
@@ -167,7 +242,7 @@
     const priorityMuscles = Array.isArray(value.settings?.priorityMuscles) ? [...new Set(value.settings.priorityMuscles.filter((item) => validMuscles.has(item)))].slice(0, 2) : [];
     const minutes = [30, 45, 60].includes(Number(value.settings?.minutes)) ? Number(value.settings.minutes) : 45;
     const experience = value.settings?.experience === "intermediate" ? "intermediate" : "beginner";
-    const activityTab = ["today", "plan", "lab"].includes(value.ui?.activityTab) ? value.ui.activityTab : "today";
+    const activityTab = ["today", "plan"].includes(value.ui?.activityTab) ? value.ui.activityTab : "today";
     const recoveryByDate = {};
     Object.entries(value.recoveryByDate || {}).forEach(([date, item]) => {
       if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !item || typeof item !== "object") return;
@@ -284,7 +359,7 @@
   }
 
   function saveState() {
-    state.version = 4;
+    state.version = 5;
     state.modelVersion = MODEL_VERSION;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -506,6 +581,7 @@
     renderHistory();
     prefillForms();
     window.RootbodyCoach?.render?.();
+    window.dispatchEvent(new CustomEvent("rootbody:render", { detail: { version: state.version } }));
   }
 
   function renderToday() {
@@ -705,8 +781,21 @@
   function prefillForms() {
     const profileForm = $("[data-profile-form]");
     if (document.activeElement?.form !== profileForm) {
+      profileForm.elements.name.value = state.profile.name || "";
+      profileForm.elements.age.value = state.profile.age || "";
+      profileForm.elements.biologicalSex.value = state.profile.biologicalSex;
       profileForm.elements.weightKg.value = state.profile.weightKg || "";
       profileForm.elements.heightCm.value = state.profile.heightCm || "";
+      profileForm.elements.waistCm.value = state.profile.waistCm || "";
+      profileForm.elements.systolic.value = state.profile.systolic || "";
+      profileForm.elements.diastolic.value = state.profile.diastolic || "";
+      profileForm.elements.restingHr.value = state.profile.restingHr || "";
+      profileForm.elements.activityLevel.value = state.profile.activityLevel;
+      profileForm.elements.smoking.value = state.profile.smoking;
+      profileForm.elements.alcohol.value = state.profile.alcohol;
+      profileForm.elements.knownConditions.value = state.profile.knownConditions || "";
+      profileForm.elements.medications.value = state.profile.medications || "";
+      profileForm.elements.familyHistory.value = state.profile.familyHistory || "";
       profileForm.elements.bmiStandard.value = state.profile.bmiStandard;
     }
     const settingsForm = $("[data-settings-form]");
@@ -921,7 +1010,8 @@
   function openActivityDialog(type) {
     if (!profileReady()) {
       showToast("Nhập cân nặng và chiều cao trước khi tính vận động.");
-      navigate("profile");
+      navigate("you");
+      setTimeout(() => openDialog("profileDialog"), 40);
       return;
     }
     const form = $("[data-activity-form]");
@@ -934,12 +1024,14 @@
   }
 
   function navigate(view) {
-    const target = document.querySelector(`[data-view="${view}"]`) ? view : "today";
+    const aliases = { history: "trends", activity: "training", profile: "you" };
+    const requested = aliases[view] || view;
+    const target = document.querySelector(`[data-view="${requested}"]`) ? requested : "today";
     $$("[data-view]").forEach((section) => section.classList.toggle("is-active", section.dataset.view === target));
     $$(".tab[data-nav]").forEach((tab) => tab.classList.toggle("is-active", tab.dataset.nav === target));
     if (location.hash !== `#${target}`) history.replaceState(null, "", `#${target}`);
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-    if (target === "history") renderHistory();
+    if (target === "trends") renderHistory();
   }
 
   function showToast(message) {
@@ -1061,10 +1153,45 @@
     const weightKg = Number(form.elements.weightKg.value);
     const heightCm = Number(form.elements.heightCm.value);
     if (weightKg < 30 || weightKg > 300 || heightCm < 120 || heightCm > 230) return;
-    state.profile = { weightKg: Math.round(weightKg * 10) / 10, heightCm: Math.round(heightCm * 10) / 10, bmiStandard: form.elements.bmiStandard.value === "international" ? "international" : "asian" };
+    const optional = (name) => form.elements[name].value === "" ? null : Number(form.elements[name].value);
+    const systolic = optional("systolic");
+    const diastolic = optional("diastolic");
+    if ((systolic === null) !== (diastolic === null)) {
+      showToast("Huyết áp cần đủ cả tâm thu và tâm trương.");
+      return;
+    }
+    state.profile = {
+      name: form.elements.name.value.trim().slice(0, 60),
+      age: optional("age"),
+      biologicalSex: ["male", "female", "intersex"].includes(form.elements.biologicalSex.value) ? form.elements.biologicalSex.value : "unknown",
+      weightKg: Math.round(weightKg * 10) / 10,
+      heightCm: Math.round(heightCm * 10) / 10,
+      waistCm: optional("waistCm"),
+      systolic,
+      diastolic,
+      restingHr: optional("restingHr"),
+      activityLevel: ["low", "moderate", "high"].includes(form.elements.activityLevel.value) ? form.elements.activityLevel.value : "moderate",
+      smoking: ["never", "former", "current"].includes(form.elements.smoking.value) ? form.elements.smoking.value : "unknown",
+      alcohol: ["none", "one_three", "four_seven", "eight_plus"].includes(form.elements.alcohol.value) ? form.elements.alcohol.value : "unknown",
+      knownConditions: form.elements.knownConditions.value.trim().slice(0, 500),
+      medications: form.elements.medications.value.trim().slice(0, 500),
+      familyHistory: form.elements.familyHistory.value.trim().slice(0, 500),
+      bmiStandard: form.elements.bmiStandard.value === "international" ? "international" : "asian"
+    };
     upsertWeight(localDateKey(), state.profile.weightKg);
-    saveState(); renderAll(); showToast("Đã lưu hồ sơ và ghi cân hôm nay.");
+    upsertProfileMeasurement("waist", localDateKey(), state.profile.waistCm === null ? null : { cm: state.profile.waistCm });
+    upsertProfileMeasurement("restingHr", localDateKey(), state.profile.restingHr === null ? null : { bpm: state.profile.restingHr });
+    upsertProfileMeasurement("bloodPressure", localDateKey(), state.profile.systolic === null || state.profile.diastolic === null ? null : { systolic: state.profile.systolic, diastolic: state.profile.diastolic });
+    saveState(); closeDialog("profileDialog"); renderAll(); navigate("today"); showToast("Đã lưu hồ sơ và cập nhật chỉ số hôm nay.");
   });
+
+  function upsertProfileMeasurement(kind, date, payload) {
+    if (!state.measurements?.[kind] || !payload) return;
+    const found = state.measurements[kind].find((item) => item.date === date);
+    if (found) Object.assign(found, payload);
+    else state.measurements[kind].push({ date, ...payload });
+    state.measurements[kind].sort((a, b) => a.date.localeCompare(b.date));
+  }
 
   $("[data-weight-form]").addEventListener("submit", (event) => {
     event.preventDefault();
@@ -1150,6 +1277,6 @@
   navigate(location.hash.slice(1) || "today");
 
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js?v=41").catch((error) => console.warn("Service worker chưa sẵn sàng.", error)));
+    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js?v=52").catch((error) => console.warn("Service worker chưa sẵn sàng.", error)));
   }
 })();

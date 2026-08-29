@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="vi">
+<html lang="vi" class="splash-active">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-  <meta name="theme-color" content="#F3F0E7">
-  <meta name="description" content="Rootbody — ước tính calorie deficit và xu hướng cân nặng, local-first.">
+  <meta name="theme-color" content="#F6F8FA">
+  <meta name="description" content="Rootbody — đo lường, diễn giải, ưu tiên, can thiệp và kiểm chứng sức khỏe theo thời gian.">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Rootbody">
@@ -12,14 +12,40 @@
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./brand/rootbody-symbol.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="./icon-180.png">
-  <link rel="stylesheet" href="./styles.css?v=41">
+  <link rel="stylesheet" href="./styles.css?v=52">
+  <link rel="stylesheet" href="./v8.css?v=52">
 </head>
-<body>
+<body class="splash-active">
+  <div class="opening-splash" data-opening-splash aria-hidden="true">
+    <div class="splash-lockup">
+      <span class="splash-halo"></span>
+      <svg class="splash-mark" viewBox="0 0 400 440" aria-hidden="true">
+        <g class="splash-rings" fill="none" stroke="#BFE9F3" stroke-width="5">
+          <circle class="splash-ring splash-ring-one" cx="200" cy="112" r="54"/>
+          <circle class="splash-ring splash-ring-two" cx="200" cy="112" r="84"/>
+          <circle class="splash-ring splash-ring-three" cx="200" cy="112" r="114"/>
+        </g>
+        <circle class="splash-core" cx="200" cy="112" r="17" fill="#0FA3A3"/>
+        <g class="splash-body">
+          <path d="M200 143v132" fill="none" stroke="#0FA3A3" stroke-width="12" stroke-linecap="round"/>
+          <path d="M195 172c-24 0-38-10-55-30-6 24-5 45 4 67 15-17 30-27 51-28M205 172c24 0 38-10 55-30 6 24 5 45-4 67-15-17-30-27-51-28" fill="#0FA3A3"/>
+          <path d="M200 224c0 37-4 71-17 100M200 224c1 39 7 73 21 100" fill="none" stroke="#0D1B2A" stroke-width="12" stroke-linecap="round"/>
+        </g>
+        <g class="splash-signals" fill="#0FA3A3"><circle cx="200" cy="202" r="5"/><circle cx="200" cy="220" r="5"/><circle cx="201" cy="239" r="5"/><circle cx="202" cy="258" r="5"/></g>
+        <g class="splash-roots" fill="none" stroke="#0D1B2A" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M183 320c-20 16-35 34-47 55m47-55c-5 25-6 50-3 75m3-75c14 20 24 43 29 69M221 320c22 15 39 33 53 54m-53-54c8 24 11 49 9 74m-9-74c-13 20-21 43-25 69"/>
+          <path d="M136 375c-27-2-51 2-75 13m75-13c-19 13-35 29-47 49m47-49c-5 19-5 36-1 53M274 374c25-4 49-1 73 9m-73-9c19 12 36 27 50 46m-50-46c6 18 8 36 5 53"/>
+        </g>
+      </svg>
+      <div class="splash-wordmark"><span>root</span><strong>body</strong></div>
+      <div class="splash-copyright">© Copyright from <strong>derekdaydoi</strong></div>
+    </div>
+  </div>
   <div class="app-shell">
     <header class="app-header">
       <a class="brand" href="#today" data-nav="today" aria-label="Rootbody — Hôm nay">
         <img src="./brand/rootbody-symbol.svg" alt="" width="56" height="56">
-        <span class="brand-copy"><span class="brand-name"><span>ROOT</span><strong>BODY</strong></span><small>(c) Product of derekdaydoi</small></span>
+        <span class="brand-copy"><span class="brand-name"><span>root</span><strong>body</strong></span><small>© Copyright from derekdaydoi</small></span>
       </a>
       <div class="header-actions">
         <button class="icon-button" type="button" data-open-dialog="settingsDialog" aria-label="Mở cài đặt">
@@ -30,18 +56,38 @@
 
     <main>
       <section class="view is-active" id="today" data-view="today" aria-labelledby="todayTitle">
-        <div class="screen-heading">
-          <div><p class="eyebrow" data-today-label>Hôm nay</p><h1 id="todayTitle">Cân bằng hôm nay</h1></div>
-          <span class="privacy-chip">Chỉ lưu trên máy</span>
+        <div class="screen-heading rb-screen-heading">
+          <div><h1 id="todayTitle" data-greeting>Hôm nay</h1><p data-today-label>Hôm nay</p></div>
+          <button class="rb-header-icon" type="button" aria-label="Thông báo" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9ZM10 21h4"/></svg></button>
         </div>
 
-        <button class="profile-nudge" type="button" data-nav="profile" hidden>
+        <button class="profile-nudge" type="button" data-nav="you" hidden>
           <span class="nudge-icon">↗</span>
           <span><strong>Hoàn thiện hồ sơ người dùng</strong><small>Cân nặng và chiều cao được dùng để tính BMI và vận động.</small></span>
         </button>
 
+        <div class="rb-status-grid" aria-label="Tín hiệu sức khỏe hôm nay">
+          <article class="rb-status-card" data-domain-card="metabolic" data-state="unknown"><span class="rb-domain-icon">○</span><div><strong>Chuyển hóa</strong><small data-domain-status>Chưa đủ dữ liệu</small></div></article>
+          <article class="rb-status-card" data-domain-card="composition" data-state="unknown"><span class="rb-domain-icon">◒</span><div><strong>Cơ thể</strong><small data-domain-status>Chưa đủ dữ liệu</small></div></article>
+          <article class="rb-status-card" data-domain-card="fitness" data-state="unknown"><span class="rb-domain-icon">↗</span><div><strong>Thể lực</strong><small data-domain-status>Chưa đủ dữ liệu</small></div></article>
+          <article class="rb-status-card" data-domain-card="recovery" data-state="unknown"><span class="rb-domain-icon">☾</span><div><strong>Phục hồi</strong><small data-domain-status>Chưa đủ dữ liệu</small></div></article>
+        </div>
+
+        <article class="rb-priority-card" data-priority-card data-state="unknown">
+          <div class="rb-card-kicker">Ưu tiên hiện tại</div>
+          <h2 data-priority-title>Chưa đủ dữ liệu</h2>
+          <p><strong data-priority-fact>Hoàn thiện hồ sơ để bắt đầu.</strong> <span data-priority-interpretation></span></p>
+          <button class="rb-inline-button" type="button" data-open-reason>Xem lý do</button>
+          <img src="./brand/rootbody-mark.svg" alt="" aria-hidden="true">
+        </article>
+
+        <section class="rb-section" aria-labelledby="todayActionsTitle">
+          <h2 id="todayActionsTitle">Việc hôm nay</h2>
+          <div class="rb-action-list" data-health-actions></div>
+        </section>
+
         <article class="deficit-hero" aria-live="polite">
-          <div class="hero-topline"><p class="hero-label">Biến động dự kiến</p><button class="info-button" type="button" data-open-dialog="modelDialog" aria-label="Cách Rootbody tính">i</button></div>
+          <div class="hero-topline"><p class="hero-label">Năng lượng hôm nay</p><button class="info-button" type="button" data-open-dialog="modelDialog" aria-label="Cách Rootbody tính">i</button></div>
           <div class="hero-value-row">
             <p class="hero-value"><span data-kg-value>—</span><small>kg eq.</small></p>
             <span class="status-chip" data-deficit-status>Chưa đủ dữ liệu</span>
@@ -99,11 +145,45 @@
         </section>
       </section>
 
-      <section class="view" id="history" data-view="history" aria-labelledby="historyTitle">
-        <div class="screen-heading">
-          <h1 id="historyTitle">Biến động</h1>
+      <section class="view" id="analysis" data-view="analysis" aria-labelledby="analysisTitle">
+        <div class="screen-heading rb-screen-heading"><h1 id="analysisTitle">Phân tích</h1></div>
+
+        <section class="rb-section" aria-labelledby="markersTitle">
+          <h2 id="markersTitle">Chỉ số chính</h2>
+          <div class="rb-marker-list">
+            <article class="rb-marker-row"><span>BMI</span><strong data-analysis-bmi>—</strong><small data-analysis-bmi-signal data-state="unknown">Chưa có</small></article>
+            <article class="rb-marker-row"><span>Vòng eo / chiều cao</span><strong data-analysis-waist>—</strong><small data-analysis-waist-signal data-state="unknown">Chưa có</small></article>
+            <article class="rb-marker-row"><span>Huyết áp</span><strong><b data-analysis-bp>—</b> <i>mmHg</i></strong><small data-analysis-bp-signal data-state="unknown">Chưa có</small></article>
+          </div>
+        </section>
+
+        <section class="rb-section" aria-labelledby="liverTitle">
+          <div class="section-line"><h2 id="liverTitle">Bối cảnh gan</h2><button class="text-button" type="button" data-open-dialog="labsDialog">Nhập kết quả</button></div>
+          <div class="rb-card rb-liver-card" data-liver-context></div>
+        </section>
+
+        <article class="rb-interpretation-card" data-analysis-interpretation data-state="unknown">
+          <span>Diễn giải</span>
+          <h2 data-analysis-priority>Chưa đủ dữ liệu</h2>
+          <p data-analysis-copy>Hoàn thiện hồ sơ để Rootbody bắt đầu phân loại tín hiệu.</p>
+          <div><strong data-analysis-risk>Chưa đủ dữ liệu</strong><small data-analysis-grade>Chưa xếp hạng</small></div>
+          <button class="rb-inline-button" type="button" data-open-reason>Xem căn cứ</button>
+          <img src="./brand/rootbody-mark.svg" alt="" aria-hidden="true">
+        </article>
+
+        <section class="rb-section" aria-labelledby="contributorsTitle">
+          <h2 id="contributorsTitle">Yếu tố liên quan</h2>
+          <div class="rb-chip-list" data-contributors><span class="is-empty">Chưa đủ dữ liệu</span></div>
+        </section>
+      </section>
+
+      <section class="view" id="trends" data-view="trends" aria-labelledby="historyTitle">
+        <div class="screen-heading rb-screen-heading">
+          <h1 id="historyTitle">Xu hướng</h1>
           <button class="primary-small" type="button" data-open-dialog="weightDialog">+ Cân nặng</button>
         </div>
+
+        <div class="rb-segmented" role="group" aria-label="Khoảng thời gian"><button type="button" data-trend-range="7">7N</button><button type="button" data-trend-range="28">4T</button><button class="is-active" type="button" data-trend-range="84">12T</button><button type="button" data-trend-range="180">6T</button><button type="button" data-trend-range="365">1N</button><button type="button" data-trend-range="0">Tất cả</button></div>
 
         <article class="chart-card">
           <div class="chart-heading"><h2>Cân nặng</h2><strong data-weight-delta>—</strong></div>
@@ -115,27 +195,49 @@
           <div class="chart-shell" data-step-chart></div>
         </article>
 
+        <div class="rb-trend-grid">
+          <article class="rb-trend-card"><div><h2>Vòng eo</h2><strong data-waist-latest>—</strong></div><div class="rb-mini-chart" data-waist-chart></div></article>
+          <article class="rb-trend-card"><div><h2>Nhịp tim nghỉ</h2><strong data-rhr-latest>—</strong></div><div class="rb-mini-chart" data-rhr-chart></div></article>
+          <article class="rb-trend-card"><div><h2>Giấc ngủ</h2><strong data-sleep-latest>—</strong></div><div class="rb-mini-chart" data-sleep-chart></div></article>
+          <article class="rb-trend-card"><div><h2>Thời lượng tập</h2><strong data-load-latest>—</strong></div><div class="rb-mini-chart" data-load-chart></div></article>
+          <article class="rb-trend-card"><div><h2>Pace 5K</h2><strong data-pace-latest>—</strong></div><div class="rb-mini-chart" data-pace-chart></div></article>
+        </div>
+
+        <article class="rb-insight-card"><img src="./brand/rootbody-mark.svg" alt="" aria-hidden="true"><div><span>Tín hiệu</span><h2 data-trend-insight>Chưa đủ dữ liệu</h2><p data-trend-insight-copy>Cần nhiều phép đo lặp lại theo cùng quy trình.</p></div></article>
+
         <section class="section-block" aria-labelledby="dayHistoryTitle">
           <div class="section-line"><h2 id="dayHistoryTitle">Cân bằng theo ngày</h2></div>
           <div class="history-list" data-history-list></div>
         </section>
       </section>
 
-      <section class="view" id="activity" data-view="activity" aria-labelledby="activityTitle">
-        <div class="screen-heading coach-heading">
-          <div><p class="eyebrow">Body OS · evidence-first</p><h1 id="activityTitle">Vận động</h1></div>
+      <section class="view" id="training" data-view="training" aria-labelledby="activityTitle">
+        <div class="screen-heading coach-heading rb-screen-heading">
+          <div><h1 id="activityTitle">Tập luyện</h1></div>
           <span class="date-chip" data-today-short></span>
         </div>
+
+        <article class="rb-week-summary">
+          <h2>Tuần này</h2>
+          <div><span><strong data-training-sessions>0</strong><small>Buổi</small></span><span><strong data-training-minutes>0</strong><small>Phút</small></span><span><strong data-training-load>—</strong><small>Load</small></span><span><strong data-training-load-status>Chưa đủ</strong><small>Trạng thái</small></span></div>
+        </article>
+
+        <div class="rb-training-cards">
+          <article><div class="rb-training-title"><span>⚊</span><h2>Tạ / Gym</h2><small data-strength-sessions>0 buổi</small></div><dl><div><dt>Khối lượng</dt><dd data-strength-volume>Chưa đủ dữ liệu</dd></div></dl></article>
+          <article><div class="rb-training-title"><span>↗</span><h2>Chạy</h2><small data-run-sessions>0 buổi</small></div><dl><div><dt>Pace tốt nhất</dt><dd data-run-pace>—</dd></div><div><dt>Quãng đường</dt><dd data-run-distance>—</dd></div></dl></article>
+          <article><div class="rb-training-title"><span>◈</span><h2>Thể thao</h2><small data-sport-sessions>0 buổi</small></div><dl><div><dt>Thời lượng</dt><dd data-sport-duration>—</dd></div></dl></article>
+        </div>
+
+        <article class="rb-recovery-summary"><h2>Check-in phục hồi</h2><div><span><small>Nhịp tim nghỉ</small><strong data-training-rhr>—</strong></span><span><small>Ngủ TB</small><strong data-training-sleep>—</strong></span><span><small>Năng lượng</small><strong data-training-energy>—</strong></span></div><p data-training-recovery-note>Chưa check-in hôm nay.</p></article>
 
         <div class="coach-tabs" role="tablist" aria-label="Khu vực vận động" data-activity-tabs>
           <button class="coach-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="coachToday" data-activity-tab="today">Hôm nay</button>
           <button class="coach-tab" type="button" role="tab" aria-selected="false" aria-controls="coachPlan" data-activity-tab="plan" tabindex="-1">Giáo án</button>
-          <button class="coach-tab" type="button" role="tab" aria-selected="false" aria-controls="coachLab" data-activity-tab="lab" tabindex="-1">Lab</button>
         </div>
 
         <div id="coachToday" class="coach-panel" role="tabpanel" data-activity-panel="today">
           <article class="coach-hero" data-coach-today>
-            <div class="coach-hero-top"><span class="evidence-pill">ACSM-informed</span><span data-coach-session-index>Buổi 1/3</span></div>
+            <div class="coach-hero-top"><span class="evidence-pill">Theo mục tiêu</span><span data-coach-session-index>Buổi 1/3</span></div>
             <p class="coach-kicker">Buổi tiếp theo</p>
             <h2 data-today-workout-title>Full body A</h2>
             <p data-today-workout-meta>5 bài · khoảng 45 phút · RIR 2–3</p>
@@ -226,7 +328,7 @@
           </section>
 
           <article class="plan-summary" data-plan-preview>
-            <span class="evidence-pill">Evidence grade A</span>
+            <span class="evidence-pill">Quy tắc sản phẩm</span>
             <h2 data-plan-title>Giảm mỡ + tăng cơ</h2>
             <p data-plan-description></p>
             <div class="plan-stats"><span><b data-plan-days>3</b> buổi tạ</span><span><b data-plan-cardio-stat>1</b> cardio</span><span><b data-plan-sport-stat>1</b> thể thao</span><span><b data-plan-minutes>45</b> phút</span><span>RIR <b data-plan-rir>2–3</b></span></div>
@@ -245,7 +347,7 @@
           <aside class="model-note"><strong>Double progression</strong><p data-progression-rule></p></aside>
         </div>
 
-        <div id="coachLab" class="coach-panel" role="tabpanel" data-activity-panel="lab" hidden>
+        <div id="coachLab" class="rb-experiments-panel" hidden>
           <section class="meditation-hub" aria-labelledby="meditationTitle">
             <div class="meditation-hub-top"><span class="evidence-pill">Tĩnh tâm · Grade B</span><span class="meditation-status" data-meditation-status>Chưa có phiên</span></div>
             <div class="meditation-heading"><img class="lab-mark" src="./brand/rootbody-lab.svg" alt="" width="58" height="58"><div><p class="eyebrow">Attention reset</p><h2 id="meditationTitle">10 phút ít kích thích</h2></div></div>
@@ -253,34 +355,51 @@
             <div class="meditation-outcomes" aria-label="Các trạng thái tự đánh giá"><span>Bình tĩnh</span><span>Tập trung</span><span>Tỉnh táo</span></div>
             <button class="primary-button" type="button" data-coach-action="protocol" data-protocol-id="wall_focus_10">Bắt đầu tĩnh tâm 10 phút</button>
           </section>
-          <article class="lab-intro">
-            <div class="lab-brand"><img src="./brand/rootbody-lab.svg" alt="" width="44" height="44"><div><span>ROOTBODY</span><strong>LAB</strong></div></div>
-            <span class="evidence-pill">Không guru worship</span>
-            <h2>Biohack chỉ được vào đây nếu claim và rủi ro đều rõ</h2>
-            <p>Huberman/Eric Berg có thể gợi ý câu hỏi; nguồn quyết định là guideline và nghiên cứu gốc. Protocol Lab không cộng calorie, không chẩn đoán và không thay thế điều trị.</p>
-            <div class="grade-key"><span><b>A</b> guideline</span><span><b>B</b> human evidence</span><span><b>C</b> experimental</span></div>
-          </article>
           <div class="protocol-list" data-protocol-list></div>
         </div>
       </section>
 
-      <section class="view" id="profile" data-view="profile" aria-labelledby="profileTitle">
-        <div class="screen-heading">
-          <h1 id="profileTitle">Cá nhân</h1>
-          <span class="privacy-chip">Không tài khoản</span>
+      <section class="view" id="you" data-view="you" aria-labelledby="profileTitle">
+        <div class="screen-heading rb-screen-heading">
+          <h1 id="profileTitle">Bạn</h1>
         </div>
+
+        <article class="rb-profile-card"><span class="rb-avatar" data-profile-initials>RB</span><div><h2 data-profile-name>Người dùng Rootbody</h2><p data-profile-summary>Chưa hoàn thiện hồ sơ</p><button class="rb-outline-button" type="button" data-open-dialog="profileDialog">Xem hồ sơ</button></div></article>
+
+        <section class="rb-you-section"><div class="section-line"><h2>Mục tiêu</h2><button class="text-button" type="button" data-nav="training">Sửa</button></div><div class="rb-setting-list"><div><span>Chính</span><strong data-you-primary-goal>Chưa chọn</strong></div><div><span>Nhóm cơ</span><strong data-you-secondary-goal>Chưa chọn</strong></div><div><span>Hoạt động</span><strong data-you-activity-goal>Chưa chọn</strong></div></div></section>
+
+        <section class="rb-you-section"><h2>Kế hoạch đang dùng</h2><article class="rb-plan-row"><div><strong data-you-plan-name>Chưa có giáo án</strong><small data-you-plan-progress>0 buổi đã hoàn tất</small></div><span>›</span></article></section>
+
+        <section class="rb-you-section"><div class="section-line"><h2>Dinh dưỡng & phục hồi</h2><button class="text-button" type="button" data-open-dialog="settingsDialog">Sửa</button></div><div class="rb-setting-list"><div><span>Protein</span><strong data-you-protein>Chưa đủ dữ liệu</strong></div><div><span>Cơ hội ngủ</span><strong data-you-sleep>≥7 giờ/đêm</strong></div><div><span>Calorie tùy chọn</span><strong data-you-calorie>Ước tính</strong></div><div><span>Mức vận động</span><strong data-you-activity-level>Chưa khai báo</strong></div></div></section>
+
+        <section class="rb-you-section"><h2>Dữ liệu</h2><div class="rb-setting-list"><div><span>Kết nối ứng dụng</span><strong>Chưa kết nối</strong></div><div><span>Lưu trữ</span><strong>Trong trình duyệt này</strong></div></div><p class="rb-card-note">Dữ liệu chưa được gửi đến máy chủ Rootbody.</p></section>
+
+        <section class="rb-you-section" aria-labelledby="experimentsTitle"><h2 id="experimentsTitle">Thử nghiệm</h2><div data-you-experiments></div></section>
 
         <article class="bmi-card" aria-live="polite">
           <div class="bmi-value"><span>BMI</span><strong data-bmi-value>—</strong></div>
           <div class="bmi-copy"><span data-bmi-band>Chưa đủ dữ liệu</span><small data-bmi-standard>Nhập cân nặng và chiều cao</small></div>
         </article>
 
-        <form class="profile-form" data-profile-form>
+        <div data-profile-form-placeholder></div>
+        <form class="profile-form rb-profile-setup" data-profile-form>
+          <label class="field"><span>Tên hiển thị</span><input name="name" type="text" autocomplete="name" maxlength="60" placeholder="Tên của người dùng"></label>
+          <label class="field"><span>Tuổi</span><input name="age" type="number" inputmode="numeric" min="18" max="100" placeholder="32"></label>
+          <label class="field"><span>Giới tính sinh học</span><select name="biologicalSex"><option value="unknown">Chưa khai báo</option><option value="male">Nam</option><option value="female">Nữ</option><option value="intersex">Liên giới tính</option></select></label>
           <label class="field"><span>Cân nặng hiện tại</span><span class="input-with-unit"><input name="weightKg" type="number" inputmode="decimal" min="30" max="300" step="0.1" placeholder="72.5" required><b>kg</b></span></label>
           <label class="field"><span>Chiều cao</span><span class="input-with-unit"><input name="heightCm" type="number" inputmode="decimal" min="120" max="230" step="0.1" placeholder="172" required><b>cm</b></span></label>
+          <label class="field"><span>Vòng eo</span><span class="input-with-unit"><input name="waistCm" type="number" inputmode="decimal" min="40" max="250" step="0.1" placeholder="86"><b>cm</b></span></label>
+          <div class="rb-field-pair"><label class="field"><span>Huyết áp tâm thu</span><span class="input-with-unit"><input name="systolic" type="number" inputmode="numeric" min="60" max="260" placeholder="118"><b>mmHg</b></span></label><label class="field"><span>Huyết áp tâm trương</span><span class="input-with-unit"><input name="diastolic" type="number" inputmode="numeric" min="35" max="160" placeholder="75"><b>mmHg</b></span></label></div>
+          <label class="field"><span>Nhịp tim nghỉ</span><span class="input-with-unit"><input name="restingHr" type="number" inputmode="numeric" min="30" max="220" placeholder="58"><b>bpm</b></span></label>
+          <label class="field"><span>Mức vận động</span><select name="activityLevel"><option value="low">Ít vận động</option><option value="moderate">Vận động vừa</option><option value="high">Vận động cao</option></select></label>
+          <label class="field"><span>Hút thuốc</span><select name="smoking"><option value="unknown">Chưa khai báo</option><option value="never">Chưa từng</option><option value="former">Đã bỏ</option><option value="current">Đang hút</option></select></label>
+          <label class="field"><span>Rượu bia</span><select name="alcohol"><option value="unknown">Chưa khai báo</option><option value="none">Không dùng</option><option value="one_three">1–3 đơn vị/tuần</option><option value="four_seven">4–7 đơn vị/tuần</option><option value="eight_plus">Từ 8 đơn vị/tuần</option></select></label>
+          <label class="field"><span>Bệnh đã biết</span><textarea name="knownConditions" rows="2" maxlength="500" placeholder="Không có hoặc nhập tên bệnh"></textarea></label>
+          <label class="field"><span>Thuốc đang dùng</span><textarea name="medications" rows="2" maxlength="500" placeholder="Không có hoặc nhập tên thuốc"></textarea></label>
+          <label class="field"><span>Tiền sử gia đình</span><textarea name="familyHistory" rows="2" maxlength="500" placeholder="Ví dụ: tăng huyết áp ở bố"></textarea></label>
           <label class="field"><span>Ngưỡng diễn giải BMI</span><select name="bmiStandard"><option value="asian">Asian action points</option><option value="international">International</option></select></label>
           <p class="form-help" data-bmi-help>Asian action points dùng mốc 23 và 27,5 để cảnh báo nguy cơ; công thức BMI không đổi.</p>
-          <button class="primary-button" type="submit">Lưu & ghi cân hôm nay</button>
+          <button class="primary-button" type="submit">Tiếp tục</button>
         </form>
 
         <section class="section-block profile-facts" aria-labelledby="profileFactsTitle">
@@ -294,6 +413,7 @@
         </section>
 
         <aside class="model-note warning-note"><strong>BMI chỉ là screening</strong><p>Không phải chẩn đoán sức khỏe. Xu hướng cân 2–4 tuần đáng tin hơn một lần cân hoặc kg dự báo trong ngày.</p></aside>
+        <footer class="rb-product-footer">© Copyright from derekdaydoi</footer>
       </section>
     </main>
 
@@ -302,20 +422,59 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 10.5 12 3.8l8.5 6.7v9A1.5 1.5 0 0 1 19 21H5a1.5 1.5 0 0 1-1.5-1.5Z"/><path d="M9 21v-6h6v6"/></svg>
         <small>Hôm nay</small>
       </a>
-      <a href="#history" class="tab" data-nav="history">
+      <a href="#analysis" class="tab" data-nav="analysis">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V10m5 10V4m5 16v-7m5 7V7"/></svg>
+        <small>Phân tích</small>
+      </a>
+      <a href="#training" class="tab" data-nav="training">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6m3-8v10m12-10v10m3-8v6M6 12h12"/></svg>
+        <small>Tập luyện</small>
+      </a>
+      <a href="#trends" class="tab" data-nav="trends">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4v15h16"/><path d="m7 15 4-4 3 2 5-6"/></svg>
-        <small>Biến động</small>
+        <small>Xu hướng</small>
       </a>
-      <a href="#activity" class="tab" data-nav="activity">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13h4l2-6 4 10 2-7 2 3h4"/></svg>
-        <small>Vận động</small>
-      </a>
-      <a href="#profile" class="tab" data-nav="profile">
+      <a href="#you" class="tab" data-nav="you">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></svg>
-        <small>Cá nhân</small>
+        <small>Bạn</small>
       </a>
     </nav>
   </div>
+
+  <dialog id="profileDialog" class="full-page-dialog rb-profile-dialog">
+    <div class="dialog-card full-page-card rb-profile-dialog-card">
+      <div class="dialog-heading"><div><p class="eyebrow">Hồ sơ 1/1</p><h2>Thiết lập hồ sơ</h2></div><button class="dialog-close" type="button" data-close-dialog="profileDialog" aria-label="Đóng">×</button></div>
+      <div class="rb-setup-progress" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+      <p class="rb-dialog-intro">Dữ liệu này giúp Rootbody diễn giải tín hiệu.</p>
+      <div data-profile-dialog-body></div>
+      <p class="rb-privacy-line">Dữ liệu chỉ lưu trong trình duyệt trên thiết bị này.</p>
+    </div>
+  </dialog>
+
+  <dialog id="reasonDialog" class="full-page-dialog">
+    <div class="dialog-card full-page-card rb-reason-card">
+      <div class="dialog-heading"><div><p class="eyebrow">Căn cứ</p><h2 data-reason-title>Diễn giải</h2></div><button class="dialog-close" type="button" data-close-dialog="reasonDialog" aria-label="Đóng">×</button></div>
+      <section><span>01</span><div><h3>Dữ kiện</h3><p data-reason-fact>Chưa đủ dữ liệu.</p></div></section>
+      <section><span>02</span><div><h3>Suy luận</h3><p data-reason-inference>Chưa thể suy luận.</p></div></section>
+      <section><span>03</span><div><h3>Mức xử lý</h3><p data-reason-risk>Chưa đủ dữ liệu</p></div></section>
+      <section><span>04</span><div><h3>Hành động</h3><p data-reason-action>Hoàn thiện dữ liệu.</p></div></section>
+      <section><span>05</span><div><h3>Đo lại</h3><p data-reason-verify>Chưa xác định.</p></div></section>
+      <div class="rb-evidence-grade" data-reason-grade>Chưa xếp hạng</div>
+    </div>
+  </dialog>
+
+  <dialog id="labsDialog" class="full-page-dialog">
+    <form class="dialog-card full-page-card rb-labs-form" data-labs-form>
+      <div class="dialog-heading"><div><p class="eyebrow">Dữ liệu tự khai báo</p><h2>Bối cảnh gan</h2></div><button class="dialog-close" type="button" data-close-dialog="labsDialog" aria-label="Đóng">×</button></div>
+      <label class="field"><span>Tình trạng xét nghiệm viêm gan</span><select name="hepatitisStatus"><option value="unknown">Chưa rõ</option><option value="not_tested">Chưa xét nghiệm</option><option value="negative">Âm tính</option><option value="positive">Dương tính</option></select></label>
+      <label class="field"><span>Ngày xét nghiệm</span><input name="measuredDate" type="date"></label>
+      <fieldset><legend>ALT</legend><div class="rb-lab-grid"><label class="field"><span>Giá trị</span><input name="altValue" type="number" inputmode="decimal" min="0" step="0.1"></label><label class="field"><span>Đơn vị</span><input name="altUnit" type="text" value="U/L" maxlength="20"></label><label class="field"><span>Tham chiếu từ</span><input name="altLow" type="number" inputmode="decimal" min="0" step="0.1"></label><label class="field"><span>Đến</span><input name="altHigh" type="number" inputmode="decimal" min="0" step="0.1"></label></div></fieldset>
+      <fieldset><legend>AST</legend><div class="rb-lab-grid"><label class="field"><span>Giá trị</span><input name="astValue" type="number" inputmode="decimal" min="0" step="0.1"></label><label class="field"><span>Đơn vị</span><input name="astUnit" type="text" value="U/L" maxlength="20"></label><label class="field"><span>Tham chiếu từ</span><input name="astLow" type="number" inputmode="decimal" min="0" step="0.1"></label><label class="field"><span>Đến</span><input name="astHigh" type="number" inputmode="decimal" min="0" step="0.1"></label></div></fieldset>
+      <fieldset><legend>GGT</legend><div class="rb-lab-grid"><label class="field"><span>Giá trị</span><input name="ggtValue" type="number" inputmode="decimal" min="0" step="0.1"></label><label class="field"><span>Đơn vị</span><input name="ggtUnit" type="text" value="U/L" maxlength="20"></label><label class="field"><span>Tham chiếu từ</span><input name="ggtLow" type="number" inputmode="decimal" min="0" step="0.1"></label><label class="field"><span>Đến</span><input name="ggtHigh" type="number" inputmode="decimal" min="0" step="0.1"></label></div></fieldset>
+      <p class="form-help">Rootbody chỉ so sánh với khoảng tham chiếu người dùng nhập từ phiếu xét nghiệm; không tự chẩn đoán.</p>
+      <button class="primary-button" type="submit">Lưu kết quả</button>
+    </form>
+  </dialog>
 
   <dialog id="mealDialog" class="food-dialog">
     <div class="dialog-card food-dialog-card">
@@ -485,7 +644,7 @@
       <div class="dialog-heading"><h2>Cài đặt</h2><button class="dialog-close" type="button" data-close-dialog="settingsDialog" aria-label="Đóng">×</button></div>
       <label class="field"><span>Calo nền mỗi ngày</span><span class="input-with-unit"><input name="baselineKcal" type="number" inputmode="numeric" min="800" max="4000" step="50" required><b>kcal</b></span></label>
       <label class="field"><span>Mục tiêu thâm hụt</span><span class="input-with-unit"><input name="targetDeficit" type="number" inputmode="numeric" min="100" max="1000" step="50" required><b>kcal</b></span></label>
-      <p class="form-help">Mặc định hiện tại là 1.600 kcal. Model chưa tự suy ra BMR vì hồ sơ không thu thập tuổi và giới tính.</p>
+      <p class="form-help">1.600 kcal là giả định người dùng có thể chỉnh, không phải BMR/TDEE đã đo hoặc tự suy ra.</p>
       <button class="primary-button" type="submit" value="default">Lưu cài đặt</button>
     </form>
   </dialog>
@@ -500,9 +659,11 @@
   </dialog>
 
   <div class="toast" role="status" aria-live="polite" data-toast></div>
-  <script src="./food-data.js?v=41" defer></script>
-  <script src="./coach-data.js?v=41" defer></script>
-  <script src="./app.js?v=41" defer></script>
-  <script src="./coach.js?v=41" defer></script>
+  <script src="./food-data.js?v=52" defer></script>
+  <script src="./coach-data.js?v=52" defer></script>
+  <script src="./health-engine.js?v=52" defer></script>
+  <script src="./app.js?v=52" defer></script>
+  <script src="./coach.js?v=52" defer></script>
+  <script src="./intelligence.js?v=52" defer></script>
 </body>
 </html>

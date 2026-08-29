@@ -1,43 +1,57 @@
-# Rootbody — brand spec
+# Rootbody — brand specification
 
-Rootbody follows the same visual grammar as Rootflow and Rootwork.
+Rootbody dùng cùng nhịp chuyển động gọn và cảm giác sản phẩm của Rootflow, nhưng có nhận diện riêng: một tín hiệu cơ thể phát triển thành hệ rễ.
+
+## Logo system
+
+- `brand/rootbody-mark.svg`: primary mark trên nền trong suốt.
+- `brand/rootbody-symbol.svg`: app icon Deep Navy, dùng cho PWA/Home Screen.
+- `brand/rootbody-wordmark.svg`: wordmark chữ thường; `root` Deep Navy, `body` Signal Teal.
+- `brand/rootbody-logo.svg`: lockup mark + wordmark.
+- `brand/rootbody-lab.svg`: monoline Lab mark, không dùng biểu tượng AI/sparkle.
+
+Logo phải còn đọc được ở 24 px. Không đổi tỷ lệ, không crop rễ hoặc vòng signal và không thêm gradient/glow vào asset tĩnh.
 
 ## Palette
 
-- Background: `#F3F0E7`
-- Surface: `#FFFDF9`
-- Ink: `#101110`
-- Muted: `#5B5F5A`
-- Subtle: `#858981`
-- Line: `#E3E1D8`
-- Brand: `#14614A`
-- Brand strong: `#0E4A38`
-- Brand soft: `#E2EEE8`
-- Danger: `#9A352B`
-- Warning: `#8A641D`
+| Token | Giá trị | Vai trò |
+| --- | --- | --- |
+| Deep Navy | `#0D1B2A` | chữ chính, icon, app-icon background |
+| Signal Teal | `#0FA3A3` | action, trạng thái chọn, signal |
+| Soft Cyan | `#BFE9F3` | ring, surface thông tin, divider mềm |
+| Off White | `#F6F8FA` | nền ứng dụng |
+| Muted Violet | `#6F6AAE` | secondary data series, recovery |
 
-No gradients and no second green.
+Surface dùng trắng hoặc Off White; border dùng Navy với opacity thấp. Trạng thái cảnh báo/y khoa dùng màu chức năng riêng và không được thay bằng Teal chỉ để “đẹp”.
 
 ## Typography
 
-- UI, headings and large numbers: `OpenAI Sans`, with Inter and the native system stack as fallbacks.
-- Brand wordmark: weight 800. Product headings: weight 700.
+- UI: Open Sans self-hosted, gồm Vietnamese/Latin/Latin Extended.
+- Wordmark: chữ thường, trọng lượng 400–500; không viết `ROOTBODY` toàn bộ bằng chữ hoa.
+- Heading: 700; body: 400–500; số liệu quan trọng: 650–700.
+- Không giảm font dưới 11 px để ép một dòng. Ưu tiên rút copy hoặc đổi layout.
 
-## Symbol
+## Spacing và sizing
 
-The Rootbody symbol is an abstract `B` drawn as three rounded white strokes. The two bowls represent energy in and energy out; their narrow join is the daily balance. The detached dot is the Root-family anchor.
+- Mobile content width: tối đa 680 px.
+- Card radius: 14–18 px; control tối thiểu 44 px.
+- Padding ngang: 18 px trên mobile, 20–24 px trên màn hình rộng.
+- Hỗ trợ từ 320 px, không có horizontal overflow.
+- Ảnh bài tập dùng `object-fit: contain`; toàn bộ ảnh kết thúc trước phần Setup/Cues.
 
-It preserves the family constraints:
+## Startup motion
 
-- `viewBox="0 0 1000 1000"`;
-- solid `#14614A` background with `rx="220"`;
-- white `#FFFFFF` foreground;
-- `stroke-width="90"` with round caps and joins;
-- all geometry survives a central circular crop;
-- legible at Home Screen size.
+Tổng thời lượng khoảng 3,05 giây:
 
-## Wordmark
+1. Core xuất hiện ở 0,20 giây.
+2. Ba signal ring lần lượt ở 0,44 / 0,66 / 0,88 giây.
+3. Body và roots hoàn thiện khoảng 1,04 giây.
+4. Wordmark xuất hiện khoảng 1,42 giây.
+5. `© Copyright from derekdaydoi` xuất hiện khoảng 1,82 giây.
+6. Splash rời màn hình ở 3,15 giây.
 
-`ROOT` uses `#101110`; `BODY` uses `#14614A`. Both use OpenAI Sans/Inter 800 with tight tracking.
+Với `prefers-reduced-motion: reduce`, bỏ chuỗi chuyển cảnh và đóng splash sau khoảng 700 ms.
 
-Tagline: `MAKE ENERGY VISIBLE.`
+## Product copy
+
+Ít subtitle. Mỗi card chỉ trả lời một việc: dữ kiện, diễn giải, hành động hoặc kiểm chứng. Không dùng claim y khoa khi dữ liệu chỉ là self-report/ước tính. Trạng thái thiếu dữ liệu luôn ghi rõ `Chưa đủ dữ liệu`.

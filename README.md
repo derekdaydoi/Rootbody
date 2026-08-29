@@ -1,159 +1,148 @@
-# Rootbody V7
+# Rootbody V8
 
-Rootbody là PWA local-first để ước tính calorie deficit, gợi ý bữa ăn theo ngân sách còn lại, theo dõi xu hướng cân nặng, xây giáo án tập và hỗ trợ tĩnh tâm. V7 ưu tiên model giải thích được, sai số nhìn thấy được và dữ liệu có thể dùng ngay; app không phụ thuộc Apple Health, backend hay tài khoản.
+Rootbody là PWA health-intelligence local-first theo flow:
 
-V7 tách rõ ba training engine, cho chọn tối đa hai nhóm cơ ưu tiên và bổ sung 22 minh họa kỹ thuật có người ở hai pha động tác. Viewer dùng `object-fit: contain`, ảnh kết thúc trọn vẹn trước phần Setup/Cues và chỉ hiển thị minh họa kỹ thuật có người. Ảnh phòng gym gốc không được publish vì có người/phản chiếu.
+`Measure → Interpret → Prioritize → Intervene → Verify`
 
-## V7 có gì
+App không phụ thuộc Apple Health, backend hoặc tài khoản. Người dùng tự ghi hồ sơ, bữa ăn, cân nặng, vòng eo, vận động, workout và recovery; Rootbody phân loại tín hiệu nhưng không biến dữ liệu thiếu thành sample có vẻ “thật”.
 
-- Hồ sơ cá nhân: cân nặng, chiều cao, BMI và lựa chọn `Asian action points` / `International`.
-- Ghi vận động thủ công:
-  - Đi bộ: số bước + số phút.
-  - Chạy: số bước + số phút.
-  - Cầu lông: số phút + trình độ từ Yếu đến Giỏi.
-  - Gym thủ công: xe đạp, máy leo cầu thang, máy chạy có độ dốc, multi-press, tạ đơn, nằm nâng ngực, máy khép đùi và máy mở đùi.
-- Gym Coach theo ba mục tiêu: `Giảm mỡ`, `Giảm mỡ + tăng cơ`, `Tăng cơ toàn diện`.
-- Default tuần theo mục tiêu lần lượt là `2 tạ + 2 cardio + 1 thể thao`, `3 tạ + 1 cardio + 1 thể thao`, và `4 tạ + 0 cardio + 1 thể thao`. Người dùng vẫn chỉnh được từng thành phần.
-- Nhánh tăng cơ cho chọn tối đa hai nhóm ưu tiên trong 12 nhóm; bài khớp nhóm được cộng một set, còn các nhóm khác vẫn giữ maintenance volume.
-- Giáo án tạ 2/3/4 buổi mỗi tuần, 30/45/60 phút, có sets, reps, RIR, rest và double progression; lịch 4 buổi dùng Upper/Lower A/B thay vì full-body hằng ngày.
-- Workout mode lưu sau mỗi set, resume sau reload và chỉ tạo **một** activity calorie khi hoàn tất.
-- Hướng dẫn nhận diện/setup/cues/lỗi cho 9 nhóm thiết bị; 22 WebP kỹ thuật thể hiện vị trí đầu–cuối, hướng chuyển động và nhóm cơ chính.
-- Recovery gate theo ngủ, năng lượng, đau mỏi, illness và red flags; trạng thái xấu sẽ giảm volume hoặc chặn buổi tập.
-- Tĩnh tâm 10 phút có timer chịu được app background/foreground, visual-or-breath anchor và check-in trước/sau cho bình tĩnh, tập trung, tỉnh táo trên thang 1–5.
-- Wim Hof guided flow: vòng tròn dẫn 30 nhịp, retention đếm lên không có target, recovery breath 15 giây và tối đa 3 rounds; safety acknowledgement là điều kiện bắt đầu.
-- Evidence-first Lab cho sleep anchor, caffeine, ánh sáng, thở chậm, Wim Hof breathing và cold finish.
-- Food Engine gồm 57 món/nguyên liệu Việt Nam, tìm kiếm không dấu, khẩu phần 1/2–3 phần và modifier luộc/xào/chiên.
-- Mỗi ước tính đồ ăn lưu calorie, protein, khoảng thấp–cao và confidence; calorie ghi vào deficit được làm tròn lên có chủ đích.
-- `Hôm nay ăn gì?` xếp hạng 12 bữa mẫu theo calorie và protein còn lại, cập nhật ngay sau mỗi lần ghi món.
-- 12 món thường ăn vẫn thêm bằng một chạm; món ngoài catalog vẫn có fallback nhập tay.
-- Dashboard hiển thị calorie và `kg eq.` — kg tương đương năng lượng.
-- Chart cân nặng tối đa 20 lần ghi gần nhất và chart số bước 14 ngày.
-- Migration không phá dữ liệu từ `rootbody.v1` / `rootbody.v2` / `rootbody.v3` sang `rootbody.v4`; các key cũ vẫn được giữ làm rollback.
-- Cài lên iPhone Home Screen và hoạt động offline sau lần tải đầu.
-- Open Sans được self-host theo OFL; footer dùng đúng chuỗi `(c) Product of derekdaydoi`.
+Live: [derekdaydoi.github.io/Rootbody](https://derekdaydoi.github.io/Rootbody/)
 
-## Model năng lượng
+## V8 có gì
 
-### Cân bằng ngày
+### 5 màn hình chính
+
+- **Hôm nay:** bốn health domain, ưu tiên hiện tại, hành động hôm nay, cân bằng năng lượng và gợi ý bữa ăn.
+- **Phân tích:** BMI, waist-to-height ratio, huyết áp, bối cảnh gan do người dùng nhập, interpretation và evidence grade.
+- **Tập luyện:** summary tuần, Strength/Gym, Running, Sport, recovery gate, giáo án theo mục tiêu và log vận động thủ công.
+- **Xu hướng:** cân nặng, bước chân, vòng eo, resting heart rate, giấc ngủ, thời lượng tập và 5K pace khi có đủ dữ liệu.
+- **Bạn:** hồ sơ, mục tiêu, kế hoạch, dinh dưỡng/phục hồi, local data và Experiments (meditation/Wim Hof/Biohack Lab).
+
+Profile Setup là detail flow, không phải tab thứ sáu.
+
+### Health reasoning
+
+- Không có sample metrics hoặc trạng thái “Good/Healthy” giả.
+- Mỗi finding tách thành dữ kiện, suy luận, mức xử lý, hành động và cách đo lại.
+- Thiếu phép đo được ghi `Chưa đủ dữ liệu`.
+- BMI hỗ trợ `Asian action points` và `International`; công thức không thay đổi.
+- Waist-to-height ratio cần phép đo lặp lại trước khi app gọi tín hiệu là có tính hành động.
+- Một phép đo huyết áp không được trình bày như chẩn đoán.
+- Lab markers chỉ hiển thị giá trị, đơn vị và khoảng tham chiếu người dùng nhập từ phiếu xét nghiệm; Rootbody không tự tạo reference range.
+
+### Energy và food
 
 ```text
 deficit_kcal = baseline_kcal + activity_net_kcal - intake_kcal
-predicted_weight_change_kg = -deficit_kcal / 7,700
+kg_equivalent = -deficit_kcal / 7,700
 ```
 
-`baseline_kcal` mặc định là 1.600 kcal/ngày và mục tiêu deficit mặc định là 500 kcal/ngày theo product assumption hiện tại, không phải BMR được cá nhân hóa. V4 chưa hỏi tuổi/giới tính nên không tự suy ra BMR.
+`baseline_kcal = 1.600` và `target_deficit = 500` là **product assumption có thể chỉnh**, không phải BMR/TDEE đã đo hoặc tự suy ra. `kg eq.` là năng lượng quy đổi, không phải dự báo cân ngày mai.
 
-`kg eq.` không phải dự báo số cân ngày mai. Nó chỉ là năng lượng quy đổi; nước, glycogen, muối, tiêu hóa và sai số khẩu phần khiến cân thực tế lệch đáng kể. Chart cân thật được dùng để đánh giá xu hướng.
-
-### Vận động
+Vận động dùng phần năng lượng ròng để tránh cộng lại 1 MET nghỉ đã có trong baseline:
 
 ```text
 activity_net_kcal = floor_to_10((MET - 1) × 3.5 × weight_kg / 200 × minutes)
 ```
 
-Trừ `1 MET` để tránh cộng lại phần năng lượng nghỉ đã nằm trong baseline. Kết quả vận động làm tròn xuống 10 kcal.
+- Đi/chạy dùng bước, thời lượng và chiều cao để ước tính quãng đường/tốc độ.
+- Cầu lông dùng thời lượng + mức độ.
+- Cardio machine dùng thời lượng, speed/incline hoặc resistance/RPM khi có.
+- Strength machine dùng thời lượng cả buổi + cường độ; không đổi set/reps trực tiếp thành calorie.
+- Một workout hoàn tất chỉ tạo một activity, không cộng đôi phút hoặc calorie.
+- Food catalog, tìm kiếm không dấu, portion/cooking modifier, confidence và low–high range.
+- `Hôm nay ăn gì?` xếp hạng bữa theo calorie/protein còn lại.
 
-Đi bộ/chạy dùng chiều cao để ước tính độ dài bước, suy ra quãng đường và tốc độ:
+### Training và recovery
 
-```text
-walking_step_length_m = height_m × 0.415
-running_step_length_m = height_m × 0.65
-distance_km = steps × step_length_m / 1,000
-speed_kmh = distance_km / hours
-```
+- Ba mục tiêu: `Giảm mỡ`, `Giảm mỡ + tăng cơ`, `Tăng cơ toàn diện`.
+- Giáo án 2/3/4 buổi tạ, 30/45/60 phút; nhánh 4 buổi dùng Upper/Lower A/B.
+- Tối đa hai nhóm cơ ưu tiên; nhóm còn lại vẫn có maintenance volume.
+- Prescription gồm set, rep, RIR, rest và double progression.
+- Ảnh kỹ thuật có người ở hai pha, dùng `object-fit: contain`; phần ảnh kết thúc trước Setup/Cues/Lỗi cần tránh.
+- Recovery gate dùng sleep, self-rated energy, soreness, illness, sharp pain và red flags; không tạo “readiness score” giả chính xác.
 
-MET được chọn theo band tốc độ của [2024 Adult Compendium — Walking](https://pacompendium.com/walking/) và [Running](https://pacompendium.com/running/). Cầu lông neo theo 5.5 MET (social), 7.0 MET (competitive) và 9.0 MET (match play) trong [Sports Compendium](https://pacompendium.com/sports/); các mức xen giữa là product heuristic bảo thủ.
+### Experiments
 
-### Gym
+- Meditation 10 phút với visual/breath anchor và self-report trước/sau.
+- Wim Hof guided flow: 30 nhịp, retention đếm lên không đặt thành tích, recovery breath 15 giây, tối đa 3 round.
+- Safety acknowledgement là điều kiện bắt đầu Wim Hof; không thực hiện trong/gần nước, dưới vòi sen, khi lái xe, đứng hoặc vận hành máy móc.
+- Protocol log không cộng calorie, không tự sửa recovery và không thay thế điều trị.
 
-- Xe đạp dùng thời lượng, level lực cản 1–30 và RPM. Vì level không chuẩn hóa giữa hãng máy, model nội suy bảo thủ trong dải 3,5–9,0 MET của [2024 Adult Compendium — Bicycling](https://pacompendium.com/bicycling/), rồi giới hạn tối đa 10,5 MET khi cadence cao.
-- Máy chạy dùng tốc độ và độ dốc theo phương trình metabolic walking/running của ACSM. Độ dốc được giới hạn 0–20%; tốc độ 1–25 km/h.
-- Máy tập sức mạnh dùng tổng thời gian đã gồm cả lúc nghỉ và ba mức cường độ. Dải 2,5–6,0 MET được neo theo resistance training 3,5–6,0 MET trong [2024 Adult Compendium — Conditioning Exercise](https://pacompendium.com/conditioning-exercise/).
-- Tất cả kết quả tiếp tục trừ 1 MET nghỉ và làm tròn xuống 10 kcal. Sai số lớn nhất nằm ở level xe không có watt và thời gian nghỉ giữa hiệp.
-- Workout theo giáo án dùng một MET bình quân bảo thủ cho toàn buổi (`3,5–4,5` tùy mục tiêu), rồi chỉ ghi một activity. Sets/reps không được đổi thành calorie riêng.
-
-## Gym Coach và recovery
-
-- `Giảm mỡ` không bỏ resistance training: app giữ hai buổi full-body để hạn chế mất cơ, nhưng dành nhiều slot hơn cho cardio/thể thao. Calorie deficit vẫn do cân bằng năng lượng quyết định, không phải do chọn tên bài “đốt mỡ”.
-- `Giảm mỡ + tăng cơ` dùng ba buổi full-body để tăng tần suất tiếp xúc bài trong khi vẫn chừa recovery cho cardio và thể thao.
-- `Tăng cơ toàn diện` dùng Upper/Lower A/B. Nhóm ưu tiên nhận thêm một set ở bài khớp, tối đa hai nhóm; lựa chọn ưu tiên không xóa các nhóm còn lại khỏi lịch.
-- `RIR` là số reps người dùng ước tính còn làm được với form tốt. Buổi đầu không đoán tạ từ cân nặng cơ thể; chọn tải kết thúc đúng RIR mục tiêu.
-- Double progression: khi mọi set chạm đầu trên rep range với `RIR ≥ 2` trong hai buổi liên tiếp, tăng một nấc tạ nhỏ nhất; hụt đầu dưới hoặc form hỏng hai buổi thì giảm 5–10%.
-- Nếu ngủ dưới 6 giờ, năng lượng ≤2/5 hoặc đau mỏi ≥7/10, app giảm một set mỗi bài, dùng RIR 3 và bỏ conditioning finisher.
-- Đau/tức ngực, khó thở bất thường, choáng/sắp ngất, illness hoặc đau nhói/tăng dần sẽ chặn buổi cường độ cao. Rootbody không chẩn đoán tình trạng này.
-
-Khung resistance training dựa trên [ACSM 2026 resistance training guidelines](https://acsm.org/resistance-training-guidelines-update-2026/) và phạm vi vận động tuần dựa trên [WHO physical activity guideline](https://www.who.int/publications/i/item/9789240015128).
-
-## Evidence-first Lab
-
-Evidence grade là phân loại nội bộ của Rootbody:
-
-- `A`: guideline hoặc position stand áp dụng trực tiếp.
-- `B`: controlled human evidence hoặc official best practice còn giới hạn.
-- `C`: bằng chứng nhỏ/ngắn hạn/mechanistic; hiển thị là experimental khi phù hợp.
-
-Biohack log không cộng calorie và không tự thay đổi recovery. Protocol tĩnh tâm dùng focused attention: bức tường chỉ là visual anchor ít kích thích, không được mô tả như một tác nhân tự tạo năng lượng. Một RCT nhỏ cho thấy 10 phút mindfulness có thể cải thiện một số chỉ số attention ở người mới tập; bằng chứng tổng thể vẫn có effect nhỏ và heterogeneity, nên app giữ Grade B và chỉ đo self-report trước/sau ([RCT 10 phút](https://pubmed.ncbi.nlm.nih.gov/30127731/), [meta-analysis brief mindfulness](https://pubmed.ncbi.nlm.nih.gov/32739799/)).
-
-Wim Hof breathing yêu cầu safety acknowledgement: chỉ ngồi/nằm, không bao giờ ở trong/gần nước, dưới vòi sen, khi lái xe, đứng hoặc vận hành máy móc; không có leaderboard nín thở hay claim giảm mỡ/tăng miễn dịch. Cold exposure trong MVP chỉ là kết thúc tắm bằng nước mát tối đa 2 phút, không hướng dẫn ice bath/open-water immersion.
-
-### BMI
+## Architecture
 
 ```text
-BMI = weight_kg / height_m²
+index.html              semantic PWA shell và 5-screen navigation
+styles.css              V7 component foundation, giữ compatibility
+v8.css                  V8 design system và responsive override
+app.js                   local state, migration, energy/food/activity engine
+health-engine.js         pure health signals và prioritization
+coach-data.js            exercise, plan và protocol catalog
+coach.js                 training/recovery/workout/meditation/Wim Hof UI
+intelligence.js          V8 screen composition, lab/trend/reasoning UI
+food-data.js             food catalog, cooking rules, meal templates
+sw.js                    offline app-shell cache
+manifest.webmanifest     PWA metadata
+brand/                   SVG logo system
+exercise-form/           kỹ thuật bài tập có người
 ```
 
-Công thức không đổi giữa hai lựa chọn. `International` dùng mốc 25/30. `Asian action points` dùng mốc 23/27.5 để cảnh báo nguy cơ; đây là action points, không phải một định nghĩa BMI mới cho mọi người châu Á. Tham chiếu: [WHO expert consultation](https://pubmed.ncbi.nlm.nih.gov/14726171/).
+Không dùng framework hoặc build step; GitHub Pages phục vụ file tĩnh.
 
-BMI chỉ là screening, không phải chẩn đoán sức khỏe.
+## Data và migration
 
-## Quy tắc ước tính
+State hiện tại nằm ở `localStorage["rootbody.v5"]`:
 
-- Món đơn giản có confidence cao; món hoàn chỉnh/ăn ngoài có khoảng sai số rộng hơn.
-- Food Estimator cộng modifier dầu theo cách nấu và dùng một phần của biên trên để tạo calorie ghi nhận bảo thủ.
-- Món thường ăn giữ product shortcut; ví dụ cà phê sữa một ly được cố định 100 kcal.
-- Protein target là product heuristic `1,6 g/kg`, giới hạn 80–180 g/ngày; khi chưa có cân nặng dùng 100 g.
-- Gợi ý bữa ăn không phải medical nutrition therapy và không tự chẩn đoán dị ứng/bệnh lý.
-- Vận động: tính phần ròng và làm tròn xuống.
-- Ngày chưa ghi món ăn không tạo dự báo kg, vì coi lượng ăn là 0 sẽ tạo thâm hụt giả.
-- Mọi sample đều có khẩu phần cố định; bấm nhiều lần tương ứng nhiều khẩu phần.
+```text
+profile
+settings
+days[date].meals[]
+days[date].activities[]
+weights[]
+measurements.waist[]
+measurements.restingHr[]
+measurements.bloodPressure[]
+labs
+coach.settings
+coach.recoveryByDate
+coach.activeWorkout
+coach.workoutHistory[]
+coach.protocolLogs[]
+```
+
+Khi V8 chạy lần đầu, state V4 được normalize sang V5. Key `rootbody.v4` vẫn giữ nguyên để rollback; normalizer giới hạn phạm vi/độ dài input và không copy thuộc tính lạ.
 
 ## Privacy
 
-- Toàn bộ hồ sơ, món ăn, vận động, cân nặng, recovery, workout và protocol log nằm trong `localStorage` của trình duyệt.
-- Không gửi dữ liệu tới server, không analytics, không tài khoản.
-- Xóa dữ liệu website trong Safari/Chrome sẽ xóa dữ liệu Rootbody trên máy đó.
-- GitHub Pages chỉ phục vụ các file tĩnh của ứng dụng.
+- Dữ liệu nằm trong browser storage của thiết bị đang dùng.
+- Không analytics, tài khoản hoặc API gửi health data về server Rootbody.
+- Xóa website data của trình duyệt sẽ xóa dữ liệu local.
+- Cần export/sync mã hóa trước khi coi đây là nơi lưu hồ sơ dài hạn; V8 chưa có tính năng đó.
+
+## Evidence boundaries
+
+- WHO: người lớn nên đạt 150–300 phút aerobic mức vừa hoặc 75–150 phút mức mạnh mỗi tuần và strength cho nhóm cơ lớn ít nhất 2 ngày/tuần: [WHO 2020 Guidelines](https://www.who.int/publications/i/item/9789240015128).
+- Waist-to-height ratio bands dùng NICE: 0,4–0,49 healthy central adiposity, 0,5–0,59 increased, từ 0,6 high: [NICE NG246](https://www.nice.org.uk/guidance/ng246/chapter/Identifying-and-assessing-overweight-obesity-and-central-adiposity).
+- Blood-pressure bands và crisis handling tham chiếu AHA; một reading đơn lẻ không xác nhận chẩn đoán: [American Heart Association](https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings).
+- Sleep target mặc định là ít nhất 7 giờ cho người lớn: [AASM/SRS consensus](https://aasm.org/resources/pdf/pressroom/adult-sleep-duration-consensus.pdf).
+- Asian BMI values 23 và 27,5 được dùng như public-health action points, không phải công thức BMI khác: [WHO expert consultation](https://pubmed.ncbi.nlm.nih.gov/14726171/).
+
+Rootbody là công cụ self-tracking/decision support, không phải thiết bị y tế và không chẩn đoán.
 
 ## Chạy local
-
-Mở bằng một static server bất kỳ, ví dụ:
 
 ```bash
 python -m http.server 8765
 ```
 
-Sau đó truy cập `http://localhost:8765`.
+Mở `http://localhost:8765`.
 
-## Deploy GitHub Pages
+## Deploy
 
-Workflow `.github/workflows/pages.yml` deploy nhánh `main`. Trong repository, chọn `Settings → Pages → Source: GitHub Actions` một lần; các commit sau sẽ tự deploy.
+Workflow `.github/workflows/pages.yml` deploy nhánh `main` lên GitHub Pages. Service Worker V8 dùng cache riêng `rootbody-v8-intelligence-v52` để tránh trộn asset V7/V8.
 
-## Cấu trúc
+## Brand
 
-```text
-Rootbody/
-├── brand/                   # SVG logo, symbol, wordmark
-├── fonts/                   # Open Sans self-host + OFL
-├── equipment/               # SVG minh họa máy, không chứa ảnh người dùng
-├── exercise-art/             # 19 WebP nhận diện thiết bị cũ
-├── exercise-form/            # 22 WebP kỹ thuật có người, hai pha động tác
-├── .github/workflows/       # GitHub Pages deployment
-├── index.html               # PWA shell
-├── styles.css               # Root family design system
-├── food-data.js              # catalog thực phẩm, cách nấu và bữa gợi ý
-├── coach-data.js            # catalog máy, bài tập, giáo án và evidence
-├── coach.js                 # Coach UI, recovery, workout và Lab
-├── app.js                   # energy model, storage, charts và bridge
-├── sw.js                    # offline cache
-└── manifest.webmanifest     # install metadata
-```
+Màu: Deep Navy `#0D1B2A`, Signal Teal `#0FA3A3`, Soft Cyan `#BFE9F3`, Off White `#F6F8FA`, Muted Violet `#6F6AAE`. UI dùng Open Sans self-hosted. Startup motion theo nhịp Rootflow và hỗ trợ `prefers-reduced-motion`.
+
+© Copyright from derekdaydoi

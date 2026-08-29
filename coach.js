@@ -307,7 +307,8 @@
   function startOrResumeWorkout() {
     if (!core.profileReady()) {
       core.showToast("Nhập cân nặng và chiều cao trước khi bắt đầu.");
-      core.navigate("profile");
+      core.navigate("you");
+      setTimeout(() => core.openDialog("profileDialog"), 40);
       return;
     }
     if (settings().hasPain) {

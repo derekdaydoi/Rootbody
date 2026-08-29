@@ -1,15 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 220" role="img" aria-labelledby="title desc">
-  <title id="title">Rootbody logo</title>
-  <desc id="desc">Rootbody lockup with green app mark, ROOT in graphite and BODY in green.</desc>
-  <g transform="translate(10 10) scale(.2)">
-    <rect width="1000" height="1000" rx="220" fill="#14614A"/>
-    <g fill="none" stroke="#FFFFFF" stroke-width="90" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M328 752 V248"/>
-      <path d="M328 276 H505 C631 276 702 335 702 420 C702 504 637 552 512 552 H328"/>
-      <path d="M512 552 C654 552 724 608 724 694 C724 790 631 827 500 795 L328 752"/>
-    </g>
-    <circle cx="230" cy="690" r="50" fill="#FFFFFF"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 440" role="img" aria-labelledby="title desc">
+  <title id="title">rootbody</title><desc id="desc">Rootbody human signal and root mark with lowercase wordmark.</desc>
+  <g transform="translate(0 5) scale(.92)">
+    <g fill="none" stroke="#BFE9F3" stroke-width="5"><circle cx="200" cy="112" r="54"/><circle cx="200" cy="112" r="84" opacity=".86"/><circle cx="200" cy="112" r="114" opacity=".7"/></g><circle cx="200" cy="112" r="17" fill="#0FA3A3"/><path d="M200 143v132" fill="none" stroke="#0FA3A3" stroke-width="12" stroke-linecap="round"/><path d="M195 172c-24 0-38-10-55-30-6 24-5 45 4 67 15-17 30-27 51-28M205 172c24 0 38-10 55-30 6 24 5 45-4 67-15-17-30-27-51-28" fill="#0FA3A3"/><path d="M200 224c0 37-4 71-17 100M200 224c1 39 7 73 21 100" fill="none" stroke="#0D1B2A" stroke-width="12" stroke-linecap="round"/><g fill="#0FA3A3"><circle cx="200" cy="202" r="5"/><circle cx="200" cy="220" r="5"/><circle cx="201" cy="239" r="5"/><circle cx="202" cy="258" r="5"/></g><g fill="none" stroke="#0D1B2A" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M183 320c-20 16-35 34-47 55m47-55c-5 25-6 50-3 75m3-75c14 20 24 43 29 69M221 320c22 15 39 33 53 54m-53-54c8 24 11 49 9 74m-9-74c-13 20-21 43-25 69M136 375c-27-2-51 2-75 13m75-13c-19 13-35 29-47 49m47-49c-5 19-5 36-1 53M274 374c25-4 49-1 73 9m-73-9c19 12 36 27 50 46m-50-46c6 18 8 36 5 53"/></g>
   </g>
-  <text x="245" y="128" font-family="'OpenAI Sans', Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="82" font-weight="800" letter-spacing="-5"><tspan fill="#101110">ROOT</tspan><tspan fill="#14614A">BODY</tspan></text>
-  <text x="250" y="165" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="700" letter-spacing="4.4" fill="#858981">MAKE ENERGY VISIBLE.</text>
+  <text x="390" y="262" font-family="'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="170" font-weight="400" letter-spacing="-10"><tspan fill="#0D1B2A">root</tspan><tspan fill="#0FA3A3">body</tspan></text>
 </svg>
