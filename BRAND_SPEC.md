@@ -1,16 +1,16 @@
 # Rootbody — brand specification
 
-Rootbody dùng cùng nhịp chuyển động gọn và cảm giác sản phẩm của Rootflow, nhưng có nhận diện riêng: một tín hiệu cơ thể phát triển thành hệ rễ.
+Rootbody dùng cùng nhịp chuyển động gọn và cảm giác sản phẩm của Rootflow, nhưng có nhận diện riêng: một tín hiệu cơ thể được neo bởi ba root-stroke lớn.
 
 ## Logo system
 
-- `brand/rootbody-mark.svg`: primary mark trên nền trong suốt.
-- `brand/rootbody-symbol.svg`: app icon Deep Navy, dùng cho PWA/Home Screen.
+- `brand/rootbody-mark.svg`: compact primary mark trên nền trong suốt.
+- `brand/rootbody-symbol.svg`: app icon Deep Navy, dùng cho PWA/Home Screen; không dùng mạng rễ chi tiết.
 - `brand/rootbody-wordmark.svg`: wordmark chữ thường; `root` Deep Navy, `body` Signal Teal.
 - `brand/rootbody-logo.svg`: lockup mark + wordmark.
 - `brand/rootbody-lab.svg`: monoline Lab mark, không dùng biểu tượng AI/sparkle.
 
-Logo phải còn đọc được ở 24 px. Không đổi tỷ lệ, không crop rễ hoặc vòng signal và không thêm gradient/glow vào asset tĩnh.
+Logo phải còn đọc được ở 24 px. App icon chỉ có hai vòng signal, một core, body và ba root-stroke đậm; không thêm chi tiết mảnh hoặc gradient/glow vào asset tĩnh.
 
 ## Palette
 
@@ -22,7 +22,7 @@ Logo phải còn đọc được ở 24 px. Không đổi tỷ lệ, không crop
 | Off White | `#F6F8FA` | nền ứng dụng |
 | Muted Violet | `#6F6AAE` | secondary data series, recovery |
 
-Surface dùng trắng hoặc Off White; border dùng Navy với opacity thấp. Trạng thái cảnh báo/y khoa dùng màu chức năng riêng và không được thay bằng Teal chỉ để “đẹp”.
+Light theme dùng surface trắng/Off White. Dark theme dùng `#08121D` đến `#1B2E3E`, giữ Teal/Cyan sáng hơn để bảo toàn tương phản. Trạng thái cảnh báo/y khoa dùng màu chức năng riêng và không được thay bằng Teal chỉ để “đẹp”.
 
 ## Typography
 

@@ -1,175 +1,4 @@
-(() => {
-  "use strict";
-
-  const STORAGE_KEY = "rootbody.v5";
-  const V4_KEY = "rootbody.v4";
-  const V3_KEY = "rootbody.v3";
-  const V2_KEY = "rootbody.v2";
-  const LEGACY_KEY = "rootbody.v1";
-  const MODEL_VERSION = "0.5";
-  const KCAL_PER_KG = 7700;
-  const number = new Intl.NumberFormat("vi-VN", { maximumFractionDigits: 1 });
-  const integer = new Intl.NumberFormat("vi-VN", { maximumFractionDigits: 0 });
-  const kg3 = new Intl.NumberFormat("vi-VN", { minimumFractionDigits: 3, maximumFractionDigits: 3 });
-  const longDate = new Intl.DateTimeFormat("vi-VN", { weekday: "long", day: "numeric", month: "long" });
-  const shortDate = new Intl.DateTimeFormat("vi-VN", { day: "2-digit", month: "2-digit" });
-
-  const foodData = window.ROOTBODY_FOOD_DATA || { foods: [], quickIds: [], cookingMethods: {}, mealTemplates: [] };
-  const FOOD_INDEX = new Map(foodData.foods.map((item) => [item.id, item]));
-  const FOOD_SAMPLES = foodData.quickIds.map((id) => FOOD_INDEX.get(id)).filter(Boolean);
-  const CONFIDENCE_LABELS = { high: "Tin cậy cao", medium: "Tin cậy vừa", low: "Sai số rộng" };
-
-  const ACTIVITY_NAMES = {
-    walk: "Đi bộ", run: "Chạy", badminton: "Cầu lông",
-    gym_bike: "Đạp xe", gym_treadmill: "Máy chạy", gym_stair: "Máy leo cầu thang",
-    gym_shoulder: "Máy tập cơ vai", gym_alpha: "Máy đa năng (chưa xác minh)",
-    gym_dumbbell: "Tạ đơn", gym_bench: "Nằm nâng ngực",
-    gym_adductor: "Máy khép đùi", gym_abductor: "Máy mở đùi",
-    gym_session: "Giáo án Rootbody",
-    legacy: "Vận động V1"
-  };
-  const LEVELS = {
-    weak: { label: "Yếu", met: 3.5 },
-    poor: { label: "Kém", met: 4.5 },
-    medium: { label: "Trung bình", met: 5.5 },
-    medium_plus: { label: "Trung bình +", met: 6.0 },
-    good: { label: "Khá", met: 7.0 },
-    strong: { label: "Giỏi", met: 9.0 }
-  };
-  const STRENGTH_LEVELS = {
-    gym_light: { label: "Nhẹ · nghỉ nhiều", offset: -0.7 },
-    gym_medium: { label: "Vừa · nghỉ tiêu chuẩn", offset: 0 },
-    gym_heavy: { label: "Nặng · nghỉ ngắn", offset: 1.5 }
-  };
-  const ALL_LEVELS = { ...LEVELS, ...STRENGTH_LEVELS };
-  const STRENGTH_TYPES = new Set(["gym_shoulder", "gym_alpha", "gym_dumbbell", "gym_bench", "gym_adductor", "gym_abductor"]);
-  const STRENGTH_BASE_MET = {
-    gym_shoulder: 3.5, gym_alpha: 3.5, gym_dumbbell: 4.0,
-    gym_bench: 4.0, gym_adductor: 3.2, gym_abductor: 3.2
-  };
-
-  const $ = (selector, root = document) => root.querySelector(selector);
-  const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
-  const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
-  let state = loadState();
-  let toastTimer;
-  let lockedScrollY = 0;
-  let viewportCleanup = null;
-  let selectedFoodId = null;
-  let suggestionOffset = 0;
-
-  function defaultState() {
-    return {
-      version: 5,
-      modelVersion: MODEL_VERSION,
-      profile: {
-        name: "", age: null, biologicalSex: "unknown", weightKg: null, heightCm: null, waistCm: null,
-        systolic: null, diastolic: null, restingHr: null, activityLevel: "moderate", smoking: "unknown",
-        alcohol: "unknown", knownConditions: "", medications: "", familyHistory: "", bmiStandard: "asian"
-      },
-      settings: { baselineKcal: 1600, targetDeficit: 500 },
-      days: {},
-      weights: [],
-      measurements: { waist: [], restingHr: [], bloodPressure: [] },
-      labs: { hepatitisStatus: "unknown", measuredDate: "", alt: null, ast: null, ggt: null },
-      coach: {
-        settings: { goal: "recomp", daysPerWeek: 3, cardioDays: 1, sportDays: 1, priorityMuscles: [], minutes: 45, experience: "beginner", hasPain: false },
-        ui: { activityTab: "today" },
-        recoveryByDate: {},
-        activeWorkout: null,
-        workoutHistory: [],
-        protocolLogs: []
-      }
-    };
-  }
-
-  function localDateKey(date = new Date()) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  }
-
-  function parseDateKey(key) {
-    const [year, month, day] = key.split("-").map(Number);
-    return new Date(year, month - 1, day, 12, 0, 0);
-  }
-
-  function uid() {
-    return globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`;
-  }
-
-  function loadState() {
-    try {
-      const current = localStorage.getItem(STORAGE_KEY);
-      if (current) return normalizeState(JSON.parse(current));
-      const v4 = localStorage.getItem(V4_KEY);
-      if (v4) {
-        const migrated = normalizeState(JSON.parse(v4));
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
-        return migrated;
-      }
-      const v3 = localStorage.getItem(V3_KEY);
-      if (v3) {
-        const migrated = normalizeState(JSON.parse(v3));
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
-        return migrated;
-      }
-      const v2 = localStorage.getItem(V2_KEY);
-      if (v2) {
-        const migrated = normalizeState(JSON.parse(v2));
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
-        return migrated;
-      }
-      const legacy = localStorage.getItem(LEGACY_KEY);
-      if (legacy) {
-        const migrated = migrateV1(JSON.parse(legacy));
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
-        return migrated;
-      }
-    } catch (error) {
-      console.warn("Rootbody không đọc được dữ liệu local.", error);
-    }
-    return defaultState();
-  }
-
-  function migrateV1(old) {
-    const next = defaultState();
-    next.settings.baselineKcal = safeNumber(old?.settings?.baselineKcal, 800, 4000, 1600);
-    next.settings.targetDeficit = safeNumber(old?.settings?.targetDeficit, 100, 1000, 500);
-    next.weights = normalizeWeights(old?.weights);
-    if (next.weights.length) next.profile.weightKg = next.weights[next.weights.length - 1].kg;
-    Object.entries(old?.days || {}).forEach(([date, day]) => {
-      if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
-      next.days[date] = {
-        meals: normalizeMeals(day?.meals),
-        activities: Number(day?.activityKcal) > 0 ? [{
-          id: uid(), type: "legacy", name: "Vận động từ V1", kcal: Math.round(Number(day.activityKcal)), steps: 0,
-          minutes: null, met: null, createdAt: `${date}T12:00:00`
-        }] : []
-      };
-    });
-    return next;
-  }
-
-  function normalizeState(value) {
-    const fresh = defaultState();
-    if (!value || typeof value !== "object") return fresh;
-    fresh.profile.name = String(value.profile?.name || "").trim().slice(0, 60);
-    fresh.profile.age = nullableNumber(value.profile?.age, 18, 100);
-    fresh.profile.biologicalSex = ["male", "female", "intersex", "unknown"].includes(value.profile?.biologicalSex) ? value.profile.biologicalSex : "unknown";
-    fresh.profile.weightKg = nullableNumber(value.profile?.weightKg, 30, 300);
-    fresh.profile.heightCm = nullableNumber(value.profile?.heightCm, 120, 230);
-    fresh.profile.waistCm = nullableNumber(value.profile?.waistCm, 40, 250);
-    fresh.profile.systolic = nullableNumber(value.profile?.systolic, 60, 260);
-    fresh.profile.diastolic = nullableNumber(value.profile?.diastolic, 35, 160);
-    fresh.profile.restingHr = nullableNumber(value.profile?.restingHr, 30, 220);
-    fresh.profile.activityLevel = ["low", "moderate", "high"].includes(value.profile?.activityLevel) ? value.profile.activityLevel : "moderate";
-    fresh.profile.smoking = ["never", "former", "current", "unknown"].includes(value.profile?.smoking) ? value.profile.smoking : "unknown";
-    fresh.profile.alcohol = ["none", "one_three", "four_seven", "eight_plus", "unknown"].includes(value.profile?.alcohol) ? value.profile.alcohol : "unknown";
-    fresh.profile.knownConditions = String(value.profile?.knownConditions || "").trim().slice(0, 500);
-    fresh.profile.medications = String(value.profile?.medications || "").trim().slice(0, 500);
-    fresh.profile.familyHistory = String(value.profile?.familyHistory || "").trim().slice(0, 500);
+ofile.familyHistory = String(value.profile?.familyHistory || "").trim().slice(0, 500);
     fresh.profile.bmiStandard = value.profile?.bmiStandard === "international" ? "international" : "asian";
     fresh.settings.baselineKcal = safeNumber(value.settings?.baselineKcal, 800, 4000, 1600);
     fresh.settings.targetDeficit = safeNumber(value.settings?.targetDeficit, 100, 1000, 500);
@@ -359,7 +188,7 @@
   }
 
   function saveState() {
-    state.version = 5;
+    state.version = 1;
     state.modelVersion = MODEL_VERSION;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -368,6 +197,25 @@
       console.warn("Rootbody không lưu được dữ liệu local.", error);
       showToast("Không lưu được dữ liệu. Kiểm tra dung lượng trình duyệt.");
       return false;
+    }
+  }
+
+  function applyTheme(theme, persist = true) {
+    const next = theme === "dark" ? "dark" : "light";
+    document.documentElement.dataset.theme = next;
+    document.documentElement.style.colorScheme = next;
+    const meta = $("[data-theme-color]");
+    if (meta) meta.setAttribute("content", next === "dark" ? "#08121D" : "#F6F8FA");
+    $$('[data-theme-option]').forEach((button) => {
+      const active = button.dataset.themeOption === next;
+      button.classList.toggle("is-active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+    if (!persist) return;
+    try {
+      localStorage.setItem(THEME_KEY, next);
+    } catch (error) {
+      console.warn("Rootbody không lưu được giao diện trên thiết bị.", error);
     }
   }
 
@@ -575,6 +423,7 @@
   }
 
   function renderAll() {
+    applyTheme(document.documentElement.dataset.theme, false);
     renderToday();
     renderActivity();
     renderProfile();
@@ -1043,6 +892,12 @@
   }
 
   document.addEventListener("click", (event) => {
+    const themeButton = event.target.closest("[data-theme-option]");
+    if (themeButton) {
+      applyTheme(themeButton.dataset.themeOption);
+      showToast(`Đã chuyển sang giao diện ${themeButton.dataset.themeOption === "dark" ? "tối" : "sáng"}.`);
+      return;
+    }
     const nav = event.target.closest("[data-nav]");
     if (nav) { event.preventDefault(); navigate(nav.dataset.nav); return; }
     const opener = event.target.closest("[data-open-dialog]");
@@ -1277,6 +1132,6 @@
   navigate(location.hash.slice(1) || "today");
 
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js?v=52").catch((error) => console.warn("Service worker chưa sẵn sàng.", error)));
+    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js?v=53").catch((error) => console.warn("Service worker chưa sẵn sàng.", error)));
   }
 })();

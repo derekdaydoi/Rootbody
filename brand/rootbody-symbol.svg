@@ -1,10 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" role="img" aria-labelledby="title desc">
-  <title id="title">Rootbody app icon</title><desc id="desc">A human signal becoming roots on deep navy.</desc>
+  <title id="title">Rootbody app icon</title>
+  <desc id="desc">Compact body signal with three grounded roots on deep navy.</desc>
   <rect width="1000" height="1000" rx="220" fill="#0D1B2A"/>
-  <g transform="translate(165 92) scale(1.68)">
-    <g fill="none" stroke="#BFE9F3" stroke-width="5"><circle cx="200" cy="112" r="54"/><circle cx="200" cy="112" r="84" opacity=".86"/><circle cx="200" cy="112" r="114" opacity=".7"/></g>
-    <circle cx="200" cy="112" r="17" fill="#0FA3A3"/><path d="M200 143v132" fill="none" stroke="#F6F8FA" stroke-width="12" stroke-linecap="round"/><path d="M195 172c-24 0-38-10-55-30-6 24-5 45 4 67 15-17 30-27 51-28M205 172c24 0 38-10 55-30 6 24 5 45-4 67-15-17-30-27-51-28" fill="#0FA3A3"/><path d="M200 224c0 37-4 71-17 100M200 224c1 39 7 73 21 100" fill="none" stroke="#F6F8FA" stroke-width="12" stroke-linecap="round"/>
-    <g fill="#0FA3A3"><circle cx="200" cy="202" r="5"/><circle cx="200" cy="220" r="5"/><circle cx="201" cy="239" r="5"/><circle cx="202" cy="258" r="5"/></g>
-    <g fill="none" stroke="#F6F8FA" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M183 320c-20 16-35 34-47 55m47-55c-5 25-6 50-3 75m3-75c14 20 24 43 29 69M221 320c22 15 39 33 53 54m-53-54c8 24 11 49 9 74m-9-74c-13 20-21 43-25 69M136 375c-27-2-51 2-75 13m75-13c-19 13-35 29-47 49m47-49c-5 19-5 36-1 53M274 374c25-4 49-1 73 9m-73-9c19 12 36 27 50 46m-50-46c6 18 8 36 5 53"/></g>
+  <g fill="none" stroke="#BFE9F3" stroke-linecap="round">
+    <circle cx="500" cy="350" r="190" stroke-width="28" opacity=".92"/>
+    <circle cx="500" cy="350" r="285" stroke-width="22" opacity=".58"/>
+  </g>
+  <circle cx="500" cy="350" r="78" fill="#0FA3A3"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M500 445v265" stroke="#F6F8FA" stroke-width="64"/>
+    <path d="M500 520c-98 0-162-43-224-116M500 520c98 0 162-43 224-116" stroke="#0FA3A3" stroke-width="58"/>
+    <path d="M500 690c-80 46-142 98-198 166M500 690v174M500 690c80 46 142 98 198 166" stroke="#F6F8FA" stroke-width="54"/>
   </g>
 </svg>

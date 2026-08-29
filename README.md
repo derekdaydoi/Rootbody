@@ -18,6 +18,8 @@ Live: [derekdaydoi.github.io/Rootbody](https://derekdaydoi.github.io/Rootbody/)
 - **Xu hướng:** cân nặng, bước chân, vòng eo, resting heart rate, giấc ngủ, thời lượng tập và 5K pace khi có đủ dữ liệu.
 - **Bạn:** hồ sơ, mục tiêu, kế hoạch, dinh dưỡng/phục hồi, local data và Experiments (meditation/Wim Hof/Biohack Lab).
 
+Giao diện hỗ trợ Light/Dark, ghi nhớ lựa chọn ngay trên thiết bị. Typography dùng scale tối thiểu 11 px cho nhãn phụ và 16 px cho body để vẫn đọc được ở màn hình 320 px.
+
 Profile Setup là detail flow, không phải tab thứ sáu.
 
 ### Health reasoning
@@ -75,7 +77,7 @@ activity_net_kcal = floor_to_10((MET - 1) × 3.5 × weight_kg / 200 × minutes)
 index.html              semantic PWA shell và 5-screen navigation
 styles.css              V7 component foundation, giữ compatibility
 v8.css                  V8 design system và responsive override
-app.js                   local state, migration, energy/food/activity engine
+app.js                   local-only state, theme, energy/food/activity engine
 health-engine.js         pure health signals và prioritization
 coach-data.js            exercise, plan và protocol catalog
 coach.js                 training/recovery/workout/meditation/Wim Hof UI
@@ -89,9 +91,9 @@ exercise-form/           kỹ thuật bài tập có người
 
 Không dùng framework hoặc build step; GitHub Pages phục vụ file tĩnh.
 
-## Data và migration
+## Data local-only
 
-State hiện tại nằm ở `localStorage["rootbody.v5"]`:
+State hiện tại nằm ở `localStorage["rootbody.device.v1"]`:
 
 ```text
 profile
@@ -110,7 +112,7 @@ coach.workoutHistory[]
 coach.protocolLogs[]
 ```
 
-Khi V8 chạy lần đầu, state V4 được normalize sang V5. Key `rootbody.v4` vẫn giữ nguyên để rollback; normalizer giới hạn phạm vi/độ dài input và không copy thuộc tính lạ.
+Không migration dữ liệu V1–V5. Khi bản này chạy lần đầu, các key `rootbody.v1` đến `rootbody.v5` bị xóa và app khởi tạo state mới. Mọi lần người dùng bấm lưu hoặc hoàn tất một hành động, state mới được ghi trực tiếp vào `localStorage` của thiết bị.
 
 ## Privacy
 
@@ -139,10 +141,10 @@ Mở `http://localhost:8765`.
 
 ## Deploy
 
-Workflow `.github/workflows/pages.yml` deploy nhánh `main` lên GitHub Pages. Service Worker V8 dùng cache riêng `rootbody-v8-intelligence-v52` để tránh trộn asset V7/V8.
+Workflow `.github/workflows/pages.yml` deploy nhánh `main` lên GitHub Pages. Service Worker dùng cache riêng `rootbody-v8-theme-local-v53` để nhận đúng theme, typography và icon mới.
 
 ## Brand
 
-Màu: Deep Navy `#0D1B2A`, Signal Teal `#0FA3A3`, Soft Cyan `#BFE9F3`, Off White `#F6F8FA`, Muted Violet `#6F6AAE`. UI dùng Open Sans self-hosted. Startup motion theo nhịp Rootflow và hỗ trợ `prefers-reduced-motion`.
+Màu: Deep Navy `#0D1B2A`, Signal Teal `#0FA3A3`, Soft Cyan `#BFE9F3`, Off White `#F6F8FA`, Muted Violet `#6F6AAE`; dark theme dùng navy surfaces và tăng độ sáng Teal/Cyan. UI dùng Open Sans self-hosted. App icon chỉ giữ signal, body và ba root-stroke lớn để đọc rõ ở kích thước Home Screen. Startup motion theo nhịp Rootflow và hỗ trợ `prefers-reduced-motion`.
 
 © Copyright from derekdaydoi

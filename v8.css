@@ -24,7 +24,7 @@
 }
 
 html { background: var(--bg); scroll-padding-top: calc(72px + env(safe-area-inset-top, 0px)); }
-body { color: var(--ink); background: var(--bg); font-size: 14px; line-height: 1.45; -webkit-overflow-scrolling: touch; }
+body { color: var(--ink); background: var(--bg); font-size: 16px; line-height: 1.5; -webkit-overflow-scrolling: touch; }
 html.splash-active, body.splash-active { overflow: hidden; }
 button, input, select, textarea { font: inherit; }
 textarea { width: 100%; min-height: 76px; resize: vertical; border: 1px solid var(--line-strong); border-radius: 12px; outline: 0; background: var(--surface); color: var(--ink); padding: 12px 13px; }
@@ -47,7 +47,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--green); box-shad
 }
 .splash-lockup { position: relative; display: grid; width: min(82vw, 360px); justify-items: center; transform: translateY(-2vh); }
 .splash-halo { position: absolute; top: 44%; left: 50%; width: min(58vw, 230px); aspect-ratio: 1; border: 1px solid rgba(15,163,163,.14); border-radius: 50%; opacity: 0; transform: translate(-50%,-64%) scale(.62); box-shadow: 0 0 0 24px rgba(191,233,243,.12); animation: rb-halo .72s 1.12s cubic-bezier(.18,.82,.28,1) both; }
-.splash-mark { width: 158px; height: 174px; overflow: visible; filter: drop-shadow(0 8px 16px rgba(13,27,42,.08)); animation: rb-mark-settle .62s 1.04s cubic-bezier(.2,.8,.25,1) both; }
+.splash-mark { width: 148px; height: 148px; overflow: visible; color: var(--ink); filter: drop-shadow(0 8px 16px rgba(13,27,42,.08)); animation: rb-mark-settle .62s 1.04s cubic-bezier(.2,.8,.25,1) both; }
 .splash-core { opacity: 0; transform-box: fill-box; transform-origin: center; animation: rb-core-in .38s .2s cubic-bezier(.2,.9,.28,1.25) both; }
 .splash-ring { opacity: 0; transform-box: fill-box; transform-origin: center; animation: rb-ring .56s cubic-bezier(.36,.02,.18,1) both; }
 .splash-ring-one { animation-delay: .44s; }.splash-ring-two { animation-delay: .66s; }.splash-ring-three { animation-delay: .88s; }
@@ -167,6 +167,106 @@ dialog { color: var(--ink); }.dialog-card { background: var(--surface); }.dialog
 .rb-profile-dialog-card { padding-bottom: calc(env(safe-area-inset-bottom,0px) + 28px); }.rb-setup-progress { display: grid; grid-template-columns: repeat(5,1fr); gap: 6px; }.rb-setup-progress span { height: 3px; border-radius: 99px; background: var(--cyan); }.rb-setup-progress span:first-child { background: var(--green); }.rb-dialog-intro, .rb-privacy-line { margin: 0; color: var(--muted); font-size: 10px; }.rb-profile-setup { margin: 0; padding: 0; border: 0; background: transparent; }.rb-field-pair, .rb-lab-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }.rb-profile-setup .field, .rb-lab-grid .field { min-width: 0; }.rb-profile-setup textarea { font-size: 16px; }.rb-privacy-line { padding-top: 8px; text-align: center; }
 .rb-reason-card section { display: grid; grid-template-columns: 28px minmax(0,1fr); gap: 10px; padding: 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-2); }.rb-reason-card section > span { color: var(--green-strong); font-size: 10px; font-weight: 700; }.rb-reason-card section h3 { margin: 0; font-size: 13px; }.rb-reason-card section p { margin: 5px 0 0; color: var(--muted); font-size: 11px; line-height: 1.5; }.rb-evidence-grade { align-self: start; padding: 7px 10px; border-radius: 99px; background: var(--violet-soft); color: #4E4A82; font-size: 10px; font-weight: 700; }
 .rb-labs-form fieldset { margin: 0; padding: 12px; border: 1px solid var(--line); border-radius: 12px; }.rb-labs-form legend { padding: 0 5px; font-size: 12px; font-weight: 700; }.rb-labs-form .field > span:first-child { font-size: 10px; }
+
+/* V8.1 readable type scale */
+small { font-size: 11px !important; line-height: 1.4; }
+.rb-screen-heading h1 { font-size: 25px; }
+.rb-screen-heading p, .rb-dialog-intro, .rb-privacy-line { font-size: 12px; }
+.eyebrow, .hero-label, .rb-card-kicker, .rb-interpretation-card > span { font-size: 11px; }
+.rb-section > h2, .rb-you-section > h2, .section-line h2 { font-size: 18px; }
+.rb-status-card strong, .rb-action-row strong, .rb-empty-inline strong { font-size: 13px; }
+.rb-status-card small, .rb-priority-card p, .rb-interpretation-card p, .rb-action-row small { font-size: 12px !important; }
+.rb-inline-button, .rb-outline-button, .text-button, .primary-small, .meal-add-button { font-size: 12px; }
+.rb-marker-row > span { font-size: 12px; }
+.rb-marker-row > strong { font-size: 13px; }
+.rb-marker-row > strong i, .rb-marker-row > small, .rb-empty-inline span { font-size: 11px; }
+.rb-interpretation-card > div strong, .rb-interpretation-card > div small, .rb-chip-list span { font-size: 11px; }
+.rb-segmented button { font-size: 11px; }
+.chart-heading h2 { font-size: 16px; }
+.rb-trend-card h2 { font-size: 13px; }
+.rb-trend-card strong { font-size: 16px; }
+.rb-chart-empty, .rb-insight-card span, .rb-insight-card p { font-size: 11px; }
+.rb-insight-card h2 { font-size: 16px; }
+.rb-week-summary h2, .rb-recovery-summary h2 { font-size: 15px; }
+.rb-week-summary strong { font-size: 14px; }
+.rb-week-summary span:nth-child(4) strong, .rb-week-summary small { font-size: 11px; }
+.rb-training-title h2 { font-size: 14px; }
+.rb-training-title small, .rb-training-cards dt { font-size: 11px; }
+.rb-training-cards dd { font-size: 12px; }
+.rb-recovery-summary small, .rb-recovery-summary p { font-size: 11px; }
+.rb-recovery-summary strong { font-size: 12px; }
+.coach-hero h2 { font-size: 23px; }
+.coach-hero > p:not(.coach-kicker), .recovery-card > p, .section-note { font-size: 13px; }
+.coach-tab, .goal-option strong, .muscle-option span, .exercise-copy strong { font-size: 13px; }
+.equipment-card span, .exercise-art-card strong, .manual-loggers > summary { font-size: 12px; }
+.rb-profile-card h2 { font-size: 18px; }
+.rb-profile-card p { font-size: 12px; }
+.rb-setting-list span, .rb-setting-list strong { font-size: 12px; }
+.rb-card-note { font-size: 12px; }
+.rb-plan-row strong { font-size: 13px; }
+.rb-plan-row small { font-size: 11px !important; }
+.rb-product-footer { font-size: 11px; }
+.tab small { font-size: 11px !important; }
+.field > span:first-child, .rb-labs-form .field > span:first-child { font-size: 12px; }
+.rb-reason-card section > span, .rb-evidence-grade { font-size: 11px; }
+.rb-reason-card section h3 { font-size: 14px; }
+.rb-reason-card section p { font-size: 12px; }
+.guide-block h3 { font-size: 15px; }
+.guide-block ul, .protocol-steps { font-size: 13px; }
+.profile-facts dl > div, .model-dialog p, .protocol-summary { font-size: 14px; }
+.toast { font-size: 13px; }
+
+.rb-theme-control { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 6px; margin-top: 10px; padding: 5px; border: 1px solid var(--line); border-radius: 13px; background: var(--surface-2); }
+.rb-theme-control button { display: flex; min-width: 0; min-height: 46px; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: 10px; background: transparent; color: var(--muted); font-size: 13px; font-weight: 700; cursor: pointer; }
+.rb-theme-control button.is-active { background: var(--surface); color: var(--green-strong); box-shadow: 0 5px 16px rgba(13,27,42,.08); }
+.rb-theme-control svg { width: 20px; height: 20px; flex: 0 0 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+html[data-theme="dark"] {
+  --bg: #08121D;
+  --surface: #0F1D2B;
+  --surface-2: #152534;
+  --surface-3: #1B2E3E;
+  --ink: #F3F7FA;
+  --muted: #BAC5CE;
+  --subtle: #91A1AE;
+  --line: #243949;
+  --line-strong: #385266;
+  --green: #35C2C2;
+  --green-strong: #68D9D9;
+  --green-soft: #123A40;
+  --cyan: #234A56;
+  --violet: #9A94D6;
+  --violet-soft: #2B2D50;
+  --danger: #FF9999;
+  --warning: #E7B467;
+  --shadow: 0 16px 48px rgba(0,0,0,.3);
+}
+html[data-theme="dark"] .opening-splash { background: radial-gradient(circle at 50% 42%,rgba(35,74,86,.66),rgba(8,18,29,0) 36%),var(--bg); }
+html[data-theme="dark"] .screen-heading.rb-screen-heading { border-bottom-color: rgba(36,57,73,.9); background: rgba(8,18,29,.9); }
+html[data-theme="dark"] .tab-bar { border-color: rgba(56,82,102,.9); background: rgba(15,29,43,.95); box-shadow: 0 13px 36px rgba(0,0,0,.35); }
+html[data-theme="dark"] .dialog-heading { background: linear-gradient(180deg,var(--surface) 86%,rgba(15,29,43,0)); }
+html[data-theme="dark"] .rb-interpretation-card,
+html[data-theme="dark"] .rb-insight-card { background: #102D34; }
+html[data-theme="dark"] .rb-chip-list span,
+html[data-theme="dark"] .rb-evidence-grade { color: #D8D5FF; }
+html[data-theme="dark"] .bmi-card,
+html[data-theme="dark"] .rb-avatar,
+html[data-theme="dark"] .toast { background: #07111B; color: #F6F8FA; }
+html[data-theme="dark"] .meditation-outcomes span,
+html[data-theme="dark"] .wim-guide-head > span,
+html[data-theme="dark"] .wim-retentions span { border-color: var(--line); background: var(--surface-2); color: var(--green-strong); }
+html[data-theme="dark"] .safety-critical,
+html[data-theme="dark"] .guide-errors,
+html[data-theme="dark"] .protocol-safety { border-color: rgba(255,153,153,.28); background: #2A1B20; }
+html[data-theme="dark"] .grade-b { background: #203248; color: #AFCFF6; }
+html[data-theme="dark"] .grade-c { background: #3A3020; color: #F1C77F; }
+html[data-theme="dark"] .session-day.mix-day { background: #252C32; }
+html[data-theme="dark"] .session-day.mix-day span { color: #E3BA78; }
+html[data-theme="dark"] .image-action { background: rgba(15,29,43,.94); box-shadow: 0 7px 20px rgba(0,0,0,.26); }
+html[data-theme="dark"] .rb-theme-control button.is-active { box-shadow: 0 5px 16px rgba(0,0,0,.25); }
+html[data-theme="dark"] .rb-priority-card img,
+html[data-theme="dark"] .rb-interpretation-card img,
+html[data-theme="dark"] .rb-insight-card img { filter: saturate(1.08) brightness(1.12); }
 
 @media (max-width: 359px) {
   main { padding-right: 12px; padding-left: 12px; }
