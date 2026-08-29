@@ -251,6 +251,7 @@ html[data-theme="dark"] .screen-heading.rb-screen-heading { border-bottom-color:
 html[data-theme="dark"] .tab-bar { border-color: rgba(56,82,102,.9); background: rgba(15,29,43,.95); box-shadow: 0 13px 36px rgba(0,0,0,.35); }
 html[data-theme="dark"] .dialog-heading { background: linear-gradient(180deg,var(--surface) 86%,rgba(15,29,43,0)); }
 html[data-theme="dark"] .coach-tabs { border-color: var(--line-strong); background: rgba(15,29,43,.95); box-shadow: 0 8px 24px rgba(0,0,0,.24); }
+html[data-theme="dark"] .coach-hero { background: #07111B; }
 html[data-theme="dark"] .coach-cta { background: var(--green); color: #07111B; }
 html[data-theme="dark"] .rb-interpretation-card,
 html[data-theme="dark"] .rb-insight-card { background: #102D34; }
