@@ -1,15 +1,15 @@
-const CACHE_NAME = "rootbody-v8-recovery-v55";
+const CACHE_NAME = "rootbody-v8-recovery-v56";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./styles.css?v=55",
-  "./v8.css?v=55",
-  "./food-data.js?v=55",
-  "./coach-data.js?v=55",
-  "./health-engine.js?v=55",
-  "./app.js?v=55",
-  "./coach.js?v=55",
-  "./intelligence.js?v=55",
+  "./styles.css?v=56",
+  "./v8.css?v=56",
+  "./food-data.js?v=56",
+  "./coach-data.js?v=56",
+  "./health-engine.js?v=56",
+  "./app.js?v=56",
+  "./coach.js?v=56",
+  "./intelligence.js?v=56",
   "./manifest.webmanifest",
   "./brand/rootbody-symbol.svg",
   "./brand/rootbody-logo.svg",
@@ -102,7 +102,7 @@ async function networkFirstNavigation(request) {
 
     const html = await response.clone().text();
     const isCompleteDocument = /^\s*<!doctype html>/i.test(html)
-      && html.includes("./styles.css?v=55")
+      && /<link\b[^>]*href=["']\.\/styles\.css(?:\?v=\d+)?["']/i.test(html)
       && html.includes('class="app-shell"')
       && /<\/html>\s*$/i.test(html);
 
