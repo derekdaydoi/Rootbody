@@ -1,15 +1,15 @@
-const CACHE_NAME = "rootbody-v8-theme-contrast-v54";
+const CACHE_NAME = "rootbody-v8-recovery-v55";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./styles.css?v=54",
-  "./v8.css?v=54",
-  "./food-data.js?v=54",
-  "./coach-data.js?v=54",
-  "./health-engine.js?v=54",
-  "./app.js?v=54",
-  "./coach.js?v=54",
-  "./intelligence.js?v=54",
+  "./styles.css?v=55",
+  "./v8.css?v=55",
+  "./food-data.js?v=55",
+  "./coach-data.js?v=55",
+  "./health-engine.js?v=55",
+  "./app.js?v=55",
+  "./coach.js?v=55",
+  "./intelligence.js?v=55",
   "./manifest.webmanifest",
   "./brand/rootbody-symbol.svg",
   "./brand/rootbody-logo.svg",
@@ -95,19 +95,36 @@ self.addEventListener("activate", (event) => {
   );
 });
 
+async function networkFirstNavigation(request) {
+  try {
+    const response = await fetch(request, { cache: "no-store" });
+    if (!response.ok) throw new Error(`Navigation failed: ${response.status}`);
+
+    const html = await response.clone().text();
+    const isCompleteDocument = /^\s*<!doctype html>/i.test(html)
+      && html.includes("./styles.css?v=55")
+      && html.includes('class="app-shell"')
+      && /<\/html>\s*$/i.test(html);
+
+    if (!isCompleteDocument) throw new Error("Navigation document is incomplete");
+
+    const cache = await caches.open(CACHE_NAME);
+    await cache.put("./index.html", response.clone());
+    return response;
+  } catch (error) {
+    const cached = await caches.match("./index.html");
+    if (cached) return cached;
+    throw error;
+  }
+}
+
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
 
   if (event.request.mode === "navigate") {
-    event.respondWith(
-      fetch(event.request).then((response) => {
-        const copy = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put("./index.html", copy));
-        return response;
-      }).catch(() => caches.match("./index.html"))
-    );
+    event.respondWith(networkFirstNavigation(event.request));
     return;
   }
 

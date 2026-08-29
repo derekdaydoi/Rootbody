@@ -141,7 +141,7 @@ Mở `http://localhost:8765`.
 
 ## Deploy
 
-Workflow `.github/workflows/pages.yml` deploy nhánh `main` lên GitHub Pages. Service Worker dùng cache riêng `rootbody-v8-theme-contrast-v54` để nhận đúng theme, contrast, typography và icon mới.
+Workflow `.github/workflows/pages.yml` deploy nhánh `main` lên GitHub Pages. Service Worker dùng cache riêng `rootbody-v8-recovery-v55`, ưu tiên mạng cho tài liệu điều hướng và chỉ lưu HTML đã vượt qua kiểm tra cấu trúc tối thiểu.
 
 ## Brand
 
