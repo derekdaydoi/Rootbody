@@ -329,31 +329,14 @@
   }
 
   function applyTheme(theme, persist = true) {
-    const next = theme === "dark" ? "dark" : "light";
-    document.documentElement.dataset.theme = next;
-    document.documentElement.style.colorScheme = next;
+    document.documentElement.dataset.theme = "light";
+    document.documentElement.style.colorScheme = "light";
     const meta = $("[data-theme-color]");
-    if (meta) meta.setAttribute("content", next === "dark" ? "#08121D" : "#F6F8FA");
+    if (meta) meta.setAttribute("content", "#F6F8FA");
     $$('[data-rootbody-mark]').forEach((image) => {
-      image.setAttribute("src", next === "dark" ? "./brand/rootbody-mark-dark.svg" : "./brand/rootbody-mark.svg");
+      image.setAttribute("src", "./brand/rootbody-mark.svg");
     });
-    $$('[data-theme-option]').forEach((button) => {
-      const active = button.dataset.themeOption === next;
-      button.classList.toggle("is-active", active);
-      button.setAttribute("aria-pressed", String(active));
-    });
-    $$('[data-theme-toggle]').forEach((button) => {
-      const dark = next === "dark";
-      button.setAttribute("aria-pressed", String(dark));
-      button.setAttribute("aria-label", dark ? "Chuyển sang giao diện sáng" : "Chuyển sang giao diện tối");
-      button.setAttribute("title", dark ? "Giao diện sáng" : "Giao diện tối");
-    });
-    if (!persist) return;
-    try {
-      localStorage.setItem(THEME_KEY, next);
-    } catch (error) {
-      console.warn("Rootbody không lưu được giao diện trên thiết bị.", error);
-    }
+    try { localStorage.removeItem(THEME_KEY); } catch (error) {}
   }
 
   function dayData(date = localDateKey()) {
@@ -1272,20 +1255,12 @@
   requestAnimationFrame(resetInitialScroll);
   setTimeout(resetInitialScroll, 80);
 
-
-  const standaloneThemeMedia = matchMedia("(prefers-color-scheme: dark)");
-  const isStandalonePwa = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
-  if (isStandalonePwa) {
-    const syncStandaloneTheme = () => applyTheme(standaloneThemeMedia.matches ? "dark" : "light", false);
-    if (standaloneThemeMedia.addEventListener) standaloneThemeMedia.addEventListener("change", syncStandaloneTheme);
-    else if (standaloneThemeMedia.addListener) standaloneThemeMedia.addListener(syncStandaloneTheme);
-  }
-
+  applyTheme("light", false);
   renderAll();
   navigate(location.hash.slice(1) || "today");
 
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js?v=69").catch((error) => console.warn("Service worker chưa sẵn sàng.", error)));
+    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js?v=70").catch((error) => console.warn("Service worker chưa sẵn sàng.", error)));
   }
 })();
 

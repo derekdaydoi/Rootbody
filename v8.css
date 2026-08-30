@@ -583,6 +583,27 @@ html[data-theme="dark"] .screen-heading.rb-screen-heading::after {
 
 
 
-/* iOS standalone shell v69 */
-html.standalone-pwa [data-theme-toggle],
-html.standalone-pwa [data-theme-option] { display: none !important; }
+
+
+/* Rootbody v70 — light-only product shell */
+html { color-scheme: light !important; }
+html[data-theme="dark"] {
+  --bg: #F6F8FA;
+  --surface: #FFFFFF;
+  --surface-2: #F1F5F7;
+  --surface-3: #E8EFF2;
+  --ink: #0D1B2A;
+  --muted: #5F6976;
+  --subtle: #667381;
+  --line: #DCE5EA;
+  --line-strong: #C6D2D9;
+  --green: #0FA3A3;
+  --green-strong: #087B7B;
+  --green-soft: #E4F6F7;
+  --cyan: #BFE9F3;
+  --violet: #6F6AAE;
+  --violet-soft: #EFEEF8;
+  --danger: #A33838;
+  --warning: #A46412;
+}
+[data-theme-toggle], [data-theme-option], .rb-theme-control { display: none !important; }
