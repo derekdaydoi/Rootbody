@@ -304,25 +304,11 @@ html[data-theme="dark"] .rb-insight-card img { filter: saturate(1.08) brightness
 
 /* V8.3 — safe-area fade and compact analysis */
 :root { --rb-safe-top: env(safe-area-inset-top, 0px); }
-html.standalone-pwa { --rb-safe-top: max(env(safe-area-inset-top, 0px), 28px); }
+html.standalone-pwa { --rb-safe-top: 0px; }
 html { scroll-padding-top: calc(72px + var(--rb-safe-top)); }
 .app-shell { max-width: 100%; overflow-x: clip; }
 main, .view, .view.is-active { overflow: visible; }
 
-html.standalone-pwa body::before {
-  content: "";
-  pointer-events: none;
-  position: fixed;
-  z-index: 22;
-  top: 0;
-  right: 0;
-  left: 0;
-  height: calc(var(--rb-safe-top) + 18px);
-  background: linear-gradient(to bottom,
-    #08121D 0,
-    rgba(8,18,29,.98) calc(var(--rb-safe-top) - 1px),
-    rgba(8,18,29,0) 100%);
-}
 
 .screen-heading.rb-screen-heading {
   position: sticky;
@@ -429,7 +415,7 @@ button, a { touch-action: manipulation; }
 .rb-story-copy p { display: grid; gap: 3px; margin: 0; }
 .rb-story-copy p > span { color: var(--green-strong); font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 .rb-story-copy p > strong { color: var(--ink); font-size: 13px; font-weight: 500; line-height: 1.45; }
-.rb-priority-card img { right: -5px; bottom: -4px; width: 124px; height: 145px; opacity: .76; }
+.rb-priority-card img { right: -5px; bottom: -4px; width: 112px; height: 131px; opacity: .76; }
 
 .rb-action-list,
 .deficit-hero,
@@ -595,3 +581,8 @@ html[data-theme="dark"] .screen-heading.rb-screen-heading::after {
   background: linear-gradient(to bottom,rgba(8,18,29,.7),rgba(8,18,29,0));
 }
 
+
+
+/* iOS standalone shell v69 */
+html.standalone-pwa [data-theme-toggle],
+html.standalone-pwa [data-theme-option] { display: none !important; }

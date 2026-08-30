@@ -334,8 +334,6 @@
     document.documentElement.style.colorScheme = next;
     const meta = $("[data-theme-color]");
     if (meta) meta.setAttribute("content", next === "dark" ? "#08121D" : "#F6F8FA");
-    const statusBar = $("[data-status-bar]");
-    if (statusBar) statusBar.setAttribute("content", "black-translucent");
     $$('[data-rootbody-mark]').forEach((image) => {
       image.setAttribute("src", next === "dark" ? "./brand/rootbody-mark-dark.svg" : "./brand/rootbody-mark.svg");
     });
@@ -1274,11 +1272,20 @@
   requestAnimationFrame(resetInitialScroll);
   setTimeout(resetInitialScroll, 80);
 
+
+  const standaloneThemeMedia = matchMedia("(prefers-color-scheme: dark)");
+  const isStandalonePwa = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+  if (isStandalonePwa) {
+    const syncStandaloneTheme = () => applyTheme(standaloneThemeMedia.matches ? "dark" : "light", false);
+    if (standaloneThemeMedia.addEventListener) standaloneThemeMedia.addEventListener("change", syncStandaloneTheme);
+    else if (standaloneThemeMedia.addListener) standaloneThemeMedia.addListener(syncStandaloneTheme);
+  }
+
   renderAll();
   navigate(location.hash.slice(1) || "today");
 
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js?v=61").catch((error) => console.warn("Service worker chưa sẵn sàng.", error)));
+    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js?v=69").catch((error) => console.warn("Service worker chưa sẵn sàng.", error)));
   }
 })();
 

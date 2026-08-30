@@ -7,20 +7,21 @@
   <meta name="theme-color" content="#F6F8FA" data-theme-color>
   <meta name="description" content="Rootbody — đo lường, diễn giải, ưu tiên, can thiệp và kiểm chứng sức khỏe theo thời gian.">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" data-status-bar>
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" data-status-bar>
   <meta name="apple-mobile-web-app-title" content="Rootbody">
   <title>Rootbody</title>
-  <!-- Cache-upgrade bridge for clients running the v57 integrity guard: ./styles.css?v=57 -->
-  <link rel="manifest" href="./manifest.webmanifest">
+  <!-- Cache-upgrade bridge for clients running the v57 integrity guard: ./styles.css?v=69 -->
+  <link rel="manifest" href="./manifest.webmanifest?v=69">
   <link rel="icon" href="./brand/rootbody-symbol.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="./icon-180.png">
+  <link rel="apple-touch-icon" href="./icon-180.png?v=69">
   <script>
     (() => {
       try {
         const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
         if (standalone) document.documentElement.classList.add("standalone-pwa");
+        const systemTheme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
         const saved = localStorage.getItem("rootbody.theme");
-        const theme = saved === "dark" || saved === "light" ? saved : (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        const theme = standalone ? systemTheme : (saved === "dark" || saved === "light" ? saved : systemTheme);
         document.documentElement.dataset.theme = theme;
         document.documentElement.style.colorScheme = theme;
         document.querySelector("[data-theme-color]")?.setAttribute("content", theme === "dark" ? "#08121D" : "#F6F8FA");
@@ -29,8 +30,8 @@
       }
     })();
   </script>
-  <link rel="stylesheet" href="./styles.css?v=61">
-  <link rel="stylesheet" href="./v8.css?v=61">
+  <link rel="stylesheet" href="./styles.css?v=69">
+  <link rel="stylesheet" href="./v8.css?v=69">
 </head>
 <body class="splash-active">
   <div class="opening-splash" data-opening-splash aria-hidden="true">
@@ -39,7 +40,7 @@
         <path class="splash-seed" pathLength="1" d="M112 28V150" fill="none" stroke="#0FA3A3" stroke-width="14" stroke-linecap="round"/>
         <path class="splash-r" pathLength="1" d="M40 132V91C40 62 58 45 86 45H101" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
         <path class="splash-b" pathLength="1" d="M112 62H142C166 62 182 78 182 101C182 124 166 140 142 140H112" fill="none" stroke="#0FA3A3" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
-        <path class="splash-roots" pathLength="1" d="M112 150V228M112 157C97 168 82 176 61 183M112 163C98 181 88 199 84 214M112 157C127 168 142 176 163 183M112 163C126 181 136 199 140 214" fill="none" stroke="#0FA3A3" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="splash-roots" pathLength="1" d="M112 150C112 178 112 204 112 228M110 158C94 169 78 180 58 187M110 168C99 181 91 197 87 214M114 158C130 169 146 180 166 187M114 168C125 181 133 197 137 214" fill="none" stroke="#0FA3A3" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
         <g class="splash-ripples" fill="none" stroke="#BFE9F3" stroke-width="2.2">
           <ellipse cx="112" cy="238" rx="34" ry="10"/>
           <ellipse cx="112" cy="238" rx="52" ry="16"/>
@@ -689,12 +690,12 @@
   </dialog>
 
   <div class="toast" role="status" aria-live="polite" data-toast></div>
-  <script src="./food-data.js?v=61" defer></script>
-  <script src="./coach-data.js?v=61" defer></script>
-  <script src="./health-engine.js?v=61" defer></script>
-  <script src="./app.js?v=61" defer></script>
-  <script src="./coach.js?v=61" defer></script>
-  <script src="./intelligence.js?v=61" defer></script>
+  <script src="./food-data.js?v=69" defer></script>
+  <script src="./coach-data.js?v=69" defer></script>
+  <script src="./health-engine.js?v=69" defer></script>
+  <script src="./app.js?v=69" defer></script>
+  <script src="./coach.js?v=69" defer></script>
+  <script src="./intelligence.js?v=69" defer></script>
 </body>
 </html>
 
