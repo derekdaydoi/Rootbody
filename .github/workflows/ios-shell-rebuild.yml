@@ -26,8 +26,6 @@ jobs:
 
           VERSION = "69"
 
-          # index.html — make the install-time metadata correct, version assets,
-          # use the refined roots, and let standalone follow the iPhone theme.
           path = Path("index.html")
           s = path.read_text(encoding="utf-8")
           s = s.replace(
@@ -43,12 +41,10 @@ jobs:
           s = s.replace(old_roots, new_roots)
           for asset in ["styles.css", "v8.css", "food-data.js", "coach-data.js", "health-engine.js", "app.js", "coach.js", "intelligence.js"]:
               s = re.sub(rf'({re.escape(asset)})\?v=\d+', rf'\1?v={VERSION}', s)
-          s = s.replace('href="./manifest.webmanifest"', f'href="./manifest.webmanifest?v={VERSION}"')
-          s = s.replace('href="./icon-180.png"', f'href="./icon-180.png?v={VERSION}"')
+          s = re.sub(r'href="\.\/manifest\.webmanifest(?:\?v=\d+)?"', f'href="./manifest.webmanifest?v={VERSION}"', s)
+          s = re.sub(r'href="\.\/icon-180\.png(?:\?v=\d+)?"', f'href="./icon-180.png?v={VERSION}"', s)
           path.write_text(s, encoding="utf-8")
 
-          # app.js — runtime must never fight the install-time status-bar setting.
-          # Standalone follows system appearance and updates if Appearance changes.
           path = Path("app.js")
           s = path.read_text(encoding="utf-8")
           s = re.sub(
@@ -64,7 +60,6 @@ jobs:
           s = re.sub(r'navigator\.serviceWorker\.register\("\.\/sw\.js\?v=\d+"\)', f'navigator.serviceWorker.register("./sw.js?v={VERSION}")', s)
           path.write_text(s, encoding="utf-8")
 
-          # v8.css — remove the actual visual bug: hardcoded navy overlay + double safe area.
           path = Path("v8.css")
           s = path.read_text(encoding="utf-8")
           s = s.replace(
@@ -78,17 +73,14 @@ jobs:
               count=1,
               flags=re.S
           )
-          # Final V8.2 declaration is the one visible in the card: reduce exactly ~10%.
           s = s.replace(
               '.rb-priority-card img { right: -5px; bottom: -4px; width: 124px; height: 145px; opacity: .76; }',
               '.rb-priority-card img { right: -5px; bottom: -4px; width: 112px; height: 131px; opacity: .76; }'
           )
-          # Standalone uses system appearance, so hide controls that would create a contradictory state.
           if '/* iOS standalone shell v69 */' not in s:
               s += '''\n\n/* iOS standalone shell v69 */\nhtml.standalone-pwa [data-theme-toggle],\nhtml.standalone-pwa [data-theme-option] { display: none !important; }\n'''
           path.write_text(s, encoding="utf-8")
 
-          # manifest — version the launch route so a reinstall gets the rebuilt shell.
           path = Path("manifest.webmanifest")
           s = path.read_text(encoding="utf-8")
           s = re.sub(r'"start_url":\s*"[^"]+"', f'"start_url": "./?pwa={VERSION}"', s)
@@ -96,8 +88,7 @@ jobs:
               s = s.replace('{\n', '{\n  "id": "./",\n', 1)
           path.write_text(s, encoding="utf-8")
 
-          # sw.js — clean worker again. No HTML/CSS/JS rewriting.
-          sw = f'''const CACHE_NAME = "rootbody-v8-architecture-v{VERSION}";\n\nconst APP_SHELL = [\n  "./",\n  "./index.html",\n  "./styles.css?v={VERSION}",\n  "./v8.css?v={VERSION}",\n  "./food-data.js?v={VERSION}",\n  "./coach-data.js?v={VERSION}",\n  "./health-engine.js?v={VERSION}",\n  "./app.js?v={VERSION}",\n  "./coach.js?v={VERSION}",\n  "./intelligence.js?v={VERSION}",\n  "./manifest.webmanifest?v={VERSION}",\n  "./brand/rootbody-symbol.svg",\n  "./brand/rootbody-logo.svg",\n  "./brand/rootbody-wordmark.svg",\n  "./brand/rootbody-mark.svg",\n  "./brand/rootbody-mark-dark.svg",\n  "./brand/rootbody-lab.svg",\n  "./fonts/open-sans-vietnamese.woff2",\n  "./fonts/open-sans-latin-ext.woff2",\n  "./fonts/open-sans-latin.woff2",\n  "./icon-180.png?v={VERSION}",\n  "./icon-192.png",\n  "./icon-512.png"\n];\n\nself.addEventListener("install", (event) => {{\n  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)));\n  self.skipWaiting();\n}});\n\nself.addEventListener("activate", (event) => {{\n  event.waitUntil(\n    caches.keys()\n      .then((keys) => Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))))\n      .then(() => self.clients.claim())\n  );\n}});\n\nself.addEventListener("fetch", (event) => {{\n  if (event.request.method !== "GET") return;\n  const url = new URL(event.request.url);\n  if (url.origin !== self.location.origin) return;\n\n  if (event.request.mode === "navigate") {{\n    event.respondWith(\n      fetch(event.request, {{ cache: "no-store" }})\n        .then((response) => {{\n          if (!response.ok) throw new Error(`Navigation failed: ${{response.status}}`);\n          const copy = response.clone();\n          caches.open(CACHE_NAME).then((cache) => cache.put("./index.html", copy));\n          return response;\n        }})\n        .catch(() => caches.match("./index.html"))\n    );\n    return;\n  }}\n\n  event.respondWith(\n    fetch(event.request)\n      .then((response) => {{\n        if (response.ok) {{\n          const copy = response.clone();\n          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));\n        }}\n        return response;\n      }})\n      .catch(() => caches.match(event.request))\n  );\n}});\n'''
+          sw = f'''const CACHE_NAME = "rootbody-v8-architecture-v{VERSION}";\n\nconst APP_SHELL = [\n  "./",\n  "./index.html",\n  "./styles.css?v={VERSION}",\n  "./v8.css?v={VERSION}",\n  "./food-data.js?v={VERSION}",\n  "./coach-data.js?v={VERSION}",\n  "./health-engine.js?v={VERSION}",\n  "./app.js?v={VERSION}",\n  "./coach.js?v={VERSION}",\n  "./intelligence.js?v={VERSION}",\n  "./manifest.webmanifest?v={VERSION}",\n  "./brand/rootbody-symbol.svg",\n  "./brand/rootbody-logo.svg",\n  "./brand/rootbody-wordmark.svg",\n  "./brand/rootbody-mark.svg",\n  "./brand/rootbody-mark-dark.svg",\n  "./brand/rootbody-lab.svg",\n  "./fonts/open-sans-vietnamese.woff2",\n  "./fonts/open-sans-latin-ext.woff2",\n  "./fonts/open-sans-latin.woff2",\n  "./icon-180.png?v={VERSION}",\n  "./icon-192.png",\n  "./icon-512.png"\n];\n\nself.addEventListener("install", (event) => {{\n  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)));\n  self.skipWaiting();\n}});\n\nself.addEventListener("activate", (event) => {{\n  event.waitUntil(\n    caches.keys()\n      .then((keys) => Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))))\n      .then(() => self.clients.claim())\n  );\n}});\n\nself.addEventListener("fetch", (event) => {{\n  if (event.request.method !== "GET") return;\n  const url = new URL(event.request.url);\n  if (url.origin !== self.location.origin) return;\n\n  if (event.request.mode === "navigate") {{\n    event.respondWith(\n      fetch(event.request, {{ cache: "no-store" }})\n        .then((response) => {{\n          if (!response.ok) throw new Error("Navigation failed: " + response.status);\n          const copy = response.clone();\n          caches.open(CACHE_NAME).then((cache) => cache.put("./index.html", copy));\n          return response;\n        }})\n        .catch(() => caches.match("./index.html"))\n    );\n    return;\n  }}\n\n  event.respondWith(\n    fetch(event.request)\n      .then((response) => {{\n        if (response.ok) {{\n          const copy = response.clone();\n          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));\n        }}\n        return response;\n      }})\n      .catch(() => caches.match(event.request))\n  );\n}});\n'''
           Path("sw.js").write_text(sw, encoding="utf-8")
           PY
 
