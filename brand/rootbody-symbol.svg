@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
   <title id="title">Rootbody app icon</title>
-  <desc id="desc">Optically enlarged Rootbody rb-root monogram for app and Home Screen use.</desc>
-  <rect width="1024" height="1024" fill="#0D1B2A"/>
+  <desc id="desc">Optically enlarged Rootbody rb-root monogram on a white app-icon background.</desc>
+  <rect width="1024" height="1024" fill="#FFFFFF"/>
   <g transform="translate(74 14) scale(4)">
-    <path d="M28 132V89C28 57 49 39 82 39H101" fill="none" stroke="#F6F8FA" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M28 132V89C28 57 49 39 82 39H101" fill="none" stroke="#0D1B2A" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M112 24V150M112 62H146C173 62 191 80 191 103C191 128 173 145 146 145H112" fill="none" stroke="#0FA3A3" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M112 150C112 180 112 205 112 226M108 158C88 172 67 183 38 192M109 169C95 184 84 202 78 218M116 158C136 172 157 183 186 192M115 169C129 184 140 202 146 218" fill="none" stroke="#0FA3A3" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
