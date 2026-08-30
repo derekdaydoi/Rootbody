@@ -1,10 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 320" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 680" role="img" aria-labelledby="title desc">
   <title id="title">rootbody</title>
-  <desc id="desc">Rootbody compact signal mark with lowercase wordmark.</desc>
-  <g transform="translate(12 8) scale(.95)">
-    <g fill="none" stroke="#BFE9F3" stroke-linecap="round"><circle cx="160" cy="105" r="52" stroke-width="7"/><circle cx="160" cy="105" r="87" stroke-width="5" opacity=".72"/></g>
-    <circle cx="160" cy="105" r="22" fill="#0FA3A3"/>
-    <g fill="none" stroke="#0FA3A3" stroke-linecap="round" stroke-linejoin="round"><path d="M160 138v94" stroke-width="18"/><path d="M160 169c-37 0-61-16-81-42M160 169c37 0 61-16 81-42" stroke-width="15"/><path d="M160 224c-30 18-55 39-79 68M160 224v69M160 224c30 18 55 39 79 68" stroke-width="14"/></g>
+  <desc id="desc">Rootbody primary logo with human signal, branching roots and lowercase wordmark.</desc>
+  <g transform="translate(200 12)">
+    <g fill="none" stroke="#BFE9F3" stroke-linecap="round"><circle cx="180" cy="112" r="50" stroke-width="5"/><circle cx="180" cy="112" r="82" stroke-width="4" opacity=".78"/><circle cx="180" cy="112" r="108" stroke-width="3" opacity=".58"/></g>
+    <circle cx="180" cy="112" r="18" fill="#0FA3A3"/>
+    <g fill="none" stroke="#0FA3A3" stroke-linecap="round" stroke-linejoin="round"><path d="M180 139v84" stroke-width="8"/><path d="M173 145c-26 0-45-9-65-27M187 145c26 0 45-9 65-27" stroke-width="7"/></g>
+    <g fill="none" stroke="#0D1B2A" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M180 147c0 47 0 91-1 131" stroke-width="7"/><path d="M179 250c-12 27-34 48-63 62-25 12-46 30-63 54" stroke-width="7"/><path d="M181 250c12 27 34 48 63 62 25 12 46 30 63 54" stroke-width="7"/><path d="M180 269c0 42 0 79-1 119" stroke-width="7"/>
+      <path d="M151 289c-25-2-47-8-68-18-18-9-35-10-53-7M209 289c25-2 47-8 68-18 18-9 35-10 53-7" stroke-width="5"/><path d="M119 310c-15 20-26 42-34 68M241 310c15 20 26 42 34 68" stroke-width="5"/><path d="M99 320c-23-3-43-1-62 7M261 320c23-3 43-1 62 7" stroke-width="4"/><path d="M83 271c-11 14-21 30-29 48M277 271c11 14 21 30 29 48" stroke-width="4"/><path d="M155 291c-12 29-18 60-20 94M205 291c12 29 18 60 20 94" stroke-width="4"/><path d="M179 307c-12 18-23 37-32 58M181 307c12 18 23 37 32 58" stroke-width="4"/><path d="M115 312c-18 0-36 5-52 15M245 312c18 0 36 5 52 15" stroke-width="3.5"/>
+    </g>
+    <g fill="#0FA3A3"><circle cx="180" cy="164" r="3.4"/><circle cx="180" cy="179" r="3.4"/><circle cx="180" cy="194" r="3.4"/><circle cx="180" cy="209" r="3.4"/></g>
   </g>
-  <text x="338" y="206" font-family="'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="150" font-weight="400" letter-spacing="-9"><tspan fill="#0D1B2A">root</tspan><tspan fill="#0FA3A3">body</tspan></text>
+  <text x="380" y="606" text-anchor="middle" font-family="'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="126" font-weight="400" letter-spacing="-7"><tspan fill="#0D1B2A">root</tspan><tspan fill="#0FA3A3">body</tspan></text>
 </svg>

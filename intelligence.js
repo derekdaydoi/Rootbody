@@ -36,7 +36,7 @@
     const profileHost = $("[data-profile-dialog-body]");
     if (profileForm && profileHost && !profileHost.contains(profileForm)) profileHost.append(profileForm);
     const labPanel = $("#coachLab");
-    const labHost = $("[data-you-experiments]");
+    const labHost = $("[data-lab-host]");
     if (labPanel && labHost && !labHost.contains(labPanel)) {
       labPanel.hidden = false;
       labPanel.removeAttribute("data-activity-panel");
@@ -143,7 +143,7 @@
     setText("[data-strength-volume]", week.workoutSets ? `${week.workoutSets} set hoàn tất` : "Chưa đủ set đã log");
     setText("[data-run-sessions]", `${week.runSessions} buổi`);
     setText("[data-run-distance]", week.runDistanceKm ? `${decimal.format(week.runDistanceKm)} km` : "Chưa có quãng đường");
-    setText("[data-run-pace]", week.pace ? formatPace(week.pace) : "—");
+    setText("[data-run-pace]", week.aerobicMinutes ? `${integer.format(week.aerobicMinutes)} phút` : "Chưa đủ dữ liệu");
     setText("[data-sport-sessions]", `${week.sportSessions} buổi`);
     setText("[data-sport-duration]", week.sportMinutes ? `${integer.format(week.sportMinutes)} phút` : "Chưa có thời lượng");
     setText("[data-training-rhr]", state.profile.restingHr ? `${integer.format(state.profile.restingHr)} bpm` : "—");
@@ -171,6 +171,8 @@
     const sleepSeries = Object.entries(state.coach?.recoveryByDate || {}).map(([date, item]) => ({ date, value: item.sleepHours })).filter((item) => within(item.date));
     renderSparkline("[data-sleep-chart]", sleepSeries, (item) => item.value, "giờ");
     setLatest("[data-sleep-latest]", sleepSeries, (item) => `${decimal.format(item.value)} giờ`);
+    const latestSleep = Object.entries(state.coach?.recoveryByDate || {}).sort(([a], [b]) => a.localeCompare(b)).at(-1)?.[1];
+    setText("[data-sleep-continuity]", ({ continuous: "Ngủ một mạch", woke_once: "Thức dậy 1 lần", fragmented: "Thức dậy nhiều lần" })[latestSleep?.sleepContinuity] || "Chưa ghi độ liền mạch");
 
     const loadSeries = (state.coach?.workoutHistory || []).map((item) => ({ date: String(item.completedAt).slice(0, 10), value: item.minutes })).filter((item) => within(item.date));
     renderSparkline("[data-load-chart]", loadSeries, (item) => item.value, "phút");

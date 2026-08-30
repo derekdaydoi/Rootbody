@@ -12,11 +12,11 @@ Live: [derekdaydoi.github.io/Rootbody](https://derekdaydoi.github.io/Rootbody/)
 
 ### 5 màn hình chính
 
-- **Hôm nay:** bốn health domain, ưu tiên hiện tại, hành động hôm nay, cân bằng năng lượng và gợi ý bữa ăn.
-- **Phân tích:** BMI, waist-to-height ratio, huyết áp, bối cảnh gan do người dùng nhập, interpretation và evidence grade.
-- **Tập luyện:** summary tuần, Strength/Gym, Running, Sport, recovery gate, giáo án theo mục tiêu và log vận động thủ công.
-- **Xu hướng:** cân nặng, bước chân, vòng eo, resting heart rate, giấc ngủ, thời lượng tập và 5K pace khi có đủ dữ liệu.
-- **Bạn:** hồ sơ, mục tiêu, kế hoạch, dinh dưỡng/phục hồi, local data và Experiments (meditation/Wim Hof/Biohack Lab).
+- **Hôm nay:** kể mạch `vấn đề → dữ kiện → ý nghĩa → việc cần làm`, sau đó mới tới cân bằng năng lượng và gợi ý bữa ăn.
+- **Phân tích:** BMI, waist-to-height ratio, huyết áp, xu hướng cân/bước/vòng eo/resting heart rate, thời lượng và độ liền mạch của giấc ngủ, bối cảnh gan do người dùng nhập và evidence grade.
+- **Tập luyện:** summary tuần, recovery gate và thư viện bài tập gợi ý theo mục tiêu + tối đa hai nhóm cơ ưu tiên. App không ép người dùng vào một lịch chia buổi cố định.
+- **Lab:** tĩnh tâm 10 phút, caffeine guardrail, ánh sáng ban ngày và Wim Hof có giải thích cơ chế + safety gate. Không có cold-water protocol.
+- **Bạn:** hồ sơ, mục tiêu, dinh dưỡng/phục hồi, giao diện và trạng thái local data.
 
 Giao diện hỗ trợ Light/Dark, ghi nhớ lựa chọn ngay trên thiết bị. Nút đổi nhanh nằm ở góc phải màn hình Hôm nay; control đầy đủ nằm trong tab Bạn. Typography dùng scale tối thiểu 11 px cho nhãn phụ và 16 px cho body để vẫn đọc được ở màn hình 320 px.
 
@@ -58,9 +58,8 @@ activity_net_kcal = floor_to_10((MET - 1) × 3.5 × weight_kg / 200 × minutes)
 ### Training và recovery
 
 - Ba mục tiêu: `Giảm mỡ`, `Giảm mỡ + tăng cơ`, `Tăng cơ toàn diện`.
-- Giáo án 2/3/4 buổi tạ, 30/45/60 phút; nhánh 4 buổi dùng Upper/Lower A/B.
-- Tối đa hai nhóm cơ ưu tiên; nhóm còn lại vẫn có maintenance volume.
-- Prescription gồm set, rep, RIR, rest và double progression.
+- Người dùng chọn mục tiêu và tối đa hai nhóm cơ; Rootbody sắp xếp danh sách bài phù hợp để người dùng tự chọn và tự tập.
+- Prescription gợi ý gồm set, rep, RIR và rest; không biến list bài tập thành lịch bắt buộc.
 - Ảnh kỹ thuật có người ở hai pha, dùng `object-fit: contain`; phần ảnh kết thúc trước Setup/Cues/Lỗi cần tránh.
 - Recovery gate dùng sleep, self-rated energy, soreness, illness, sharp pain và red flags; không tạo “readiness score” giả chính xác.
 
@@ -93,7 +92,7 @@ Không dùng framework hoặc build step; GitHub Pages phục vụ file tĩnh.
 
 ## Data local-only
 
-State hiện tại nằm ở `localStorage["rootbody.device.v1"]`:
+State hiện tại nằm ở `localStorage["rootbody.device.v2"]`:
 
 ```text
 profile
@@ -112,7 +111,7 @@ coach.workoutHistory[]
 coach.protocolLogs[]
 ```
 
-Không migration dữ liệu V1–V5. Khi bản này chạy lần đầu, các key `rootbody.v1` đến `rootbody.v5` bị xóa và app khởi tạo state mới. Mọi lần người dùng bấm lưu hoặc hoàn tất một hành động, state mới được ghi trực tiếp vào `localStorage` của thiết bị.
+Không migration dữ liệu cũ. Khi bản này chạy lần đầu, `rootbody.device.v1` và các key `rootbody.v1` đến `rootbody.v5` bị xóa, sau đó app khởi tạo state mới. Mọi lần người dùng bấm lưu hoặc hoàn tất một hành động, state mới được ghi trực tiếp vào `localStorage` của thiết bị.
 
 ## Privacy
 
@@ -141,7 +140,7 @@ Mở `http://localhost:8765`.
 
 ## Deploy
 
-Workflow `.github/workflows/pages.yml` deploy nhánh `main` lên GitHub Pages. Service Worker dùng cache riêng `rootbody-v8-recovery-v57`, ưu tiên mạng cho tài liệu điều hướng và chỉ lưu HTML đã vượt qua kiểm tra cấu trúc tối thiểu.
+Workflow `.github/workflows/pages.yml` deploy nhánh `main` lên GitHub Pages. Service Worker dùng cache riêng `rootbody-v8-architecture-v58`, ưu tiên mạng cho tài liệu điều hướng và chỉ lưu HTML đã vượt qua kiểm tra cấu trúc tối thiểu.
 
 ## Brand
 

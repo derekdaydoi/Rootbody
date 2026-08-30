@@ -175,6 +175,47 @@
     }
   }
 
+  function renderRecommendations() {
+    const config = settings();
+    const goal = catalog.goals[config.goal] || catalog.goals.recomp;
+    $$('[data-recommendation-goal]').forEach((button) => {
+      const active = button.dataset.recommendationGoal === config.goal;
+      button.classList.toggle("is-active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+
+    const selectedMuscles = new Set(config.priorityMuscles || []);
+    const count = $("[data-recommendation-muscle-count]");
+    if (count) count.textContent = `${selectedMuscles.size}/2 nhóm`;
+    const muscles = $("[data-recommendation-muscles]");
+    if (muscles) muscles.innerHTML = Object.entries(catalog.muscleGroups).map(([id, muscle]) => {
+      const active = selectedMuscles.has(id);
+      return `<button class="muscle-option${active ? " is-active" : ""}" type="button" data-recommendation-muscle="${escapeHtml(id)}" aria-pressed="${active}"><span>${escapeHtml(muscle.short)}</span></button>`;
+    }).join("");
+
+    const scored = Object.entries(catalog.exercises).map(([id, exercise], index) => {
+      const muscleMatch = (exercise.muscles || []).some((muscle) => selectedMuscles.has(muscle));
+      const cardio = exercise.kind === "cardio";
+      let score = exercise.role === "compound" ? 35 : exercise.role === "accessory" ? 20 : 12;
+      if (muscleMatch) score += 120;
+      if (config.goal === "fat") score += cardio ? 100 : exercise.role === "compound" ? 35 : 0;
+      if (config.goal === "recomp") score += cardio ? 38 : 45;
+      if (config.goal === "muscle") score += cardio ? -200 : 70;
+      return { id, exercise, score, index };
+    }).sort((a, b) => b.score - a.score || a.index - b.index).slice(0, config.goal === "muscle" ? 10 : 9);
+
+    const note = $("[data-recommendation-note]");
+    if (note) note.textContent = goal.blurb.replace(/\b\d+ buổi\b/gi, "các buổi");
+    const list = $("[data-recommendation-exercises]");
+    if (!list) return;
+    list.innerHTML = scored.map(({ id, exercise }) => {
+      const prescription = prescriptionFor(exercise, config);
+      const planned = { ...exercise, id, sets: prescription.sets, reps: exercise.kind === "timed" ? "20–45 giây" : prescription.reps, rir: prescription.rir, rest: prescription.rest };
+      const muscleNames = (exercise.muscles || []).slice(0, 3).map((muscle) => catalog.muscleGroups[muscle]?.short).filter(Boolean).join(" · ");
+      return `<button class="rb-exercise-card" type="button" data-coach-action="exercise-guide" data-exercise-id="${escapeHtml(id)}"><span class="rb-exercise-image"><img src="${escapeHtml(exercise.formImage || exercise.image)}" alt="Minh họa bài ${escapeHtml(exercise.name)}"></span><span class="rb-exercise-info"><strong>${escapeHtml(exercise.name)}</strong><small>${escapeHtml(muscleNames)}</small><b>${escapeHtml(prescriptionText(planned))}</b></span><span class="rb-exercise-arrow" aria-hidden="true">↗</span></button>`;
+    }).join("");
+  }
+
   function renderPlan() {
     const config = settings();
     const goal = catalog.goals[config.goal];
@@ -245,7 +286,8 @@
       } else if (lastMeditation) status.textContent = "Đã hoàn thành phiên gần nhất";
       else status.textContent = "Chưa có phiên";
     }
-    $("[data-protocol-list]").innerHTML = catalog.protocols.filter((protocol) => protocol.category !== "meditation").map((protocol) => {
+    const visibleIds = new Set(["caffeine_guardrail", "daylight", "wim_hof"]);
+    $("[data-protocol-list]").innerHTML = catalog.protocols.filter((protocol) => visibleIds.has(protocol.id)).map((protocol) => {
       const last = [...logs].reverse().find((item) => item.id === protocol.id);
       const status = last ? `Đã làm ${new Intl.DateTimeFormat("vi-VN", { day: "2-digit", month: "2-digit" }).format(new Date(last.completedAt))}` : protocol.tag;
       return `<article class="protocol-card" data-protocol-card><div class="protocol-card-head"><span class="grade-badge grade-${protocol.grade.toLowerCase()}" data-protocol-evidence>${protocol.grade}</span><span>${escapeHtml(status)}</span></div><h2>${escapeHtml(protocol.title)}</h2><p>${escapeHtml(protocol.dose)}</p><small>${escapeHtml(protocol.summary)}</small><button class="secondary-button" type="button" data-coach-action="protocol" data-protocol-id="${escapeHtml(protocol.id)}">Mở protocol</button></article>`;
@@ -258,6 +300,7 @@
     renderOverview();
     renderRecovery();
     renderPlan();
+    renderRecommendations();
     renderLab();
   }
 
@@ -265,6 +308,7 @@
     const form = $("[data-recovery-form]");
     const entry = coach().recoveryByDate[core.localDateKey()];
     form.elements.sleepHours.value = entry?.sleepHours ?? 7;
+    form.elements.sleepContinuity.value = entry?.sleepContinuity || "continuous";
     form.elements.energy.value = entry?.energy ?? 3;
     form.elements.soreness.value = entry?.soreness ?? 3;
     form.elements.illness.checked = Boolean(entry?.illness);
@@ -284,6 +328,7 @@
     }
     coach().recoveryByDate[core.localDateKey()] = {
       sleepHours: Math.round(sleepHours * 2) / 2,
+      sleepContinuity: ["continuous", "woke_once", "fragmented"].includes(form.elements.sleepContinuity.value) ? form.elements.sleepContinuity.value : "continuous",
       energy,
       soreness,
       illness: form.elements.illness.checked,
@@ -763,6 +808,32 @@
   }
 
   document.addEventListener("click", (event) => {
+    const recommendationGoal = event.target.closest("[data-recommendation-goal]");
+    if (recommendationGoal) {
+      const nextGoal = recommendationGoal.dataset.recommendationGoal;
+      if (settings().goal !== nextGoal) {
+        settings().goal = nextGoal;
+        const defaults = catalog.goals[nextGoal].defaults;
+        settings().daysPerWeek = defaults.strength;
+        settings().cardioDays = defaults.cardio;
+        settings().sportDays = defaults.sport;
+      }
+      core.save(false);
+      renderRecommendations();
+      return;
+    }
+    const recommendationMuscle = event.target.closest("[data-recommendation-muscle]");
+    if (recommendationMuscle) {
+      const priorities = settings().priorityMuscles || (settings().priorityMuscles = []);
+      const id = recommendationMuscle.dataset.recommendationMuscle;
+      const index = priorities.indexOf(id);
+      if (index >= 0) priorities.splice(index, 1);
+      else if (priorities.length >= 2) { core.showToast("Chọn tối đa 2 nhóm cơ ưu tiên."); return; }
+      else priorities.push(id);
+      core.save(false);
+      renderRecommendations();
+      return;
+    }
     const tab = event.target.closest("[data-activity-tab]");
     if (tab) { switchTab(tab.dataset.activityTab); return; }
     const goal = event.target.closest("[data-goal-option]");

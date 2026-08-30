@@ -1,9 +1,9 @@
 (() => {
   "use strict";
 
-  const STORAGE_KEY = "rootbody.device.v1";
+  const STORAGE_KEY = "rootbody.device.v2";
   const THEME_KEY = "rootbody.theme";
-  const LEGACY_STORAGE_KEYS = ["rootbody.v1", "rootbody.v2", "rootbody.v3", "rootbody.v4", "rootbody.v5"];
+  const LEGACY_STORAGE_KEYS = ["rootbody.device.v1", "rootbody.v1", "rootbody.v2", "rootbody.v3", "rootbody.v4", "rootbody.v5"];
   const MODEL_VERSION = "0.6";
   const KCAL_PER_KG = 7700;
   const number = new Intl.NumberFormat("vi-VN", { maximumFractionDigits: 1 });
@@ -204,6 +204,7 @@
       if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !item || typeof item !== "object") return;
       recoveryByDate[date] = {
         sleepHours: safeNumber(item.sleepHours, 0, 16, 7),
+        sleepContinuity: ["continuous", "woke_once", "fragmented"].includes(item.sleepContinuity) ? item.sleepContinuity : "continuous",
         energy: safeNumber(item.energy, 1, 5, 3),
         soreness: safeNumber(item.soreness, 0, 10, 3),
         illness: Boolean(item.illness), sharpPain: Boolean(item.sharpPain), redFlag: Boolean(item.redFlag),
@@ -333,6 +334,8 @@
     document.documentElement.style.colorScheme = next;
     const meta = $("[data-theme-color]");
     if (meta) meta.setAttribute("content", next === "dark" ? "#08121D" : "#F6F8FA");
+    const statusBar = $("[data-status-bar]");
+    if (statusBar) statusBar.setAttribute("content", next === "dark" ? "black-translucent" : "default");
     $$('[data-theme-option]').forEach((button) => {
       const active = button.dataset.themeOption === next;
       button.classList.toggle("is-active", active);
@@ -1272,6 +1275,6 @@
   navigate(location.hash.slice(1) || "today");
 
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js?v=57").catch((error) => console.warn("Service worker chưa sẵn sàng.", error)));
+    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js?v=58").catch((error) => console.warn("Service worker chưa sẵn sàng.", error)));
   }
 })();
