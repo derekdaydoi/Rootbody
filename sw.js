@@ -1,4 +1,4 @@
-const CACHE_NAME = "rootbody-v8-architecture-v61";
+const CACHE_NAME = "rootbody-v8-architecture-v62";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -53,30 +53,45 @@ const OPTIONAL_MEDIA = [
   "./exercise-art/reverse-crunch.webp",
   "./exercise-art/shoulder-press.webp",
   "./exercise-art/split-squat.webp",
-  "./exercise-art/stair-steady.webp"
-  ,"./exercise-form/assisted-pullup.webp"
-  ,"./exercise-form/bike-steady.webp"
-  ,"./exercise-form/calf-raise.webp"
-  ,"./exercise-form/chest-press.webp"
-  ,"./exercise-form/db-bench.webp"
-  ,"./exercise-form/db-curl.webp"
-  ,"./exercise-form/db-rdl.webp"
-  ,"./exercise-form/db-row.webp"
-  ,"./exercise-form/dead-bug.webp"
-  ,"./exercise-form/goblet-squat.webp"
-  ,"./exercise-form/hip-abduction.webp"
-  ,"./exercise-form/hip-adduction.webp"
-  ,"./exercise-form/incline-press.webp"
-  ,"./exercise-form/incline-walk.webp"
-  ,"./exercise-form/lateral-raise.webp"
-  ,"./exercise-form/plank.webp"
-  ,"./exercise-form/rear-delt-fly.webp"
-  ,"./exercise-form/reverse-crunch.webp"
-  ,"./exercise-form/shoulder-press.webp"
-  ,"./exercise-form/split-squat.webp"
-  ,"./exercise-form/stair-steady.webp"
-  ,"./exercise-form/triceps-extension.webp"
+  "./exercise-art/stair-steady.webp",
+  "./exercise-form/assisted-pullup.webp",
+  "./exercise-form/bike-steady.webp",
+  "./exercise-form/calf-raise.webp",
+  "./exercise-form/chest-press.webp",
+  "./exercise-form/db-bench.webp",
+  "./exercise-form/db-curl.webp",
+  "./exercise-form/db-rdl.webp",
+  "./exercise-form/db-row.webp",
+  "./exercise-form/dead-bug.webp",
+  "./exercise-form/goblet-squat.webp",
+  "./exercise-form/hip-abduction.webp",
+  "./exercise-form/hip-adduction.webp",
+  "./exercise-form/incline-press.webp",
+  "./exercise-form/incline-walk.webp",
+  "./exercise-form/lateral-raise.webp",
+  "./exercise-form/plank.webp",
+  "./exercise-form/rear-delt-fly.webp",
+  "./exercise-form/reverse-crunch.webp",
+  "./exercise-form/shoulder-press.webp",
+  "./exercise-form/split-squat.webp",
+  "./exercise-form/stair-steady.webp",
+  "./exercise-form/triceps-extension.webp"
 ];
+
+const OLD_SPLASH_ROOTS = '<path class="splash-roots" pathLength="1" d="M112 150V228M112 157C97 168 82 176 61 183M112 163C98 181 88 199 84 214M112 157C127 168 142 176 163 183M112 163C126 181 136 199 140 214" fill="none" stroke="#0FA3A3" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>';
+const NEW_SPLASH_ROOTS = '<path class="splash-roots" pathLength="1" d="M112 150C112 178 112 204 112 228M110 158C94 169 78 180 58 187M110 168C99 181 91 197 87 214M114 158C130 169 146 180 166 187M114 168C125 181 133 197 137 214" fill="none" stroke="#0FA3A3" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>';
+const MOTION_OVERRIDE = `<style id="rootbody-brand-v62">
+.splash-roots{animation-duration:.50s!important;animation-delay:.56s!important}
+.splash-wordmark{animation-delay:.94s!important}
+.splash-ripples{animation-duration:.64s!important;animation-delay:1.14s!important;opacity:.55}
+@media (prefers-reduced-motion: reduce){.splash-ripples{opacity:0!important}}
+</style>`;
+
+function transformBrandHtml(html) {
+  let next = html.replace(OLD_SPLASH_ROOTS, NEW_SPLASH_ROOTS);
+  if (!next.includes('id="rootbody-brand-v62"')) next = next.replace('</head>', `${MOTION_OVERRIDE}\n</head>`);
+  return next;
+}
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -109,9 +124,18 @@ async function networkFirstNavigation(request) {
 
     if (!isCompleteDocument) throw new Error("Navigation document is incomplete");
 
+    const transformedHtml = transformBrandHtml(html);
+    const headers = new Headers(response.headers);
+    headers.set("content-type", "text/html; charset=utf-8");
+    const transformedResponse = new Response(transformedHtml, {
+      status: response.status,
+      statusText: response.statusText,
+      headers
+    });
+
     const cache = await caches.open(CACHE_NAME);
-    await cache.put("./index.html", response.clone());
-    return response;
+    await cache.put("./index.html", transformedResponse.clone());
+    return transformedResponse;
   } catch (error) {
     const cached = await caches.match("./index.html");
     if (cached) return cached;
@@ -137,4 +161,3 @@ self.addEventListener("fetch", (event) => {
     }).catch(() => caches.match(event.request))
   );
 });
-

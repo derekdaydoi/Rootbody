@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 260" role="img" aria-labelledby="title desc">
   <title id="title">Rootbody rb monogram for dark surfaces</title>
-  <desc id="desc">A white lowercase r and teal b joined to a simplified root system.</desc>
+  <desc id="desc">A white lowercase r and teal b joined to a refined five-stroke root system.</desc>
   <path d="M40 132V91C40 62 58 45 86 45H101" fill="none" stroke="#F6F8FA" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M112 28V150M112 62H142C166 62 182 78 182 101C182 124 166 140 142 140H112M112 150V228M112 157C97 168 82 176 61 183M112 163C98 181 88 199 84 214M112 157C127 168 142 176 163 183M112 163C126 181 136 199 140 214" fill="none" stroke="#0FA3A3" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M112 28V150M112 62H142C166 62 182 78 182 101C182 124 166 140 142 140H112" fill="none" stroke="#0FA3A3" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M112 150C112 178 112 204 112 228M110 158C94 169 78 180 58 187M110 168C99 181 91 197 87 214M114 158C130 169 146 180 166 187M114 168C125 181 133 197 137 214" fill="none" stroke="#0FA3A3" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
-
