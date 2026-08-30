@@ -323,8 +323,9 @@
       sessionStorage.setItem("rootbody.profilePrompted", "1");
       setTimeout(() => core.openDialog("profileDialog"), 80);
     }
-  }, reduced ? 700 : 3150);
+  }, reduced ? 700 : 2300);
 
   arrangeStaticFlows();
   render();
 })();
+

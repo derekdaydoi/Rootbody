@@ -336,6 +336,9 @@
     if (meta) meta.setAttribute("content", next === "dark" ? "#08121D" : "#F6F8FA");
     const statusBar = $("[data-status-bar]");
     if (statusBar) statusBar.setAttribute("content", "black-translucent");
+    $$('[data-rootbody-mark]').forEach((image) => {
+      image.setAttribute("src", next === "dark" ? "./brand/rootbody-mark-dark.svg" : "./brand/rootbody-mark.svg");
+    });
     $$('[data-theme-option]').forEach((button) => {
       const active = button.dataset.themeOption === next;
       button.classList.toggle("is-active", active);
@@ -1275,7 +1278,7 @@
   navigate(location.hash.slice(1) || "today");
 
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js?v=59").catch((error) => console.warn("Service worker chưa sẵn sàng.", error)));
+    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js?v=61").catch((error) => console.warn("Service worker chưa sẵn sàng.", error)));
   }
 })();
 

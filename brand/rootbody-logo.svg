@@ -1,9 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 560" role="img" aria-labelledby="title desc">
-  <title id="title">rootbody</title><desc id="desc">Rootbody primary logo with human signal, compact roots and lowercase wordmark.</desc>
-  <g transform="translate(220 10)">
-    <g fill="none" stroke="#BFE9F3" stroke-linecap="round"><path d="M75 154A96 96 0 1 1 245 154" stroke-width="3.2" opacity=".82"/><path d="M99 145A70 70 0 1 1 221 145" stroke-width="3.5" opacity=".92"/><path d="M124 132A43 43 0 1 1 196 132" stroke-width="4.1"/></g><circle cx="160" cy="92" r="15" fill="#0FA3A3"/><g fill="none" stroke="#0FA3A3" stroke-linecap="round" stroke-linejoin="round"><path d="M160 111V200" stroke-width="6.4"/><path d="M154 118c-18 1-30 9-42 19-8 7-17 9-28 7M166 118c18 1 30 9 42 19 8 7 17 9 28 7" stroke-width="5.1"/></g><g fill="#0FA3A3"><circle cx="168" cy="143" r="2.8"/><circle cx="168" cy="157" r="2.8"/><circle cx="168" cy="171" r="2.8"/><circle cx="168" cy="185" r="2.8"/></g>
-    <g fill="none" stroke="#0D1B2A" stroke-linecap="round" stroke-linejoin="round"><path d="M160 198c0 21-1 40 0 58" stroke-width="6.1"/><path d="M158 199c-5 24-21 42-47 54-19 9-36 21-51 38" stroke-width="5.8"/><path d="M162 199c5 24 21 42 47 54 19 9 36 21 51 38" stroke-width="5.8"/><path d="M160 240v88" stroke-width="5.4"/><path d="M124 246c-20-2-38-7-55-15-14-7-28-8-43-6M196 246c20-2 38-7 55-15 14-7 28-8 43-6" stroke-width="4.1"/><path d="M109 255c-16 17-27 38-34 63M211 255c16 17 27 38 34 63" stroke-width="3.8"/><path d="M93 267c-18-2-35 1-50 9M227 267c18-2 35 1 50 9" stroke-width="3.2"/><path d="M71 232c-9 11-17 25-23 41M249 232c9 11 17 25 23 41" stroke-width="3"/><path d="M137 245c-10 24-15 50-16 78M183 245c10 24 15 50 16 78" stroke-width="3.2"/><path d="M158 267c-10 13-18 30-25 48M162 267c10 13 18 30 25 48" stroke-width="2.9"/><path d="M108 256c-16 1-31 6-45 15M212 256c16 1 31 6 45 15" stroke-width="2.6"/></g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 280" role="img" aria-labelledby="title desc">
+  <title id="title">rootbody</title>
+  <desc id="desc">Rootbody horizontal logo with the rb root monogram and lowercase wordmark.</desc>
+  <g transform="translate(10 4)">
+    <path d="M40 132V91C40 62 58 45 86 45H101" fill="none" stroke="#0D1B2A" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M112 28V150M112 62H142C166 62 182 78 182 101C182 124 166 140 142 140H112M112 150V228M112 157C97 168 82 176 61 183M112 163C98 181 88 199 84 214M112 157C127 168 142 176 163 183M112 163C126 181 136 199 140 214" fill="none" stroke="#0FA3A3" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
-  <text x="380" y="490" text-anchor="middle" font-family="'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="126" font-weight="400" letter-spacing="-7"><tspan fill="#0D1B2A">root</tspan><tspan fill="#0FA3A3">body</tspan></text>
+  <text x="250" y="171" font-family="'Helvetica Neue', Arial, sans-serif" font-size="118" font-weight="400" letter-spacing="-7"><tspan fill="#0D1B2A">root</tspan><tspan fill="#0FA3A3">body</tspan></text>
 </svg>
 
