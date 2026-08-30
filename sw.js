@@ -1,15 +1,15 @@
-const CACHE_NAME = "rootbody-v8-architecture-v58";
+const CACHE_NAME = "rootbody-v8-architecture-v59";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./styles.css?v=58",
-  "./v8.css?v=58",
-  "./food-data.js?v=58",
-  "./coach-data.js?v=58",
-  "./health-engine.js?v=58",
-  "./app.js?v=58",
-  "./coach.js?v=58",
-  "./intelligence.js?v=58",
+  "./styles.css?v=59",
+  "./v8.css?v=59",
+  "./food-data.js?v=59",
+  "./coach-data.js?v=59",
+  "./health-engine.js?v=59",
+  "./app.js?v=59",
+  "./coach.js?v=59",
+  "./intelligence.js?v=59",
   "./manifest.webmanifest",
   "./brand/rootbody-symbol.svg",
   "./brand/rootbody-logo.svg",
@@ -136,3 +136,4 @@ self.addEventListener("fetch", (event) => {
     }).catch(() => caches.match(event.request))
   );
 });
+

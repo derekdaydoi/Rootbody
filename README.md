@@ -140,10 +140,13 @@ Mở `http://localhost:8765`.
 
 ## Deploy
 
-Workflow `.github/workflows/pages.yml` deploy nhánh `main` lên GitHub Pages. Service Worker dùng cache riêng `rootbody-v8-architecture-v58`, ưu tiên mạng cho tài liệu điều hướng và chỉ lưu HTML đã vượt qua kiểm tra cấu trúc tối thiểu.
+Workflow `.github/workflows/pages.yml` deploy nhánh `main` lên GitHub Pages. Service Worker dùng cache riêng `rootbody-v8-architecture-v59`, ưu tiên mạng cho tài liệu điều hướng và chỉ lưu HTML đã vượt qua kiểm tra cấu trúc tối thiểu.
+
+V59 dựng lại logo theo hệ `signal → body → root`, thu gọn app icon, rút gọn card Diễn giải và dùng sticky app bar có blur/gradient fade. Ở chế độ standalone, safe area dùng `black-translucent` với lớp chuyển sắc để tránh đường cắt sáng/tối cứng khi đổi theme.
 
 ## Brand
 
 Màu: Deep Navy `#0D1B2A`, Signal Teal `#0FA3A3`, Soft Cyan `#BFE9F3`, Off White `#F6F8FA`, Muted Violet `#6F6AAE`; dark theme dùng navy surfaces và tăng độ sáng Teal/Cyan. UI dùng Open Sans self-hosted. App icon chỉ giữ signal, body và ba root-stroke lớn để đọc rõ ở kích thước Home Screen. Startup motion theo nhịp Rootflow và hỗ trợ `prefers-reduced-motion`.
 
 © Copyright from derekdaydoi
+

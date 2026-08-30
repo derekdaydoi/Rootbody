@@ -310,6 +310,82 @@ html[data-theme="dark"] .rb-insight-card img { filter: saturate(1.08) brightness
 }
 @keyframes rb-splash-screen-reduced { 0%,70% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
 
+/* V8.3 — safe-area fade and compact analysis */
+:root { --rb-safe-top: env(safe-area-inset-top, 0px); }
+html.standalone-pwa { --rb-safe-top: max(env(safe-area-inset-top, 0px), 28px); }
+html { scroll-padding-top: calc(72px + var(--rb-safe-top)); }
+.app-shell { max-width: 100%; overflow-x: clip; }
+main, .view, .view.is-active { overflow: visible; }
+
+html.standalone-pwa body::before {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  z-index: 22;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: calc(var(--rb-safe-top) + 18px);
+  background: linear-gradient(to bottom,
+    #08121D 0,
+    rgba(8,18,29,.98) calc(var(--rb-safe-top) - 1px),
+    rgba(8,18,29,0) 100%);
+}
+
+.screen-heading.rb-screen-heading {
+  position: sticky;
+  z-index: 20;
+  top: 0;
+  min-height: calc(66px + var(--rb-safe-top));
+  padding-top: calc(var(--rb-safe-top) + 13px);
+  border-bottom: 0;
+  background: rgba(246,248,250,.9);
+  -webkit-backdrop-filter: saturate(140%) blur(18px);
+  backdrop-filter: saturate(140%) blur(18px);
+  box-shadow: 0 7px 24px rgba(13,27,42,.028);
+}
+.screen-heading.rb-screen-heading::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  z-index: -1;
+  right: 0;
+  bottom: -18px;
+  left: 0;
+  height: 18px;
+  background: linear-gradient(to bottom,rgba(246,248,250,.7),rgba(246,248,250,0));
+}
+html[data-theme="dark"] .screen-heading.rb-screen-heading {
+  border-bottom: 0;
+  background: rgba(8,18,29,.92);
+  box-shadow: 0 7px 24px rgba(0,0,0,.08);
+}
+html[data-theme="dark"] .screen-heading.rb-screen-heading::after {
+  background: linear-gradient(to bottom,rgba(8,18,29,.7),rgba(8,18,29,0));
+}
+
+.rb-liver-section { margin-top: 34px; }
+.rb-liver-section .section-line { align-items: center; margin-bottom: 12px; }
+.rb-liver-section .section-line h2 { margin: 0; }
+.rb-liver-section .text-button { min-height: 42px; padding: 0 15px; border-radius: 14px; }
+
+.rb-interpretation-card {
+  min-height: 0;
+  margin-top: 20px;
+  padding: 20px;
+  background: linear-gradient(145deg,#EAF8F9,#F7FCFC);
+}
+.rb-interpretation-card img { display: none !important; }
+.rb-interpretation-card h2 { max-width: 100%; margin: 8px 0 7px; font-size: 20px; }
+.rb-interpretation-card p { max-width: 560px; }
+.rb-interpretation-card > div { margin-top: 11px; }
+.rb-interpretation-card .rb-inline-button { justify-self: start; }
+html[data-theme="dark"] .rb-interpretation-card { background: linear-gradient(145deg,#10323A,#102731); }
+
+@media (max-width: 359px) {
+  .rb-interpretation-card { padding-right: 18px; padding-left: 18px; }
+}
+
 /* V8.2 — single information architecture, Rootflow-style document scroll */
 :root {
   --radius-xl: 28px;
@@ -488,3 +564,42 @@ html[data-theme="dark"] .exercise-row img { mix-blend-mode: normal; filter: satu
   .rb-exercise-card { grid-template-columns: 78px minmax(0,1fr) 26px; gap: 10px; }
   .rb-exercise-image { width: 78px; height: 78px; }
 }
+
+/* Sticky app bar must come after the V8.2 overflow and theme overrides. */
+html { overflow-x: clip; overflow-y: auto; }
+body { overflow: visible; }
+main, .view, .view.is-active {
+  overflow-x: visible;
+  overflow-y: visible;
+}
+.screen-heading.rb-screen-heading {
+  z-index: 20;
+  top: 0;
+  min-height: calc(66px + var(--rb-safe-top));
+  padding-top: calc(var(--rb-safe-top) + 13px);
+  border-bottom: 0;
+  background: rgba(246,248,250,.9);
+  -webkit-backdrop-filter: saturate(140%) blur(18px);
+  backdrop-filter: saturate(140%) blur(18px);
+  box-shadow: 0 7px 24px rgba(13,27,42,.028);
+}
+.screen-heading.rb-screen-heading::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  z-index: -1;
+  right: 0;
+  bottom: -18px;
+  left: 0;
+  height: 18px;
+  background: linear-gradient(to bottom,rgba(246,248,250,.7),rgba(246,248,250,0));
+}
+html[data-theme="dark"] .screen-heading.rb-screen-heading {
+  border-bottom: 0;
+  background: rgba(8,18,29,.92);
+  box-shadow: 0 7px 24px rgba(0,0,0,.08);
+}
+html[data-theme="dark"] .screen-heading.rb-screen-heading::after {
+  background: linear-gradient(to bottom,rgba(8,18,29,.7),rgba(8,18,29,0));
+}
+

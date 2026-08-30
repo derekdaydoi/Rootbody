@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#F6F8FA" data-theme-color>
   <meta name="description" content="Rootbody — đo lường, diễn giải, ưu tiên, can thiệp và kiểm chứng sức khỏe theo thời gian.">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" data-status-bar>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" data-status-bar>
   <meta name="apple-mobile-web-app-title" content="Rootbody">
   <title>Rootbody</title>
   <!-- Cache-upgrade bridge for clients running the v57 integrity guard: ./styles.css?v=57 -->
@@ -17,51 +17,43 @@
   <script>
     (() => {
       try {
+        const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+        if (standalone) document.documentElement.classList.add("standalone-pwa");
         const saved = localStorage.getItem("rootbody.theme");
         const theme = saved === "dark" || saved === "light" ? saved : (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
         document.documentElement.dataset.theme = theme;
         document.documentElement.style.colorScheme = theme;
         document.querySelector("[data-theme-color]")?.setAttribute("content", theme === "dark" ? "#08121D" : "#F6F8FA");
-        document.querySelector("[data-status-bar]")?.setAttribute("content", theme === "dark" ? "black-translucent" : "default");
       } catch (error) {
         document.documentElement.dataset.theme = "light";
       }
     })();
   </script>
-  <link rel="stylesheet" href="./styles.css?v=58">
-  <link rel="stylesheet" href="./v8.css?v=58">
+  <link rel="stylesheet" href="./styles.css?v=59">
+  <link rel="stylesheet" href="./v8.css?v=59">
 </head>
 <body class="splash-active">
   <div class="opening-splash" data-opening-splash aria-hidden="true">
     <div class="splash-lockup">
       <span class="splash-halo"></span>
-      <svg class="splash-mark" viewBox="0 0 360 420" aria-hidden="true">
+      <svg class="splash-mark" viewBox="0 0 320 360" aria-hidden="true">
         <g class="splash-rings" fill="none" stroke="#BFE9F3" stroke-linecap="round">
-          <circle class="splash-ring splash-ring-one" cx="180" cy="112" r="50" stroke-width="5"/>
-          <circle class="splash-ring splash-ring-two" cx="180" cy="112" r="82" stroke-width="4" opacity=".78"/>
-          <circle class="splash-ring splash-ring-three" cx="180" cy="112" r="108" stroke-width="3" opacity=".58"/>
+          <path class="splash-ring splash-ring-three" d="M75 154A96 96 0 1 1 245 154" stroke-width="3.2" opacity=".82"/>
+          <path class="splash-ring splash-ring-two" d="M99 145A70 70 0 1 1 221 145" stroke-width="3.5" opacity=".92"/>
+          <path class="splash-ring splash-ring-one" d="M124 132A43 43 0 1 1 196 132" stroke-width="4.1"/>
         </g>
-        <circle class="splash-core" cx="180" cy="112" r="18" fill="#0FA3A3"/>
+        <circle class="splash-core" cx="160" cy="92" r="15" fill="#0FA3A3"/>
         <g class="splash-body" fill="none" stroke="#0FA3A3" stroke-linecap="round" stroke-linejoin="round">
-          <path pathLength="1" d="M180 139v84" stroke-width="8"/>
-          <path pathLength="1" d="M173 145c-26 0-45-9-65-27M187 145c26 0 45-9 65-27" stroke-width="7"/>
+          <path pathLength="1" d="M160 111V200" stroke-width="6.4"/>
+          <path pathLength="1" d="M154 118c-18 1-30 9-42 19-8 7-17 9-28 7M166 118c18 1 30 9 42 19 8 7 17 9 28 7" stroke-width="5.1"/>
         </g>
         <g class="splash-roots" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-          <path pathLength="1" d="M180 147c0 47 0 91-1 131" stroke-width="7"/>
-          <path pathLength="1" d="M179 250c-12 27-34 48-63 62-25 12-46 30-63 54" stroke-width="7"/>
-          <path pathLength="1" d="M181 250c12 27 34 48 63 62 25 12 46 30 63 54" stroke-width="7"/>
-          <path pathLength="1" d="M180 269c0 42 0 79-1 119" stroke-width="7"/>
-          <path pathLength="1" d="M151 289c-25-2-47-8-68-18-18-9-35-10-53-7M209 289c25-2 47-8 68-18 18-9 35-10 53-7" stroke-width="5"/>
-          <path pathLength="1" d="M119 310c-15 20-26 42-34 68M241 310c15 20 26 42 34 68" stroke-width="5"/>
-          <path pathLength="1" d="M99 320c-23-3-43-1-62 7M261 320c23-3 43-1 62 7" stroke-width="4"/>
-          <path pathLength="1" d="M83 271c-11 14-21 30-29 48M277 271c11 14 21 30 29 48" stroke-width="4"/>
-          <path pathLength="1" d="M155 291c-12 29-18 60-20 94M205 291c12 29 18 60 20 94" stroke-width="4"/>
-          <path pathLength="1" d="M179 307c-12 18-23 37-32 58M181 307c12 18 23 37 32 58" stroke-width="4"/>
-          <path pathLength="1" d="M115 312c-18 0-36 5-52 15M245 312c18 0 36 5 52 15" stroke-width="3.5"/>
+          <path pathLength="1" d="M160 198c0 21-1 40 0 58" stroke-width="6.1"/><path pathLength="1" d="M158 199c-5 24-21 42-47 54-19 9-36 21-51 38" stroke-width="5.8"/><path pathLength="1" d="M162 199c5 24 21 42 47 54 19 9 36 21 51 38" stroke-width="5.8"/><path pathLength="1" d="M160 240v88" stroke-width="5.4"/>
+          <path pathLength="1" d="M124 246c-20-2-38-7-55-15-14-7-28-8-43-6M196 246c20-2 38-7 55-15 14-7 28-8 43-6" stroke-width="4.1"/><path pathLength="1" d="M109 255c-16 17-27 38-34 63M211 255c16 17 27 38 34 63" stroke-width="3.8"/><path pathLength="1" d="M93 267c-18-2-35 1-50 9M227 267c18-2 35 1 50 9" stroke-width="3.2"/><path pathLength="1" d="M71 232c-9 11-17 25-23 41M249 232c9 11 17 25 23 41" stroke-width="3"/><path pathLength="1" d="M137 245c-10 24-15 50-16 78M183 245c10 24 15 50 16 78" stroke-width="3.2"/><path pathLength="1" d="M158 267c-10 13-18 30-25 48M162 267c10 13 18 30 25 48" stroke-width="2.9"/><path pathLength="1" d="M108 256c-16 1-31 6-45 15M212 256c16 1 31 6 45 15" stroke-width="2.6"/>
         </g>
         <g class="splash-signals" fill="#0FA3A3">
-          <circle cx="180" cy="164" r="3.4"/><circle cx="180" cy="179" r="3.4"/>
-          <circle cx="180" cy="194" r="3.4"/><circle cx="180" cy="209" r="3.4"/>
+          <circle cx="168" cy="143" r="2.8"/><circle cx="168" cy="157" r="2.8"/>
+          <circle cx="168" cy="171" r="2.8"/><circle cx="168" cy="185" r="2.8"/>
         </g>
       </svg>
       <div class="splash-wordmark"><span>root</span><strong>body</strong></div>
@@ -178,7 +170,7 @@
           </div>
         </section>
 
-        <section class="rb-section" aria-labelledby="liverTitle">
+        <section class="rb-section rb-liver-section" aria-labelledby="liverTitle">
           <div class="section-line"><h2 id="liverTitle">Bối cảnh gan</h2><button class="text-button" type="button" data-open-dialog="labsDialog">Nhập kết quả</button></div>
           <div class="rb-card rb-liver-card" data-liver-context></div>
         </section>
@@ -189,7 +181,6 @@
           <p data-analysis-copy>Hoàn thiện hồ sơ để Rootbody bắt đầu phân loại tín hiệu.</p>
           <div><strong data-analysis-risk>Chưa đủ dữ liệu</strong><small data-analysis-grade>Chưa xếp hạng</small></div>
           <button class="rb-inline-button" type="button" data-open-reason>Xem căn cứ</button>
-          <img src="./brand/rootbody-mark.svg" alt="" aria-hidden="true">
         </article>
 
         <section class="rb-section" aria-labelledby="contributorsTitle">
@@ -709,11 +700,12 @@
   </dialog>
 
   <div class="toast" role="status" aria-live="polite" data-toast></div>
-  <script src="./food-data.js?v=58" defer></script>
-  <script src="./coach-data.js?v=58" defer></script>
-  <script src="./health-engine.js?v=58" defer></script>
-  <script src="./app.js?v=58" defer></script>
-  <script src="./coach.js?v=58" defer></script>
-  <script src="./intelligence.js?v=58" defer></script>
+  <script src="./food-data.js?v=59" defer></script>
+  <script src="./coach-data.js?v=59" defer></script>
+  <script src="./health-engine.js?v=59" defer></script>
+  <script src="./app.js?v=59" defer></script>
+  <script src="./coach.js?v=59" defer></script>
+  <script src="./intelligence.js?v=59" defer></script>
 </body>
 </html>
+

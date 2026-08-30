@@ -1,18 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
   <title id="title">Rootbody app icon</title>
-  <desc id="desc">Rootbody signal and branching roots on deep navy.</desc>
-  <defs><linearGradient id="icon-bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#102A42"/><stop offset="1" stop-color="#071525"/></linearGradient></defs>
-  <rect width="1000" height="1000" rx="220" fill="url(#icon-bg)"/>
-  <g transform="translate(108 35) scale(2.18)">
-    <g fill="none" stroke="#BFE9F3" stroke-linecap="round">
-      <circle cx="180" cy="112" r="50" stroke-width="5"/><circle cx="180" cy="112" r="82" stroke-width="4" opacity=".8"/><circle cx="180" cy="112" r="108" stroke-width="3" opacity=".62"/>
-    </g>
-    <circle cx="180" cy="112" r="18" fill="#0FA3A3"/>
-    <g fill="none" stroke="#0FA3A3" stroke-linecap="round" stroke-linejoin="round"><path d="M180 139v84" stroke-width="8"/><path d="M173 145c-26 0-45-9-65-27M187 145c26 0 45-9 65-27" stroke-width="7"/></g>
-    <g fill="none" stroke="#F6F8FA" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M180 147c0 47 0 91-1 131" stroke-width="7"/><path d="M179 250c-12 27-34 48-63 62-25 12-46 30-63 54" stroke-width="7"/><path d="M181 250c12 27 34 48 63 62 25 12 46 30 63 54" stroke-width="7"/><path d="M180 269c0 42 0 79-1 119" stroke-width="7"/>
-      <path d="M151 289c-25-2-47-8-68-18-18-9-35-10-53-7M209 289c25-2 47-8 68-18 18-9 35-10 53-7" stroke-width="5"/><path d="M119 310c-15 20-26 42-34 68M241 310c15 20 26 42 34 68" stroke-width="5"/><path d="M99 320c-23-3-43-1-62 7M261 320c23-3 43-1 62 7" stroke-width="4"/><path d="M83 271c-11 14-21 30-29 48M277 271c11 14 21 30 29 48" stroke-width="4"/><path d="M155 291c-12 29-18 60-20 94M205 291c12 29 18 60 20 94" stroke-width="4"/><path d="M179 307c-12 18-23 37-32 58M181 307c12 18 23 37 32 58" stroke-width="4"/><path d="M115 312c-18 0-36 5-52 15M245 312c18 0 36 5 52 15" stroke-width="3.5"/>
-    </g>
-    <g fill="#0FA3A3"><circle cx="180" cy="164" r="3.4"/><circle cx="180" cy="179" r="3.4"/><circle cx="180" cy="194" r="3.4"/><circle cx="180" cy="209" r="3.4"/></g>
+  <desc id="desc">A compact human signal and white root system on deep navy.</desc>
+  <defs><linearGradient id="rb-icon-bg" x1="120" y1="80" x2="890" y2="940" gradientUnits="userSpaceOnUse"><stop stop-color="#102A42"/><stop offset="1" stop-color="#071525"/></linearGradient><radialGradient id="rb-icon-core" cx="36%" cy="30%" r="72%"><stop offset="0" stop-color="#26BDBD"/><stop offset="1" stop-color="#078E92"/></radialGradient></defs>
+  <rect width="1024" height="1024" rx="224" fill="url(#rb-icon-bg)"/>
+  <g transform="translate(240 170) scale(1.7)">
+    <g fill="none" stroke="#84DDE6" stroke-linecap="round"><path d="M75 154A96 96 0 1 1 245 154" stroke-width="3.2" opacity=".82"/><path d="M99 145A70 70 0 1 1 221 145" stroke-width="3.5" opacity=".92"/><path d="M124 132A43 43 0 1 1 196 132" stroke-width="4.1"/></g>
+    <circle cx="160" cy="92" r="15" fill="url(#rb-icon-core)"/><g fill="none" stroke="#0FA3A3" stroke-linecap="round" stroke-linejoin="round"><path d="M160 111V200" stroke-width="6.4"/><path d="M154 118c-18 1-30 9-42 19-8 7-17 9-28 7M166 118c18 1 30 9 42 19 8 7 17 9 28 7" stroke-width="5.1"/></g><g fill="#0FA3A3"><circle cx="168" cy="143" r="2.8"/><circle cx="168" cy="157" r="2.8"/><circle cx="168" cy="171" r="2.8"/><circle cx="168" cy="185" r="2.8"/></g>
+    <g fill="none" stroke="#F6F8FA" stroke-linecap="round" stroke-linejoin="round"><path d="M160 198c0 21-1 40 0 58" stroke-width="6.1"/><path d="M158 199c-5 24-21 42-47 54-19 9-36 21-51 38" stroke-width="5.8"/><path d="M162 199c5 24 21 42 47 54 19 9 36 21 51 38" stroke-width="5.8"/><path d="M160 240v88" stroke-width="5.4"/><path d="M124 246c-20-2-38-7-55-15-14-7-28-8-43-6M196 246c20-2 38-7 55-15 14-7 28-8 43-6" stroke-width="4.1"/><path d="M109 255c-16 17-27 38-34 63M211 255c16 17 27 38 34 63" stroke-width="3.8"/><path d="M93 267c-18-2-35 1-50 9M227 267c18-2 35 1 50 9" stroke-width="3.2"/><path d="M71 232c-9 11-17 25-23 41M249 232c9 11 17 25 23 41" stroke-width="3"/><path d="M137 245c-10 24-15 50-16 78M183 245c10 24 15 50 16 78" stroke-width="3.2"/><path d="M158 267c-10 13-18 30-25 48M162 267c10 13 18 30 25 48" stroke-width="2.9"/><path d="M108 256c-16 1-31 6-45 15M212 256c16 1 31 6 45 15" stroke-width="2.6"/></g>
   </g>
 </svg>
+
