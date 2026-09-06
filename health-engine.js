@@ -160,7 +160,7 @@
 
     let priority;
     if (!finite(profile.weightKg) || !finite(profile.heightCm)) {
-      priority = { id: "profile", title: "Hoàn thiện hồ sơ", state: "unknown", fact: "Chưa có đủ cân nặng và chiều cao.", interpretation: "rootbody chưa thể tính các screening cơ bản.", action: "Nhập hồ sơ", verify: "Kiểm tra lại các trường đã lưu.", grade: "—" };
+      priority = { id: "profile", title: "Hoàn thiện hồ sơ", state: "unknown", fact: "Chưa có đủ cân nặng và chiều cao.", interpretation: "Rootbody chưa thể tính các screening cơ bản.", action: "Nhập hồ sơ", verify: "Kiểm tra lại các trường đã lưu.", grade: "—" };
     } else if (todayRecovery?.redFlag) {
       priority = { id: "red-flag", title: "Dừng buổi tập", state: "medical", fact: "Check-in có triệu chứng cảnh báo.", interpretation: "Hậu quả bỏ sót nguyên nhân y khoa có thể đáng kể.", action: "Không tập; tìm hỗ trợ y tế phù hợp.", verify: "Chỉ quay lại khi đã được đánh giá hoặc triệu chứng đã được xử lý.", grade: "A" };
     } else if (bpResult.state === "medical") {

@@ -22,7 +22,7 @@
     gym_shoulder: "Máy tập cơ vai", gym_alpha: "Máy đa năng (chưa xác minh)",
     gym_dumbbell: "Tạ đơn", gym_bench: "Nằm nâng ngực",
     gym_adductor: "Máy khép đùi", gym_abductor: "Máy mở đùi",
-    gym_session: "Giáo án rootbody",
+    gym_session: "Giáo án Rootbody",
     legacy: "Vận động V1"
   };
   const LEVELS = {
@@ -211,7 +211,7 @@
       };
     });
     const workoutHistory = Array.isArray(value.workoutHistory) ? value.workoutHistory.filter(Boolean).slice(-100).map((item) => ({
-      sessionId: String(item.sessionId || uid()), name: String(item.name || "Giáo án rootbody").slice(0, 80),
+      sessionId: String(item.sessionId || uid()), name: String(item.name || "Giáo án Rootbody").slice(0, 80),
       goal: ["fat", "muscle", "recomp"].includes(item.goal) ? item.goal : "recomp",
       minutes: safeNumber(item.minutes, 1, 300, 45), completedAt: String(item.completedAt || new Date().toISOString()),
       completedSets: safeNumber(item.completedSets, 0, 100, 0), kcal: safeNumber(item.kcal, 0, 5000, 0)
@@ -239,7 +239,7 @@
     if (!value || typeof value !== "object" || !value.sessionId || !Array.isArray(value.exercises)) return null;
     return {
       sessionId: String(value.sessionId), templateId: String(value.templateId || "full_a"),
-      name: String(value.name || "Giáo án rootbody").slice(0, 80),
+      name: String(value.name || "Giáo án Rootbody").slice(0, 80),
       goal: ["fat", "muscle", "recomp"].includes(value.goal) ? value.goal : "recomp",
       startedAt: String(value.startedAt || new Date().toISOString()),
       exerciseIndex: safeNumber(value.exerciseIndex, 0, Math.max(0, value.exercises.length), 0),
@@ -1234,7 +1234,7 @@
   navigate(location.hash.slice(1) || "today");
 
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js?v=73").catch((error) => console.warn("Service worker chưa sẵn sàng.", error)));
+    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js?v=74").catch((error) => console.warn("Service worker chưa sẵn sàng.", error)));
   }
 })();
 
