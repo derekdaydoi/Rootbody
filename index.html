@@ -3,58 +3,59 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
-  <meta name="color-scheme" content="light">
-  <meta name="theme-color" content="#F6F8FA" data-theme-color>
-  <meta name="description" content="Rootbody — đo lường, diễn giải, ưu tiên, can thiệp và kiểm chứng sức khỏe theo thời gian.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#F7F9F5" data-theme-color>
+  <meta name="description" content="rootbody — đo lường, diễn giải, ưu tiên, can thiệp và kiểm chứng sức khỏe theo thời gian.">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default" data-status-bar>
-  <meta name="apple-mobile-web-app-title" content="Rootbody">
-  <title>Rootbody</title>
-  <!-- Cache-upgrade bridge for clients running the v57 integrity guard: ./styles.css?v=70 -->
-  <link rel="manifest" href="./manifest.webmanifest?v=70">
-  <link rel="icon" href="./brand/rootbody-symbol.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="./icon-180.png?v=70">
+  <meta name="apple-mobile-web-app-title" content="rootbody">
+  <title>rootbody</title>
+  <link rel="manifest" href="./manifest.webmanifest?v=71">
+  <link rel="icon" href="./brand/rootbody-favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./icon-180.png?v=71">
   <script>
     (() => {
       try {
         const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
         if (standalone) document.documentElement.classList.add("standalone-pwa");
-        document.documentElement.dataset.theme = "light";
-        document.documentElement.style.colorScheme = "light";
-        document.querySelector("[data-theme-color]")?.setAttribute("content", "#F6F8FA");
-        try { localStorage.removeItem("rootbody.theme"); } catch (error) {}
+        const stored = localStorage.getItem("rootbody.theme");
+        const theme = stored === "dark" || stored === "light"
+          ? stored
+          : matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.style.colorScheme = theme;
+        document.querySelector("[data-theme-color]")?.setAttribute("content", theme === "dark" ? "#08150E" : "#F7F9F5");
+        document.querySelector("[data-status-bar]")?.setAttribute("content", theme === "dark" ? "black-translucent" : "default");
       } catch (error) {
         document.documentElement.dataset.theme = "light";
       }
     })();
   </script>
-  <link rel="stylesheet" href="./styles.css?v=70">
-  <link rel="stylesheet" href="./v8.css?v=70">
+  <link rel="stylesheet" href="./styles.css?v=71">
+  <link rel="stylesheet" href="./v8.css?v=71">
 </head>
 <body class="splash-active">
   <div class="opening-splash" data-opening-splash aria-hidden="true">
     <div class="splash-lockup">
-      <svg class="splash-mark" viewBox="0 0 220 260" aria-hidden="true">
-        <path class="splash-seed" pathLength="1" d="M112 28V150" fill="none" stroke="#0FA3A3" stroke-width="14" stroke-linecap="round"/>
-        <path class="splash-r" pathLength="1" d="M40 132V91C40 62 58 45 86 45H101" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
-        <path class="splash-b" pathLength="1" d="M112 62H142C166 62 182 78 182 101C182 124 166 140 142 140H112" fill="none" stroke="#0FA3A3" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
-        <path class="splash-roots" pathLength="1" d="M112 150C112 178 112 204 112 228M110 158C94 169 78 180 58 187M110 168C99 181 91 197 87 214M114 158C130 169 146 180 166 187M114 168C125 181 133 197 137 214" fill="none" stroke="#0FA3A3" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <g class="splash-ripples" fill="none" stroke="#BFE9F3" stroke-width="2.2">
-          <ellipse cx="112" cy="238" rx="34" ry="10"/>
-          <ellipse cx="112" cy="238" rx="52" ry="16"/>
-          <ellipse cx="112" cy="238" rx="70" ry="22"/>
-        </g>
+      <svg class="splash-mark" viewBox="0 0 1320 1320" aria-hidden="true">
+        <circle class="splash-root-field" cx="660" cy="660" r="586"/>
+        <image class="splash-body" href="./brand/rootbody-base.svg" width="1320" height="1320"/>
+        <image class="splash-signal" href="./brand/rootbody-signal.svg" width="1320" height="1320"/>
       </svg>
-      <div class="splash-wordmark"><span>root</span><strong>body</strong></div>
+      <div class="splash-identity"><div class="splash-wordmark">rootbody</div><small>© Copyright from derekdaydoi</small></div>
     </div>
   </div>
   <div class="app-shell">
     <header class="app-header">
-      <a class="brand" href="#today" data-nav="today" aria-label="Rootbody — Hôm nay">
-        <img src="./brand/rootbody-mark.svg" alt="" width="44" height="52" data-rootbody-mark>
-        <span class="brand-copy"><span class="brand-name"><span>root</span><strong>body</strong></span><small>© Copyright from derekdaydoi</small></span>
+      <a class="brand" href="#today" data-nav="today" aria-label="rootbody — Hôm nay">
+        <img src="./brand/rootbody-mark.svg" alt="" width="52" height="52" data-rootbody-mark>
+        <span class="brand-copy"><span class="brand-name">rootbody</span><small>© Copyright from derekdaydoi</small></span>
       </a>
       <div class="header-actions">
+        <button class="icon-button rb-theme-quick-toggle" type="button" data-theme-toggle aria-label="Đổi giao diện sáng hoặc tối">
+          <svg class="rb-theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="rb-theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.2A8.3 8.3 0 0 1 8.8 4 8.4 8.4 0 1 0 20 15.2Z"/></svg>
+        </button>
         <button class="icon-button" type="button" data-open-dialog="settingsDialog" aria-label="Mở cài đặt">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5v.2h-4v-.2a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.5v-.2h4v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></svg>
         </button>
@@ -75,7 +76,7 @@
         <article class="rb-priority-card" data-priority-card data-state="unknown">
           <div class="rb-card-kicker">Câu chuyện hôm nay</div>
           <h2 data-priority-title>Chưa đủ dữ liệu</h2>
-          <div class="rb-story-copy"><p><span>Dữ kiện</span><strong data-priority-fact>Hoàn thiện hồ sơ để bắt đầu.</strong></p><p><span>Ý nghĩa</span><strong data-priority-interpretation>Rootbody cần dữ liệu nền trước khi ưu tiên.</strong></p></div>
+          <div class="rb-story-copy"><p><span>Dữ kiện</span><strong data-priority-fact>Hoàn thiện hồ sơ để bắt đầu.</strong></p><p><span>Ý nghĩa</span><strong data-priority-interpretation>rootbody cần dữ liệu nền trước khi ưu tiên.</strong></p></div>
           <button class="rb-inline-button" type="button" data-open-reason>Xem căn cứ</button>
           <img src="./brand/rootbody-mark.svg" alt="" aria-hidden="true" data-rootbody-mark>
         </article>
@@ -86,7 +87,7 @@
         </section>
 
         <article class="deficit-hero" aria-live="polite">
-          <div class="hero-topline"><p class="hero-label">Năng lượng hôm nay</p><button class="info-button" type="button" data-open-dialog="modelDialog" aria-label="Cách Rootbody tính">i</button></div>
+          <div class="hero-topline"><p class="hero-label">Năng lượng hôm nay</p><button class="info-button" type="button" data-open-dialog="modelDialog" aria-label="Cách rootbody tính">i</button></div>
           <div class="hero-value-row">
             <p class="hero-value"><span data-kg-value>—</span><small>kg eq.</small></p>
             <span class="status-chip" data-deficit-status>Chưa đủ dữ liệu</span>
@@ -162,7 +163,7 @@
         <article class="rb-interpretation-card" data-analysis-interpretation data-state="unknown">
           <span>Diễn giải</span>
           <h2 data-analysis-priority>Chưa đủ dữ liệu</h2>
-          <p data-analysis-copy>Hoàn thiện hồ sơ để Rootbody bắt đầu phân loại tín hiệu.</p>
+          <p data-analysis-copy>Hoàn thiện hồ sơ để rootbody bắt đầu phân loại tín hiệu.</p>
           <div><strong data-analysis-risk>Chưa đủ dữ liệu</strong><small data-analysis-grade>Chưa xếp hạng</small></div>
           <button class="rb-inline-button" type="button" data-open-reason>Xem căn cứ</button>
         </article>
@@ -235,7 +236,7 @@
           </div>
           <div class="rb-muscle-filter-head"><span>Ưu tiên nhóm cơ</span><small data-recommendation-muscle-count>0/2 nhóm</small></div>
           <div class="muscle-grid rb-muscle-filter" data-recommendation-muscles></div>
-          <p class="rb-recommendation-note" data-recommendation-note>Chọn mục tiêu để Rootbody sắp xếp bài phù hợp. Đây là danh sách gợi ý, không phải lịch bắt buộc.</p>
+          <p class="rb-recommendation-note" data-recommendation-note>Chọn mục tiêu để rootbody sắp xếp bài phù hợp. Đây là danh sách gợi ý, không phải lịch bắt buộc.</p>
           <div class="rb-exercise-library" data-recommendation-exercises></div>
         </section>
 
@@ -306,7 +307,7 @@
             <div class="log-list" data-activity-log></div>
           </section>
 
-          <aside class="model-note"><strong>Một buổi, một lần cộng calorie</strong><p>Workout theo giáo án chỉ tạo một activity khi hoàn tất. Rootbody trừ 1 MET nghỉ và làm tròn xuống; set/reps dùng để tiến bộ, không được biến thành calorie giả.</p></aside>
+          <aside class="model-note"><strong>Một buổi, một lần cộng calorie</strong><p>Workout theo giáo án chỉ tạo một activity khi hoàn tất. rootbody trừ 1 MET nghỉ và làm tròn xuống; set/reps dùng để tiến bộ, không được biến thành calorie giả.</p></aside>
         </div>
 
         <div id="coachPlan" class="coach-panel" role="tabpanel" data-activity-panel="plan" hidden>
@@ -383,10 +384,14 @@
           <h1 id="profileTitle">Bạn</h1>
         </div>
 
-        <article class="rb-profile-card"><span class="rb-avatar" data-profile-initials>RB</span><div><h2 data-profile-name>Người dùng Rootbody</h2><p data-profile-summary>Chưa hoàn thiện hồ sơ</p><button class="rb-outline-button" type="button" data-open-dialog="profileDialog">Xem hồ sơ</button></div></article>
+        <article class="rb-profile-card"><span class="rb-avatar" data-profile-initials>RB</span><div><h2 data-profile-name>Người dùng rootbody</h2><p data-profile-summary>Chưa hoàn thiện hồ sơ</p><button class="rb-outline-button" type="button" data-open-dialog="profileDialog">Xem hồ sơ</button></div></article>
 
         <section class="rb-you-section" aria-labelledby="appearanceTitle">
           <h2 id="appearanceTitle">Giao diện</h2>
+          <div class="rb-theme-control" role="group" aria-label="Chọn giao diện">
+            <button type="button" data-theme-option="light"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>Sáng</button>
+            <button type="button" data-theme-option="dark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.2A8.3 8.3 0 0 1 8.8 4 8.4 8.4 0 1 0 20 15.2Z"/></svg>Tối</button>
+          </div>
           <p class="rb-card-note">Lựa chọn được ghi nhớ trên thiết bị này.</p>
         </section>
 
@@ -394,7 +399,7 @@
 
         <section class="rb-you-section"><div class="section-line"><h2>Dinh dưỡng & phục hồi</h2><button class="text-button" type="button" data-open-dialog="settingsDialog">Sửa</button></div><div class="rb-setting-list"><div><span>Protein</span><strong data-you-protein>Chưa đủ dữ liệu</strong></div><div><span>Cơ hội ngủ</span><strong data-you-sleep>≥7 giờ/đêm</strong></div><div><span>Calorie tùy chọn</span><strong data-you-calorie>Ước tính</strong></div><div><span>Mức vận động</span><strong data-you-activity-level>Chưa khai báo</strong></div></div></section>
 
-        <section class="rb-you-section"><h2>Dữ liệu</h2><div class="rb-setting-list"><div><span>Kết nối ứng dụng</span><strong>Chưa kết nối</strong></div><div><span>Lưu trữ</span><strong>Trực tiếp trên thiết bị</strong></div></div><p class="rb-card-note">Không migration dữ liệu cũ và không gửi dữ liệu lên máy chủ Rootbody.</p></section>
+        <section class="rb-you-section"><h2>Dữ liệu</h2><div class="rb-setting-list"><div><span>Kết nối ứng dụng</span><strong>Chưa kết nối</strong></div><div><span>Lưu trữ</span><strong>Trực tiếp trên thiết bị</strong></div></div><p class="rb-card-note">Không migration dữ liệu cũ và không gửi dữ liệu lên máy chủ rootbody.</p></section>
 
         <article class="bmi-card" aria-live="polite">
           <div class="bmi-value"><span>BMI</span><strong data-bmi-value>—</strong></div>
@@ -465,7 +470,7 @@
     <div class="dialog-card full-page-card rb-profile-dialog-card">
       <div class="dialog-heading"><div><p class="eyebrow">Hồ sơ 1/1</p><h2>Thiết lập hồ sơ</h2></div><button class="dialog-close" type="button" data-close-dialog="profileDialog" aria-label="Đóng">×</button></div>
       <div class="rb-setup-progress" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
-      <p class="rb-dialog-intro">Dữ liệu này giúp Rootbody diễn giải tín hiệu.</p>
+      <p class="rb-dialog-intro">Dữ liệu này giúp rootbody diễn giải tín hiệu.</p>
       <div data-profile-dialog-body></div>
       <p class="rb-privacy-line">Dữ liệu chỉ lưu trong trình duyệt trên thiết bị này.</p>
     </div>
@@ -491,7 +496,7 @@
       <fieldset><legend>ALT</legend><div class="rb-lab-grid"><label class="field"><span>Giá trị</span><input name="altValue" type="number" inputmode="decimal" min="0" step="0.1"></label><label class="field"><span>Đơn vị</span><input name="altUnit" type="text" value="U/L" maxlength="20"></label><label class="field"><span>Tham chiếu từ</span><input name="altLow" type="number" inputmode="decimal" min="0" step="0.1"></label><label class="field"><span>Đến</span><input name="altHigh" type="number" inputmode="decimal" min="0" step="0.1"></label></div></fieldset>
       <fieldset><legend>AST</legend><div class="rb-lab-grid"><label class="field"><span>Giá trị</span><input name="astValue" type="number" inputmode="decimal" min="0" step="0.1"></label><label class="field"><span>Đơn vị</span><input name="astUnit" type="text" value="U/L" maxlength="20"></label><label class="field"><span>Tham chiếu từ</span><input name="astLow" type="number" inputmode="decimal" min="0" step="0.1"></label><label class="field"><span>Đến</span><input name="astHigh" type="number" inputmode="decimal" min="0" step="0.1"></label></div></fieldset>
       <fieldset><legend>GGT</legend><div class="rb-lab-grid"><label class="field"><span>Giá trị</span><input name="ggtValue" type="number" inputmode="decimal" min="0" step="0.1"></label><label class="field"><span>Đơn vị</span><input name="ggtUnit" type="text" value="U/L" maxlength="20"></label><label class="field"><span>Tham chiếu từ</span><input name="ggtLow" type="number" inputmode="decimal" min="0" step="0.1"></label><label class="field"><span>Đến</span><input name="ggtHigh" type="number" inputmode="decimal" min="0" step="0.1"></label></div></fieldset>
-      <p class="form-help">Rootbody chỉ so sánh với khoảng tham chiếu người dùng nhập từ phiếu xét nghiệm; không tự chẩn đoán.</p>
+      <p class="form-help">rootbody chỉ so sánh với khoảng tham chiếu người dùng nhập từ phiếu xét nghiệm; không tự chẩn đoán.</p>
       <button class="primary-button" type="submit">Lưu kết quả</button>
     </form>
   </dialog>
@@ -524,7 +529,7 @@
             <label class="field"><span>Calorie</span><span class="input-with-unit"><input name="mealKcal" type="number" inputmode="numeric" min="10" max="5000" step="10" placeholder="500" required><b>kcal</b></span></label>
             <label class="field"><span>Protein nếu biết</span><span class="input-with-unit"><input name="mealProtein" type="number" inputmode="numeric" min="0" max="500" step="1" value="0"><b>g</b></span></label>
           </div>
-          <p class="form-help">Mục nhập tay được đánh dấu sai số rộng. Rootbody không tự coi số này là chính xác.</p>
+          <p class="form-help">Mục nhập tay được đánh dấu sai số rộng. rootbody không tự coi số này là chính xác.</p>
           <button class="secondary-button" type="submit">Thêm món thủ công</button>
         </form>
       </details>
@@ -560,7 +565,7 @@
       <div class="safety-list">
         <label class="safety-check"><input name="illness" type="checkbox"><span><strong>Đang sốt hoặc không khỏe</strong><small>Không bắt đầu buổi cường độ cao.</small></span></label>
         <label class="safety-check"><input name="sharpPain" data-recovery-pain-flag type="checkbox"><span><strong>Đau nhói hoặc đau đang tăng</strong><small>Dừng tải lên vùng đau và đánh giá nguyên nhân.</small></span></label>
-        <label class="safety-check safety-critical"><input name="redFlag" type="checkbox"><span><strong>Đau/tức ngực, khó thở bất thường, choáng hoặc sắp ngất</strong><small>Rootbody sẽ chặn buổi tập. Triệu chứng nghiêm trọng hoặc không giảm cần cấp cứu địa phương.</small></span></label>
+        <label class="safety-check safety-critical"><input name="redFlag" type="checkbox"><span><strong>Đau/tức ngực, khó thở bất thường, choáng hoặc sắp ngất</strong><small>rootbody sẽ chặn buổi tập. Triệu chứng nghiêm trọng hoặc không giảm cần cấp cứu địa phương.</small></span></label>
       </div>
       <button class="primary-button" type="submit" data-recovery-confirm>Lưu check-in</button>
       <button class="secondary-button" type="button" data-close-dialog="recoveryDialog" data-recovery-cancel>Để sau</button>
@@ -615,7 +620,7 @@
 
   <dialog id="protocolDialog" class="full-page-dialog">
     <div class="dialog-card full-page-card protocol-detail">
-      <div class="dialog-heading"><div><p class="eyebrow">Rootbody Lab</p><h2 data-protocol-title>Protocol</h2></div><button class="dialog-close" type="button" data-close-dialog="protocolDialog" aria-label="Đóng">×</button></div>
+      <div class="dialog-heading"><div><p class="eyebrow">rootbody Lab</p><h2 data-protocol-title>Protocol</h2></div><button class="dialog-close" type="button" data-close-dialog="protocolDialog" aria-label="Đóng">×</button></div>
       <div class="protocol-meta"><span class="grade-badge" data-protocol-grade>B</span><span data-protocol-dose></span></div>
       <p class="protocol-summary" data-protocol-summary></p>
       <section class="protocol-timer" data-protocol-timer hidden aria-live="polite">
@@ -674,18 +679,18 @@
     <div class="dialog-card model-dialog">
       <div class="dialog-heading"><h2>kg eq. là gì?</h2><button class="dialog-close" type="button" data-close-dialog="modelDialog" aria-label="Đóng">×</button></div>
       <p><strong>Thâm hụt = calo nền + vận động ròng − calorie đã ăn.</strong></p>
-      <p>Rootbody chia kết quả cho 7.700 để tạo “kg tương đương năng lượng”. Đây không phải cân nặng chắc chắn của người dùng; nước, glycogen, muối và khẩu phần làm số cân thực tế dao động mạnh hơn.</p>
+      <p>rootbody chia kết quả cho 7.700 để tạo “kg tương đương năng lượng”. Đây không phải cân nặng chắc chắn của người dùng; nước, glycogen, muối và khẩu phần làm số cân thực tế dao động mạnh hơn.</p>
       <p>Vì vậy chart cân thật là trọng tài; kg eq. chỉ là la bàn ngắn hạn.</p>
     </div>
   </dialog>
 
   <div class="toast" role="status" aria-live="polite" data-toast></div>
-  <script src="./food-data.js?v=70" defer></script>
-  <script src="./coach-data.js?v=70" defer></script>
-  <script src="./health-engine.js?v=70" defer></script>
-  <script src="./app.js?v=70" defer></script>
-  <script src="./coach.js?v=70" defer></script>
-  <script src="./intelligence.js?v=70" defer></script>
+  <script src="./food-data.js?v=71" defer></script>
+  <script src="./coach-data.js?v=71" defer></script>
+  <script src="./health-engine.js?v=71" defer></script>
+  <script src="./app.js?v=71" defer></script>
+  <script src="./coach.js?v=71" defer></script>
+  <script src="./intelligence.js?v=71" defer></script>
 </body>
 </html>
 

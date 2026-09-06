@@ -1,29 +1,33 @@
-const CACHE_NAME = "rootbody-v8-architecture-v70";
+const CACHE_NAME = "rootbody-v8-architecture-v71";
 
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./styles.css?v=70",
-  "./v8.css?v=70",
-  "./food-data.js?v=70",
-  "./coach-data.js?v=70",
-  "./health-engine.js?v=70",
-  "./app.js?v=70",
-  "./coach.js?v=70",
-  "./intelligence.js?v=70",
-  "./manifest.webmanifest?v=70",
+  "./styles.css?v=71",
+  "./v8.css?v=71",
+  "./food-data.js?v=71",
+  "./coach-data.js?v=71",
+  "./health-engine.js?v=71",
+  "./app.js?v=71",
+  "./coach.js?v=71",
+  "./intelligence.js?v=71",
+  "./manifest.webmanifest?v=71",
   "./brand/rootbody-symbol.svg",
   "./brand/rootbody-logo.svg",
   "./brand/rootbody-wordmark.svg",
   "./brand/rootbody-mark.svg",
   "./brand/rootbody-mark-dark.svg",
+  "./brand/rootbody-base.svg",
+  "./brand/rootbody-signal.svg",
+  "./brand/rootbody-favicon.svg",
   "./brand/rootbody-lab.svg",
   "./fonts/open-sans-vietnamese.woff2",
   "./fonts/open-sans-latin-ext.woff2",
   "./fonts/open-sans-latin.woff2",
-  "./icon-180.png?v=70",
+  "./icon-180.png?v=71",
   "./icon-192.png",
-  "./icon-512.png"
+  "./icon-512.png",
+  "./icon-1024.png"
 ];
 
 self.addEventListener("install", (event) => {

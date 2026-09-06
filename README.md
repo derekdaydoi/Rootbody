@@ -1,10 +1,10 @@
-# Rootbody V8
+# rootbody V8
 
-Rootbody là PWA health-intelligence local-first theo flow:
+rootbody là PWA health-intelligence local-first theo flow:
 
 `Measure → Interpret → Prioritize → Intervene → Verify`
 
-App không phụ thuộc Apple Health, backend hoặc tài khoản. Người dùng tự ghi hồ sơ, bữa ăn, cân nặng, vòng eo, vận động, workout và recovery; Rootbody phân loại tín hiệu nhưng không biến dữ liệu thiếu thành sample có vẻ “thật”.
+App không phụ thuộc Apple Health, backend hoặc tài khoản. Người dùng tự ghi hồ sơ, bữa ăn, cân nặng, vòng eo, vận động, workout và recovery; rootbody phân loại tín hiệu nhưng không biến dữ liệu thiếu thành sample có vẻ “thật”.
 
 Live: [derekdaydoi.github.io/Rootbody](https://derekdaydoi.github.io/Rootbody/)
 
@@ -18,7 +18,7 @@ Live: [derekdaydoi.github.io/Rootbody](https://derekdaydoi.github.io/Rootbody/)
 - **Lab:** tĩnh tâm 10 phút, caffeine guardrail, ánh sáng ban ngày và Wim Hof có giải thích cơ chế + safety gate. Không có cold-water protocol.
 - **Bạn:** hồ sơ, mục tiêu, dinh dưỡng/phục hồi, giao diện và trạng thái local data.
 
-Giao diện hỗ trợ Light/Dark, ghi nhớ lựa chọn ngay trên thiết bị. Nút đổi nhanh nằm ở góc phải màn hình Hôm nay; control đầy đủ nằm trong tab Bạn. Typography dùng scale tối thiểu 11 px cho nhãn phụ và 16 px cho body để vẫn đọc được ở màn hình 320 px.
+Giao diện hỗ trợ Light/Dark, tự theo system ở lần đầu và ghi nhớ lựa chọn trên thiết bị. Nút đổi nhanh nằm trong app header; control đầy đủ nằm trong tab Bạn. Header hiển thị logo, wordmark `rootbody` và copyright nhất quán; title lặp lại trong từng tab được ẩn khỏi thị giác nhưng vẫn giữ cho accessibility. Typography dùng scale tối thiểu 11 px cho nhãn phụ và 16 px cho body để vẫn đọc được ở màn hình 320 px.
 
 Profile Setup là detail flow, không phải tab thứ sáu.
 
@@ -30,7 +30,7 @@ Profile Setup là detail flow, không phải tab thứ sáu.
 - BMI hỗ trợ `Asian action points` và `International`; công thức không thay đổi.
 - Waist-to-height ratio cần phép đo lặp lại trước khi app gọi tín hiệu là có tính hành động.
 - Một phép đo huyết áp không được trình bày như chẩn đoán.
-- Lab markers chỉ hiển thị giá trị, đơn vị và khoảng tham chiếu người dùng nhập từ phiếu xét nghiệm; Rootbody không tự tạo reference range.
+- Lab markers chỉ hiển thị giá trị, đơn vị và khoảng tham chiếu người dùng nhập từ phiếu xét nghiệm; rootbody không tự tạo reference range.
 
 ### Energy và food
 
@@ -58,7 +58,7 @@ activity_net_kcal = floor_to_10((MET - 1) × 3.5 × weight_kg / 200 × minutes)
 ### Training và recovery
 
 - Ba mục tiêu: `Giảm mỡ`, `Giảm mỡ + tăng cơ`, `Tăng cơ toàn diện`.
-- Người dùng chọn mục tiêu và tối đa hai nhóm cơ; Rootbody sắp xếp danh sách bài phù hợp để người dùng tự chọn và tự tập.
+- Người dùng chọn mục tiêu và tối đa hai nhóm cơ; rootbody sắp xếp danh sách bài phù hợp để người dùng tự chọn và tự tập.
 - Prescription gợi ý gồm set, rep, RIR và rest; không biến list bài tập thành lịch bắt buộc.
 - Ảnh kỹ thuật có người ở hai pha, dùng `object-fit: contain`; phần ảnh kết thúc trước Setup/Cues/Lỗi cần tránh.
 - Recovery gate dùng sleep, self-rated energy, soreness, illness, sharp pain và red flags; không tạo “readiness score” giả chính xác.
@@ -116,7 +116,7 @@ Không migration dữ liệu cũ. Khi bản này chạy lần đầu, `rootbody.
 ## Privacy
 
 - Dữ liệu nằm trong browser storage của thiết bị đang dùng.
-- Không analytics, tài khoản hoặc API gửi health data về server Rootbody.
+- Không analytics, tài khoản hoặc API gửi health data về server rootbody.
 - Xóa website data của trình duyệt sẽ xóa dữ liệu local.
 - Cần export/sync mã hóa trước khi coi đây là nơi lưu hồ sơ dài hạn; V8 chưa có tính năng đó.
 
@@ -128,7 +128,7 @@ Không migration dữ liệu cũ. Khi bản này chạy lần đầu, `rootbody.
 - Sleep target mặc định là ít nhất 7 giờ cho người lớn: [AASM/SRS consensus](https://aasm.org/resources/pdf/pressroom/adult-sleep-duration-consensus.pdf).
 - Asian BMI values 23 và 27,5 được dùng như public-health action points, không phải công thức BMI khác: [WHO expert consultation](https://pubmed.ncbi.nlm.nih.gov/14726171/).
 
-Rootbody là công cụ self-tracking/decision support, không phải thiết bị y tế và không chẩn đoán.
+rootbody là công cụ self-tracking/decision support, không phải thiết bị y tế và không chẩn đoán.
 
 ## Chạy local
 
@@ -140,13 +140,13 @@ Mở `http://localhost:8765`.
 
 ## Deploy
 
-Workflow `.github/workflows/pages.yml` deploy nhánh `main` lên GitHub Pages. Service Worker dùng cache riêng `rootbody-v8-architecture-v61`, ưu tiên mạng cho tài liệu điều hướng và chỉ lưu HTML đã vượt qua kiểm tra cấu trúc tối thiểu.
+Workflow `.github/workflows/pages.yml` deploy nhánh `main` lên GitHub Pages. Service Worker dùng cache riêng `rootbody-v8-architecture-v71`, ưu tiên mạng cho tài liệu điều hướng và giữ app shell để chạy offline.
 
-V61 thay hệ biểu tượng cũ bằng monogram `rb → root`, giữ đúng hai màu Deep Navy/Signal Teal và giảm logo xuống các nét đọc được ở 24 px. Startup motion theo sáu mốc 0.00–1.10 giây, giữ khung cuối rồi thoát ở khoảng 2.2 giây; `prefers-reduced-motion` dùng logo tĩnh.
+V71 dựng lại logo trực tiếp từ ảnh nguồn `body.png`, đưa logo + wordmark + copyright vào app header, cung cấp icon 180/192/512/1024 px và favicon. Startup motion theo chuỗi `ROOT → BODY → SIGNAL → IDENTITY` trong khoảng 1,9 giây; `prefers-reduced-motion` dùng lockup tĩnh trong 650–700 ms.
 
 ## Brand
 
-Màu: Deep Navy `#0D1B2A`, Signal Teal `#0FA3A3`, Soft Cyan `#BFE9F3`, Off White `#F6F8FA`, Muted Violet `#6F6AAE`; dark theme dùng navy surfaces và tăng độ sáng Teal/Cyan. UI dùng Open Sans self-hosted. App icon dùng monogram `rb` với `r` trắng trên nền Deep Navy, trục `b` và rễ Signal Teal.
+Brand cố định dùng Root Green `#025B30`, Signal Lime `#7ED957`, Body White `#FFFFFF` và Evidence Ink `#102019`. Root Green chứa chữ luôn dùng Body White; Signal Lime chứa chữ luôn dùng Evidence Ink. Signal Lime chỉ mang nghĩa active/selected/change/intervention/progress, không thay cho kết luận “khỏe” hoặc “an toàn”. Dark theme dùng green-black surfaces nhưng không đổi geometry/màu logo. Chi tiết đầy đủ nằm trong `BRAND_SPEC.md`.
 
 © Copyright from derekdaydoi
 

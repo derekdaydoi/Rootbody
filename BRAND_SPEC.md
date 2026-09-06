@@ -1,71 +1,137 @@
-# Rootbody — brand specification
+# rootbody — đặc tả nhận diện
 
-Rootbody dùng monogram `rb → root`: hai chữ cái của tên sản phẩm tạo thành một trục sống duy nhất rồi chuyển thành hệ rễ. Ý niệm cần đọc theo thứ tự **identity → body/system → root cause**, không phải minh họa một cái cây.
+rootbody là hệ health intelligence local-first. Tên sản phẩm luôn viết chính xác bằng chữ thường: `rootbody`.
 
-## Logo system
+## Câu chuyện thương hiệu
 
-- `brand/rootbody-mark.svg`: compact primary mark trên nền sáng/trong suốt.
-- `brand/rootbody-mark-dark.svg`: cùng geometry, đổi nét `r` sang Off White cho nền tối.
-- `brand/rootbody-symbol.svg`: app/PWA icon Deep Navy, `r` Off White, `b + roots` Signal Teal.
-- `brand/rootbody-wordmark.svg`: wordmark chữ thường; `root` Deep Navy, `body` Signal Teal.
-- `brand/rootbody-logo.svg`: horizontal lockup mark + wordmark.
-- `brand/rootbody-lab.svg`: monoline Lab mark; không dùng AI sparkle.
+Logo được dựng lại trực tiếp từ ảnh nguồn `body.png`, không thay đổi silhouette và không thêm concept ngoài ảnh:
 
-### Geometry chuẩn
+- **ROOT** — vòng Root Green là nền tảng và nguyên nhân gốc.
+- **BODY** — hình cơ thể màu trắng là hệ thống được quan sát.
+- **SIGNAL** — các chi tiết Signal Lime là dữ kiện đang hoạt động, thay đổi hoặc cần chú ý.
+- **LOOP** — đường cong khép gần trọn vòng thể hiện chu trình `đo lường → diễn giải → ưu tiên → can thiệp → kiểm chứng`.
 
-Master mark dùng `viewBox="0 0 220 260"`.
+Logo không mang nghĩa “khỏe”, “an toàn” hoặc “đã ổn”. Signal Lime chỉ diễn đạt active/selected/change/intervention/progress. Trạng thái sức khỏe phải dùng token chức năng riêng.
 
-- Lowercase `r`: Deep Navy `#0D1B2A`, stroke `16`, round cap/join.
-- Lowercase `b`: Signal Teal `#0FA3A3`, stroke `14`, round cap/join.
-- Roots là **một layer riêng**, không được gộp với thân `b` ở cùng stroke-width.
-- Primary roots: stroke `7.5` — xấp xỉ 54% độ dày thân `b`.
-- App-icon roots: stroke `8.5` để giữ khả năng đọc khi rasterize nhỏ.
-- Hệ rễ có đúng 5 nét: 1 taproot giữa, 2 lateral roots hướng ra ngoài, 2 inner roots đi chéo xuống. Tất cả xuất phát trong vùng cổ rễ quanh `x=112`, đối xứng trái/phải nhưng không tạo hình chân người.
-- Outer roots kết thúc cao hơn inner roots; taproot là nét dài nhất. Không thêm nhánh cấp hai, lá, đất, network rễ hoặc texture.
+## Nguồn hình và độ trung thực
 
-Logo phải còn nhận ra được ở 24 px. Ở kích thước nhỏ, ưu tiên silhouette `rb` rõ trước, rễ chỉ đóng vai trò signature. Asset tĩnh không dùng gradient, glow hoặc shadow bên trong mark.
+- Nguồn chuẩn: `brand/rootbody-source.png`, bản sao nguyên vẹn của ảnh người dùng cung cấp.
+- SHA-256 nguồn: `C6025927585AA61EE9FD442CE0A0BAA3E37DC518876F3E512D0B792971D2BFDD`.
+- Vùng hình được chuẩn hóa từ ảnh 2000 × 2000 px thành viewBox 1320 × 1320, giữ 40 px khoảng thở quanh silhouette.
+- Vector được trace theo đúng ba lớp màu của nguồn. Đối chiếu trên raster chuẩn hóa đạt IoU Root Green `0,997515`, IoU Signal Lime `0,955920`, độ khớp phân lớp toàn ảnh `0,998653` và sai số RGB trung bình `0,276`.
+- Nền trắng là một phần bắt buộc của geometry vì hình cơ thể dùng white negative space. Không xóa nền hoặc đổi thân người thành trong suốt.
 
-## Palette
+## Hệ asset
+
+| Asset | Vai trò |
+| --- | --- |
+| `brand/rootbody-source.png` | ảnh nguồn bất biến để đối chiếu |
+| `brand/rootbody-mark.svg` | logo chính trên controlled white field |
+| `brand/rootbody-mark-dark.svg` | cùng geometry cho dark surface; không đổi màu logo |
+| `brand/rootbody-logo.svg` | horizontal lockup: mark + wordmark chữ thường |
+| `brand/rootbody-wordmark.svg` | wordmark riêng bằng Evidence Ink |
+| `brand/rootbody-symbol.svg` | icon vuông có safe zone cho home-screen mask |
+| `brand/rootbody-favicon.svg` | favicon vector |
+| `brand/rootbody-base.svg` | lớp ROOT + BODY dùng trong startup motion |
+| `brand/rootbody-signal.svg` | lớp SIGNAL dùng trong startup motion |
+| `brand/rootbody-mark.png` | bản PNG 1024 px của mark |
+| `brand/rootbody-logo.png` | bản PNG 1600 px của horizontal lockup |
+| `icon-180.png` | Apple touch icon |
+| `icon-192.png` | PWA icon 192 px |
+| `icon-512.png` | PWA icon 512 px |
+| `icon-1024.png` | master raster icon 1024 px |
+
+Các asset monogram `rb → root` trước đây đã được retire: tên file tương thích được giữ khi cần để không phá reference, nhưng geometry và ý nghĩa cũ không còn được sử dụng.
+
+## Color tokens
+
+### Brand cố định
 
 | Token | Giá trị | Vai trò |
 | --- | --- | --- |
-| Deep Navy | `#0D1B2A` | chữ chính, `r`, app-icon background |
-| Signal Teal | `#0FA3A3` | `b`, roots, action, trạng thái chọn |
-| Soft Cyan | `#BFE9F3` | ripple/motion accent, surface thông tin, divider mềm |
-| Off White | `#F6F8FA` | nền ứng dụng, `r` trên nền tối |
-| Muted Violet | `#6F6AAE` | secondary data series, recovery |
+| Root Green | `#025B30` | cấu trúc logo, primary action ở light theme, nhận diện nền tảng |
+| Signal Lime | `#7ED957` | active, selected, change, intervention, progress |
+| Body White | `#FFFFFF` | cơ thể trong logo, chữ trên Root Green |
+| Evidence Ink | `#102019` | chữ chính, chữ trên Signal Lime |
 
-Light theme dùng surface trắng/Off White. Dark theme dùng `#08121D` đến `#1B2E3E`, giữ Teal/Cyan sáng hơn để bảo toàn tương phản. Trạng thái cảnh báo/y khoa dùng màu chức năng riêng và không được thay bằng Teal chỉ để đẹp.
+### Light theme
 
-## Typography
+| Token | Giá trị |
+| --- | --- |
+| Ground | `#F7F9F5` |
+| Surface | `#FFFFFF` |
+| Surface 2 | `#F1F5EF` |
+| Soft Root | `#E8F2E7` |
+| Muted | `#667269` |
+| Subtle | `#7B887E` |
+| Line | `#DCE6DB` |
+| Line Strong | `#C6D4C8` |
 
-- UI: Open Sans self-hosted, gồm Vietnamese/Latin/Latin Extended.
-- Wordmark: chữ thường, trọng lượng 400–500; không viết `ROOTBODY` toàn bộ bằng chữ hoa.
-- Heading: 700; body: 400–500; số liệu quan trọng: 650–700.
-- Không giảm font dưới 11 px để ép một dòng. Ưu tiên rút copy hoặc đổi layout.
+### Dark theme
 
-## Spacing và sizing
+| Token | Giá trị |
+| --- | --- |
+| Ground | `#08150E` |
+| Surface | `#0F2116` |
+| Surface 2 | `#16301F` |
+| Surface 3 | `#1D3A27` |
+| Text | `#F3F7F2` |
+| Muted | `#B7C4B9` |
+| Line | `#284732` |
+| Line Strong | `#3A5C44` |
 
-- Mobile content width: tối đa 680 px.
-- Card radius: 14–28 px tùy cấp độ surface; control tối thiểu 44 px.
-- Padding ngang: 16–18 px trên mobile, 20–24 px trên màn hình rộng.
-- Hỗ trợ từ 320 px, không có horizontal overflow.
-- Ảnh bài tập dùng `object-fit: contain`; toàn bộ ảnh kết thúc trước phần Setup/Cues.
+Quy tắc tương phản bắt buộc:
+
+- Root Green `#025B30` luôn đi với Body White `#FFFFFF` khi chứa chữ.
+- Signal Lime `#7ED957` luôn đi với Evidence Ink `#102019` khi chứa chữ.
+- Không đặt chữ đen trên Root Green và không đặt chữ trắng trên Signal Lime.
+- Màu thương hiệu không thay thế semantic state.
+
+### Semantic state
+
+| Trạng thái | Light | Dark | Ý nghĩa |
+| --- | --- | --- | --- |
+| Stable | `#3E6B5D` | `#79C99E` | dữ kiện ổn định theo rule hiện có, không phải claim “khỏe” |
+| Watch | `#A46412` | `#F0BE70` | cần theo dõi |
+| Actionable | `#B65324` | `#FF9B65` | có thể hành động |
+| Medical | `#A33838` | `#FF9B9B` | cảnh báo y khoa/red flag |
+| Unknown | Subtle | Subtle | chưa đủ dữ liệu |
+
+## Typography và wordmark
+
+- UI dùng Open Sans self-hosted.
+- Wordmark luôn là `rootbody`, không dùng `Rootbody` hoặc `ROOTBODY` trong bề mặt sản phẩm.
+- Heading 600–700; body 400–500; số liệu chính 650–700.
+- Body text tối thiểu 16 px; nhãn phụ tối thiểu 11 px. Không ép một dòng bằng cách giảm font.
+
+## Khoảng thở và kích thước
+
+- Clear space tối thiểu quanh mark bằng 8% cạnh asset.
+- Header mark: 46–52 px tùy viewport.
+- Mark độc lập không nhỏ hơn 32 px; dưới 32 px dùng favicon đã tối ưu.
+- Home-screen icon giữ khoảng an toàn khoảng 10% mỗi cạnh để chịu được mask tròn, squircle và rounded rectangle.
+- Nội dung hỗ trợ viewport từ 320 px, không horizontal overflow và không cắt control 44 px.
 
 ## Startup motion
 
-Startup motion phải dựng **chính geometry của logo**, không tạo một logo khác chỉ để animate. Tổng thời lượng hiển thị khoảng `2.2s`; DOM splash được cleanup khoảng `2.3s`.
+Motion dùng chính geometry logo và kể đúng thứ tự:
 
-1. `0.00–0.18s` — trục Signal Teal xuất hiện từ trên xuống (`seed/stem`).
-2. `0.18–0.46s` — nét `r` Deep Navy/Off White được draw-on.
-3. `0.36–0.66s` — loop `b` Signal Teal hoàn thiện.
-4. `0.56–1.06s` — 5 root strokes mọc xuống và ra ngoài; root dùng stroke mảnh `7.5`, không dày bằng thân `b`.
-5. `~0.94s` — wordmark `rootbody` fade + translate nhẹ vào vị trí.
-6. `~1.14s` — một ripple Soft Cyan rất nhẹ xuất hiện dưới root collar rồi biến mất; không sparkle, không heavy glow.
-7. `~2.20s` — splash fade out; app đã ở trạng thái sẵn sàng phía sau.
+1. **ROOT** — Root Green field xuất hiện từ `0,04s`.
+2. **BODY** — body silhouette được reveal từ `0,25s`.
+3. **SIGNAL** — Signal Lime xuất hiện từ `0,70s`.
+4. **IDENTITY** — wordmark `rootbody` và copyright xuất hiện từ `0,95s`.
+5. Splash giữ ngắn rồi fade; tổng thời lượng `1,9–1,95s`.
 
-Motion dùng ease-out, chuyển động ngắn và có cảm giác precision/clinical-tech. Không bounce lớn, không particle, không neon. Với `prefers-reduced-motion: reduce`, bỏ chuỗi draw-on/ripple, hiển thị logo tĩnh rồi fade splash trong khoảng `650–700ms`.
+Không particle, sparkle, neon, bounce lớn hoặc motion tạo thành một logo khác. Với `prefers-reduced-motion: reduce`, hiển thị lockup tĩnh và fade trong `650–700ms`.
+
+## Light/Dark và UI semantics
+
+- Logo không đảo màu ở dark theme; controlled white field bảo toàn đúng ảnh nguồn.
+- Header là điểm nhận diện cố định; title lặp lại ở từng tab được ẩn bằng kỹ thuật visually-hidden nhưng vẫn giữ accessible name.
+- Bottom navigation, segmented control và lựa chọn đang active dùng Signal Lime hoặc Signal Soft, không dùng semantic health color.
+- Card nền Root Green phải có chữ trắng. Card Signal Lime phải có chữ Evidence Ink.
+- Red flags, warning, recovery state và evidence grade tiếp tục dùng token chức năng riêng.
 
 ## Product copy
 
-Ít subtitle. Mỗi card chỉ trả lời một việc: dữ kiện, diễn giải, hành động hoặc kiểm chứng. Không dùng claim y khoa khi dữ liệu chỉ là self-report/ước tính. Trạng thái thiếu dữ liệu luôn ghi rõ `Chưa đủ dữ liệu`.
+Mỗi card chỉ trả lời một việc: dữ kiện, diễn giải, hành động hoặc kiểm chứng. Không đưa claim y khoa vào dữ liệu self-report/ước tính. Khi thiếu dữ liệu phải ghi rõ `Chưa đủ dữ liệu`.

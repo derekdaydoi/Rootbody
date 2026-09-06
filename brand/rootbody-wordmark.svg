@@ -1,6 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 170" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 220" role="img" aria-labelledby="title desc">
   <title id="title">rootbody</title>
-  <desc id="desc">Rootbody lowercase wordmark in Deep Navy and Signal Teal.</desc>
-  <text x="20" y="116" font-family="'Helvetica Neue', Arial, sans-serif" font-size="120" font-weight="400" letter-spacing="-7"><tspan fill="#0D1B2A">root</tspan><tspan fill="#0FA3A3">body</tspan></text>
+  <desc id="desc">The restrained lowercase rootbody wordmark in Evidence Ink.</desc>
+  <text x="20" y="158" fill="#102019" font-family="'Helvetica Neue', Arial, sans-serif" font-size="170" font-weight="600" letter-spacing="-9">rootbody</text>
 </svg>
-

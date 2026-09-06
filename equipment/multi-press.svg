@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" role="img" aria-labelledby="title desc">
   <title id="title">Máy multi-press</title><desc id="desc">Minh họa máy ngồi đẩy ngực và vai với ghế, tay đẩy và cụm tạ.</desc>
-  <rect width="240" height="160" rx="20" fill="#F7F5EF"/>
-  <rect x="154" y="20" width="42" height="118" rx="9" fill="#24332D"/><rect x="164" y="34" width="22" height="70" rx="5" fill="#E2EEE8"/>
-  <path d="M63 128h118M83 129V75l29-22 28 7M111 54v76" fill="none" stroke="#14614A" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M108 68H76l-18-19M114 68h31l19-19" fill="none" stroke="#101110" stroke-width="8" stroke-linecap="round"/>
-  <rect x="81" y="77" width="38" height="39" rx="9" fill="#31463D"/><rect x="77" y="113" width="47" height="15" rx="7" fill="#31463D"/>
-  <circle cx="58" cy="48" r="7" fill="#14614A"/><circle cx="164" cy="48" r="7" fill="#14614A"/>
+  <rect width="240" height="160" rx="20" fill="#F7F9F5"/>
+  <rect x="154" y="20" width="42" height="118" rx="9" fill="#102019"/><rect x="164" y="34" width="22" height="70" rx="5" fill="#E8F2E7"/>
+  <path d="M63 128h118M83 129V75l29-22 28 7M111 54v76" fill="none" stroke="#025B30" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M108 68H76l-18-19M114 68h31l19-19" fill="none" stroke="#102019" stroke-width="8" stroke-linecap="round"/>
+  <rect x="81" y="77" width="38" height="39" rx="9" fill="#2F4137"/><rect x="77" y="113" width="47" height="15" rx="7" fill="#2F4137"/>
+  <circle cx="58" cy="48" r="7" fill="#025B30"/><circle cx="164" cy="48" r="7" fill="#025B30"/>
 </svg>
 

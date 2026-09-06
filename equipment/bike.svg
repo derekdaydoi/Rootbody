@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" role="img" aria-labelledby="title desc">
   <title id="title">Xe đạp đứng</title><desc id="desc">Minh họa xe đạp tập tại chỗ có yên, bàn đạp và bảng điều khiển.</desc>
-  <rect width="240" height="160" rx="20" fill="#F7F5EF"/>
-  <circle cx="119" cy="112" r="31" fill="#E2EEE8" stroke="#14614A" stroke-width="8"/><circle cx="119" cy="112" r="7" fill="#14614A"/>
-  <path d="M119 112 91 65h54l-26 47M91 65 73 123M145 65l33 58M68 123h118" fill="none" stroke="#24332D" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M90 65V38M72 38h37M145 65l24-31M164 34h38" fill="none" stroke="#14614A" stroke-width="8" stroke-linecap="round"/>
-  <rect x="176" y="18" width="44" height="32" rx="8" fill="#31463D"/><rect x="185" y="26" width="26" height="10" rx="3" fill="#E2EEE8"/>
+  <rect width="240" height="160" rx="20" fill="#F7F9F5"/>
+  <circle cx="119" cy="112" r="31" fill="#E8F2E7" stroke="#025B30" stroke-width="8"/><circle cx="119" cy="112" r="7" fill="#025B30"/>
+  <path d="M119 112 91 65h54l-26 47M91 65 73 123M145 65l33 58M68 123h118" fill="none" stroke="#102019" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M90 65V38M72 38h37M145 65l24-31M164 34h38" fill="none" stroke="#025B30" stroke-width="8" stroke-linecap="round"/>
+  <rect x="176" y="18" width="44" height="32" rx="8" fill="#2F4137"/><rect x="185" y="26" width="26" height="10" rx="3" fill="#E8F2E7"/>
 </svg>
 

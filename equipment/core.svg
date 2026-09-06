@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" role="img" aria-labelledby="title desc">
   <title id="title">Khu tập bụng</title><desc id="desc">Minh họa thảm tập và ghế dốc dùng cho bài core.</desc>
-  <rect width="240" height="160" rx="20" fill="#F7F5EF"/>
-  <rect x="33" y="113" width="174" height="24" rx="12" fill="#E2EEE8" stroke="#14614A" stroke-width="5"/>
-  <path d="M82 112 144 60l25 52M69 112h113" fill="none" stroke="#24332D" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
-  <rect x="117" y="50" width="29" height="75" rx="11" transform="rotate(48 117 50)" fill="#31463D"/>
-  <circle cx="154" cy="58" r="12" fill="#14614A"/>
+  <rect width="240" height="160" rx="20" fill="#F7F9F5"/>
+  <rect x="33" y="113" width="174" height="24" rx="12" fill="#E8F2E7" stroke="#025B30" stroke-width="5"/>
+  <path d="M82 112 144 60l25 52M69 112h113" fill="none" stroke="#102019" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="117" y="50" width="29" height="75" rx="11" transform="rotate(48 117 50)" fill="#2F4137"/>
+  <circle cx="154" cy="58" r="12" fill="#025B30"/>
 </svg>
 
