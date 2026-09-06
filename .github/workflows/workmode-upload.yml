@@ -1,0 +1,39 @@
+name: Apply Workmode index
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.workmode-upload/**'
+      - '.github/workflows/workmode-upload.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Rebuild and verify index
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .workmode-upload/part-*.b64 | base64 --decode > index.html.new
+          echo "c3d5157576209fee3c93700b78638409a372a108f0d390ce7819a114a5e684e4  index.html.new" | sha256sum -c -
+          test "$(wc -c < index.html.new)" -eq 67197
+          mv index.html.new index.html
+
+      - name: Commit verified Workmode index
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git rm -r .workmode-upload
+          git rm .github/workflows/workmode-upload.yml
+          git commit -m "Apply Workmode Rootbody index"
+          git push origin HEAD:main
