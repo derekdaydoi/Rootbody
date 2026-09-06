@@ -1,17 +1,17 @@
-const CACHE_NAME = "rootbody-v8-architecture-v72";
+const CACHE_NAME = "rootbody-v8-architecture-v73";
 
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./styles.css?v=72",
-  "./v8.css?v=72",
-  "./food-data.js?v=72",
-  "./coach-data.js?v=72",
-  "./health-engine.js?v=72",
-  "./app.js?v=72",
-  "./coach.js?v=72",
-  "./intelligence.js?v=72",
-  "./manifest.webmanifest?v=72",
+  "./styles.css?v=73",
+  "./v8.css?v=73",
+  "./food-data.js?v=73",
+  "./coach-data.js?v=73",
+  "./health-engine.js?v=73",
+  "./app.js?v=73",
+  "./coach.js?v=73",
+  "./intelligence.js?v=73",
+  "./manifest.webmanifest?v=73",
   "./brand/rootbody-symbol.svg",
   "./brand/rootbody-logo.svg",
   "./brand/rootbody-wordmark.svg",
@@ -23,7 +23,7 @@ const APP_SHELL = [
   "./fonts/open-sans-vietnamese.woff2",
   "./fonts/open-sans-latin-ext.woff2",
   "./fonts/open-sans-latin.woff2",
-  "./icon-180.png?v=72",
+  "./icon-180.png?v=73",
   "./icon-192.png",
   "./icon-512.png",
   "./icon-1024.png"

@@ -587,7 +587,7 @@
 
     renderMealSuggestions(day, sum, targetBudget, remaining);
     const grid = $("[data-food-grid]");
-    grid.innerHTML = FOOD_SAMPLES.map((item) => `<button class="food-chip" type="button" data-food-id="${item.id}"><strong>${escapeHtml(item.name)}</strong><span>${integer.format(item.kcal)} kcal · ${integer.format(item.protein)} g đạm</span><small>${escapeHtml(item.serving)} · ${escapeHtml(CONFIDENCE_LABELS[item.confidence])}</small></button>`).join("");
+    grid.innerHTML = FOOD_SAMPLES.map((item) => `<button class="food-chip" type="button" data-food-id="${item.id}"><strong>${escapeHtml(item.name)}</strong><span>${integer.format(item.kcal)} kcal · ${integer.format(item.protein)} g đạm</span><small>${escapeHtml(CONFIDENCE_LABELS[item.confidence])}</small></button>`).join("");
     renderTodayLog(day);
   }
 
@@ -1234,7 +1234,7 @@
   navigate(location.hash.slice(1) || "today");
 
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js?v=71").catch((error) => console.warn("Service worker chưa sẵn sàng.", error)));
+    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js?v=73").catch((error) => console.warn("Service worker chưa sẵn sàng.", error)));
   }
 })();
 

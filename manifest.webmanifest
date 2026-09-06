@@ -4,7 +4,7 @@
   "short_name": "rootbody",
   "description": "Health intelligence local-first: đo lường, diễn giải, ưu tiên, can thiệp và kiểm chứng theo thời gian.",
   "lang": "vi",
-  "start_url": "./?pwa=72",
+  "start_url": "./?pwa=73",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",

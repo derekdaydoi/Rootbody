@@ -491,3 +491,23 @@ main, .view, .view.is-active { overflow-x: visible; overflow-y: visible; }
   .brand-copy small { max-width: 120px; font-size: 7px; }
   .header-actions .icon-button { width: 40px; height: 40px; flex-basis: 40px; }
 }
+
+
+/* v73 final scoped UI polish */
+.rb-muscle-filter .muscle-option {
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+.rb-muscle-filter .muscle-option span {
+  width: 100%;
+  text-align: center;
+}
+.food-chip strong,
+.food-chip span,
+.food-chip small {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+.food-chip span { line-height: 1.3; }
