@@ -4,7 +4,7 @@
   const core = window.RootbodyCore;
   const catalog = window.ROOTBODY_COACH_DATA;
   if (!core || !catalog) {
-    console.warn("Rootbody Coach chưa tải đủ dữ liệu.");
+    console.warn("rootbody Coach chưa tải đủ dữ liệu.");
     return;
   }
 

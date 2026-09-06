@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" role="img" aria-labelledby="title desc">
   <title id="title">Tạ đơn và ghế tập</title><desc id="desc">Minh họa một đôi tạ đơn cạnh ghế tập điều chỉnh.</desc>
-  <rect width="240" height="160" rx="20" fill="#F7F5EF"/>
-  <path d="M87 116h75l23-48M109 117l-12 23M164 116l15 24" fill="none" stroke="#14614A" stroke-width="9" stroke-linecap="round"/>
-  <rect x="142" y="50" width="42" height="72" rx="11" transform="rotate(25 142 50)" fill="#31463D"/><rect x="87" y="105" width="75" height="20" rx="9" fill="#31463D"/>
-  <path d="M45 78h55" stroke="#101110" stroke-width="8" stroke-linecap="round"/>
-  <rect x="33" y="59" width="17" height="38" rx="5" fill="#14614A"/><rect x="50" y="64" width="12" height="28" rx="4" fill="#24332D"/><rect x="84" y="64" width="12" height="28" rx="4" fill="#24332D"/><rect x="96" y="59" width="17" height="38" rx="5" fill="#14614A"/>
+  <rect width="240" height="160" rx="20" fill="#F7F9F5"/>
+  <path d="M87 116h75l23-48M109 117l-12 23M164 116l15 24" fill="none" stroke="#025B30" stroke-width="9" stroke-linecap="round"/>
+  <rect x="142" y="50" width="42" height="72" rx="11" transform="rotate(25 142 50)" fill="#2F4137"/><rect x="87" y="105" width="75" height="20" rx="9" fill="#2F4137"/>
+  <path d="M45 78h55" stroke="#102019" stroke-width="8" stroke-linecap="round"/>
+  <rect x="33" y="59" width="17" height="38" rx="5" fill="#025B30"/><rect x="50" y="64" width="12" height="28" rx="4" fill="#102019"/><rect x="84" y="64" width="12" height="28" rx="4" fill="#102019"/><rect x="96" y="59" width="17" height="38" rx="5" fill="#025B30"/>
 </svg>
 

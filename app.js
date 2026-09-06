@@ -23,7 +23,7 @@
     gym_shoulder: "Máy tập cơ vai", gym_alpha: "Máy đa năng (chưa xác minh)",
     gym_dumbbell: "Tạ đơn", gym_bench: "Nằm nâng ngực",
     gym_adductor: "Máy khép đùi", gym_abductor: "Máy mở đùi",
-    gym_session: "Giáo án Rootbody",
+    gym_session: "Giáo án rootbody",
     legacy: "Vận động V1"
   };
   const LEVELS = {
@@ -103,7 +103,7 @@
       const current = localStorage.getItem(STORAGE_KEY);
       if (current) return normalizeState(JSON.parse(current));
     } catch (error) {
-      console.warn("Rootbody không đọc được dữ liệu local.", error);
+      console.warn("rootbody không đọc được dữ liệu local.", error);
     }
     return defaultState();
   }
@@ -212,7 +212,7 @@
       };
     });
     const workoutHistory = Array.isArray(value.workoutHistory) ? value.workoutHistory.filter(Boolean).slice(-100).map((item) => ({
-      sessionId: String(item.sessionId || uid()), name: String(item.name || "Giáo án Rootbody").slice(0, 80),
+      sessionId: String(item.sessionId || uid()), name: String(item.name || "Giáo án rootbody").slice(0, 80),
       goal: ["fat", "muscle", "recomp"].includes(item.goal) ? item.goal : "recomp",
       minutes: safeNumber(item.minutes, 1, 300, 45), completedAt: String(item.completedAt || new Date().toISOString()),
       completedSets: safeNumber(item.completedSets, 0, 100, 0), kcal: safeNumber(item.kcal, 0, 5000, 0)
@@ -240,7 +240,7 @@
     if (!value || typeof value !== "object" || !value.sessionId || !Array.isArray(value.exercises)) return null;
     return {
       sessionId: String(value.sessionId), templateId: String(value.templateId || "full_a"),
-      name: String(value.name || "Giáo án Rootbody").slice(0, 80),
+      name: String(value.name || "Giáo án rootbody").slice(0, 80),
       goal: ["fat", "muscle", "recomp"].includes(value.goal) ? value.goal : "recomp",
       startedAt: String(value.startedAt || new Date().toISOString()),
       exerciseIndex: safeNumber(value.exerciseIndex, 0, Math.max(0, value.exercises.length), 0),
@@ -322,21 +322,31 @@
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       return true;
     } catch (error) {
-      console.warn("Rootbody không lưu được dữ liệu local.", error);
+      console.warn("rootbody không lưu được dữ liệu local.", error);
       showToast("Không lưu được dữ liệu. Kiểm tra dung lượng trình duyệt.");
       return false;
     }
   }
 
   function applyTheme(theme, persist = true) {
-    document.documentElement.dataset.theme = "light";
-    document.documentElement.style.colorScheme = "light";
+    const safeTheme = theme === "dark" ? "dark" : "light";
+    document.documentElement.dataset.theme = safeTheme;
+    document.documentElement.style.colorScheme = safeTheme;
     const meta = $("[data-theme-color]");
-    if (meta) meta.setAttribute("content", "#F6F8FA");
+    if (meta) meta.setAttribute("content", safeTheme === "dark" ? "#08150E" : "#F7F9F5");
+    const statusBar = $("[data-status-bar]");
+    if (statusBar) statusBar.setAttribute("content", safeTheme === "dark" ? "black-translucent" : "default");
     $$('[data-rootbody-mark]').forEach((image) => {
-      image.setAttribute("src", "./brand/rootbody-mark.svg");
+      image.setAttribute("src", safeTheme === "dark" ? "./brand/rootbody-mark-dark.svg" : "./brand/rootbody-mark.svg");
     });
-    try { localStorage.removeItem(THEME_KEY); } catch (error) {}
+    $$('[data-theme-option]').forEach((button) => {
+      const active = button.dataset.themeOption === safeTheme;
+      button.classList.toggle("is-active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+    if (persist) {
+      try { localStorage.setItem(THEME_KEY, safeTheme); } catch (error) {}
+    }
   }
 
   function dayData(date = localDateKey()) {
@@ -1255,12 +1265,12 @@
   requestAnimationFrame(resetInitialScroll);
   setTimeout(resetInitialScroll, 80);
 
-  applyTheme("light", false);
+  applyTheme(document.documentElement.dataset.theme || "light", false);
   renderAll();
   navigate(location.hash.slice(1) || "today");
 
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js?v=70").catch((error) => console.warn("Service worker chưa sẵn sàng.", error)));
+    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js?v=71").catch((error) => console.warn("Service worker chưa sẵn sàng.", error)));
   }
 })();
 

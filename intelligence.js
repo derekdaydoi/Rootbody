@@ -118,7 +118,7 @@
     const markerRows = [["ALT", labs.alt], ["AST", labs.ast], ["GGT", labs.ggt]].filter(([, item]) => item?.value !== null && item?.value !== undefined);
     const hasData = labs.hepatitisStatus && !["unknown", "not_tested"].includes(labs.hepatitisStatus) || markerRows.length;
     if (!hasData) {
-      container.innerHTML = '<div class="rb-empty-inline"><strong>Chưa có dữ liệu xét nghiệm</strong><span>Rootbody không điền giá trị mẫu.</span></div>';
+      container.innerHTML = '<div class="rb-empty-inline"><strong>Chưa có dữ liệu xét nghiệm</strong><span>rootbody không điền giá trị mẫu.</span></div>';
       return;
     }
     const hepatitis = ({ negative: "Âm tính đã khai báo", positive: "Dương tính đã khai báo", not_tested: "Chưa xét nghiệm", unknown: "Chưa rõ" })[labs.hepatitisStatus] || "Chưa rõ";
@@ -231,7 +231,7 @@
 
   function renderYou(state, assessment) {
     const profile = state.profile;
-    setText("[data-profile-name]", profile.name || "Người dùng Rootbody");
+    setText("[data-profile-name]", profile.name || "Người dùng rootbody");
     const facts = [profile.age ? `${profile.age} tuổi` : null, sexLabels[profile.biologicalSex], profile.heightCm ? `${decimal.format(profile.heightCm)} cm` : null, profile.weightKg ? `${decimal.format(profile.weightKg)} kg` : null].filter(Boolean);
     setText("[data-profile-summary]", facts.join(" · "));
     setText("[data-profile-initials]", initials(profile.name));
@@ -323,7 +323,7 @@
       sessionStorage.setItem("rootbody.profilePrompted", "1");
       setTimeout(() => core.openDialog("profileDialog"), 80);
     }
-  }, reduced ? 700 : 2300);
+  }, reduced ? 700 : 1950);
 
   arrangeStaticFlows();
   render();
