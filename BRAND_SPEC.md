@@ -27,7 +27,6 @@ Logo không mang nghĩa “khỏe”, “an toàn” hoặc “đã ổn”. Sig
 | --- | --- |
 | `brand/rootbody-source.png` | ảnh nguồn bất biến để đối chiếu |
 | `brand/rootbody-mark.svg` | logo chính trên controlled white field |
-| `brand/rootbody-mark-dark.svg` | cùng geometry cho dark surface; không đổi màu logo |
 | `brand/rootbody-logo.svg` | horizontal lockup: mark + wordmark chữ thường |
 | `brand/rootbody-wordmark.svg` | wordmark riêng bằng Evidence Ink |
 | `brand/rootbody-symbol.svg` | icon vuông có safe zone cho home-screen mask |
@@ -49,12 +48,12 @@ Các asset monogram `rb → root` trước đây đã được retire: tên file
 
 | Token | Giá trị | Vai trò |
 | --- | --- | --- |
-| Root Green | `#025B30` | cấu trúc logo, primary action ở light theme, nhận diện nền tảng |
+| Root Green | `#025B30` | cấu trúc logo, primary action, nhận diện nền tảng |
 | Signal Lime | `#7ED957` | active, selected, change, intervention, progress |
 | Body White | `#FFFFFF` | cơ thể trong logo, chữ trên Root Green |
 | Evidence Ink | `#102019` | chữ chính, chữ trên Signal Lime |
 
-### Light theme
+### UI neutrals
 
 | Token | Giá trị |
 | --- | --- |
@@ -67,19 +66,6 @@ Các asset monogram `rb → root` trước đây đã được retire: tên file
 | Line | `#DCE6DB` |
 | Line Strong | `#C6D4C8` |
 
-### Dark theme
-
-| Token | Giá trị |
-| --- | --- |
-| Ground | `#08150E` |
-| Surface | `#0F2116` |
-| Surface 2 | `#16301F` |
-| Surface 3 | `#1D3A27` |
-| Text | `#F3F7F2` |
-| Muted | `#B7C4B9` |
-| Line | `#284732` |
-| Line Strong | `#3A5C44` |
-
 Quy tắc tương phản bắt buộc:
 
 - Root Green `#025B30` luôn đi với Body White `#FFFFFF` khi chứa chữ.
@@ -89,13 +75,13 @@ Quy tắc tương phản bắt buộc:
 
 ### Semantic state
 
-| Trạng thái | Light | Dark | Ý nghĩa |
-| --- | --- | --- | --- |
-| Stable | `#3E6B5D` | `#79C99E` | dữ kiện ổn định theo rule hiện có, không phải claim “khỏe” |
-| Watch | `#A46412` | `#F0BE70` | cần theo dõi |
-| Actionable | `#B65324` | `#FF9B65` | có thể hành động |
-| Medical | `#A33838` | `#FF9B9B` | cảnh báo y khoa/red flag |
-| Unknown | Subtle | Subtle | chưa đủ dữ liệu |
+| Trạng thái | Màu | Ý nghĩa |
+| --- | --- | --- |
+| Stable | `#3E6B5D` | dữ kiện ổn định theo rule hiện có, không phải claim “khỏe” |
+| Watch | `#A46412` | cần theo dõi |
+| Actionable | `#B65324` | có thể hành động |
+| Medical | `#A33838` | cảnh báo y khoa/red flag |
+| Unknown | Subtle | chưa đủ dữ liệu |
 
 ## Typography và wordmark
 
@@ -124,9 +110,8 @@ Motion dùng chính geometry logo và kể đúng thứ tự:
 
 Không particle, sparkle, neon, bounce lớn hoặc motion tạo thành một logo khác. Với `prefers-reduced-motion: reduce`, hiển thị lockup tĩnh và fade trong `650–700ms`.
 
-## Light/Dark và UI semantics
+## UI semantics
 
-- Logo không đảo màu ở dark theme; controlled white field bảo toàn đúng ảnh nguồn.
 - Header là điểm nhận diện cố định; title lặp lại ở từng tab được ẩn bằng kỹ thuật visually-hidden nhưng vẫn giữ accessible name.
 - Bottom navigation, segmented control và lựa chọn đang active dùng Signal Lime hoặc Signal Soft, không dùng semantic health color.
 - Card nền Root Green phải có chữ trắng. Card Signal Lime phải có chữ Evidence Ink.

@@ -2,7 +2,6 @@
   "use strict";
 
   const STORAGE_KEY = "rootbody.device.v2";
-  const THEME_KEY = "rootbody.theme";
   const LEGACY_STORAGE_KEYS = ["rootbody.device.v1", "rootbody.v1", "rootbody.v2", "rootbody.v3", "rootbody.v4", "rootbody.v5"];
   const MODEL_VERSION = "0.6";
   const KCAL_PER_KG = 7700;
@@ -328,26 +327,6 @@
     }
   }
 
-  function applyTheme(theme, persist = true) {
-    const safeTheme = theme === "dark" ? "dark" : "light";
-    document.documentElement.dataset.theme = safeTheme;
-    document.documentElement.style.colorScheme = safeTheme;
-    const meta = $("[data-theme-color]");
-    if (meta) meta.setAttribute("content", safeTheme === "dark" ? "#08150E" : "#F7F9F5");
-    const statusBar = $("[data-status-bar]");
-    if (statusBar) statusBar.setAttribute("content", safeTheme === "dark" ? "black-translucent" : "default");
-    $$('[data-rootbody-mark]').forEach((image) => {
-      image.setAttribute("src", safeTheme === "dark" ? "./brand/rootbody-mark-dark.svg" : "./brand/rootbody-mark.svg");
-    });
-    $$('[data-theme-option]').forEach((button) => {
-      const active = button.dataset.themeOption === safeTheme;
-      button.classList.toggle("is-active", active);
-      button.setAttribute("aria-pressed", String(active));
-    });
-    if (persist) {
-      try { localStorage.setItem(THEME_KEY, safeTheme); } catch (error) {}
-    }
-  }
 
   function dayData(date = localDateKey()) {
     if (!state.days[date]) state.days[date] = { meals: [], activities: [] };
@@ -553,7 +532,6 @@
   }
 
   function renderAll() {
-    applyTheme(document.documentElement.dataset.theme, false);
     renderToday();
     renderActivity();
     renderProfile();
@@ -1022,19 +1000,6 @@
   }
 
   document.addEventListener("click", (event) => {
-    const quickThemeToggle = event.target.closest("[data-theme-toggle]");
-    if (quickThemeToggle) {
-      const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-      applyTheme(next);
-      showToast(`Đã chuyển sang giao diện ${next === "dark" ? "tối" : "sáng"}.`);
-      return;
-    }
-    const themeButton = event.target.closest("[data-theme-option]");
-    if (themeButton) {
-      applyTheme(themeButton.dataset.themeOption);
-      showToast(`Đã chuyển sang giao diện ${themeButton.dataset.themeOption === "dark" ? "tối" : "sáng"}.`);
-      return;
-    }
     const nav = event.target.closest("[data-nav]");
     if (nav) { event.preventDefault(); navigate(nav.dataset.nav); return; }
     const opener = event.target.closest("[data-open-dialog]");
@@ -1265,7 +1230,6 @@
   requestAnimationFrame(resetInitialScroll);
   setTimeout(resetInitialScroll, 80);
 
-  applyTheme(document.documentElement.dataset.theme || "light", false);
   renderAll();
   navigate(location.hash.slice(1) || "today");
 

@@ -16,9 +16,9 @@ Live: [derekdaydoi.github.io/Rootbody](https://derekdaydoi.github.io/Rootbody/)
 - **Phân tích:** BMI, waist-to-height ratio, huyết áp, xu hướng cân/bước/vòng eo/resting heart rate, thời lượng và độ liền mạch của giấc ngủ, bối cảnh gan do người dùng nhập và evidence grade.
 - **Tập luyện:** summary tuần, recovery gate và thư viện bài tập gợi ý theo mục tiêu + tối đa hai nhóm cơ ưu tiên. App không ép người dùng vào một lịch chia buổi cố định.
 - **Lab:** tĩnh tâm 10 phút, caffeine guardrail, ánh sáng ban ngày và Wim Hof có giải thích cơ chế + safety gate. Không có cold-water protocol.
-- **Bạn:** hồ sơ, mục tiêu, dinh dưỡng/phục hồi, giao diện và trạng thái local data.
+- **Bạn:** hồ sơ, mục tiêu, dinh dưỡng/phục hồi và trạng thái local data.
 
-Giao diện hỗ trợ Light/Dark, tự theo system ở lần đầu và ghi nhớ lựa chọn trên thiết bị. Nút đổi nhanh nằm trong app header; control đầy đủ nằm trong tab Bạn. Header hiển thị logo, wordmark `rootbody` và copyright nhất quán; title lặp lại trong từng tab được ẩn khỏi thị giác nhưng vẫn giữ cho accessibility. Typography dùng scale tối thiểu 11 px cho nhãn phụ và 16 px cho body để vẫn đọc được ở màn hình 320 px.
+Giao diện được cố định ở chế độ sáng để giữ trải nghiệm nhất quán trên web và PWA. Header hiển thị logo, wordmark `rootbody` và copyright nhất quán; title lặp lại trong từng tab được ẩn khỏi thị giác nhưng vẫn giữ cho accessibility. Typography dùng scale tối thiểu 11 px cho nhãn phụ và 16 px cho body để vẫn đọc được ở màn hình 320 px.
 
 Profile Setup là detail flow, không phải tab thứ sáu.
 
@@ -76,7 +76,7 @@ activity_net_kcal = floor_to_10((MET - 1) × 3.5 × weight_kg / 200 × minutes)
 index.html              semantic PWA shell và 5-screen navigation
 styles.css              V7 component foundation, giữ compatibility
 v8.css                  V8 design system và responsive override
-app.js                   local-only state, theme, energy/food/activity engine
+app.js                   local-only state, energy/food/activity engine
 health-engine.js         pure health signals và prioritization
 coach-data.js            exercise, plan và protocol catalog
 coach.js                 training/recovery/workout/meditation/Wim Hof UI
@@ -140,13 +140,13 @@ Mở `http://localhost:8765`.
 
 ## Deploy
 
-Workflow `.github/workflows/pages.yml` deploy nhánh `main` lên GitHub Pages. Service Worker dùng cache riêng `rootbody-v8-architecture-v71`, ưu tiên mạng cho tài liệu điều hướng và giữ app shell để chạy offline.
+Workflow `.github/workflows/pages.yml` deploy nhánh `main` lên GitHub Pages. Service Worker dùng cache riêng `rootbody-v8-architecture-v72`, ưu tiên mạng cho tài liệu điều hướng và giữ app shell để chạy offline.
 
-V71 dựng lại logo trực tiếp từ ảnh nguồn `body.png`, đưa logo + wordmark + copyright vào app header, cung cấp icon 180/192/512/1024 px và favicon. Startup motion theo chuỗi `ROOT → BODY → SIGNAL → IDENTITY` trong khoảng 1,9 giây; `prefers-reduced-motion` dùng lockup tĩnh trong 650–700 ms.
+V72 giữ hệ logo trực tiếp từ ảnh nguồn `body.png`, đưa logo + wordmark + copyright vào app header, cung cấp icon 180/192/512/1024 px và favicon. Startup motion theo chuỗi `ROOT → BODY → SIGNAL → IDENTITY` trong khoảng 1,9 giây; `prefers-reduced-motion` dùng lockup tĩnh trong 650–700 ms.
 
 ## Brand
 
-Brand cố định dùng Root Green `#025B30`, Signal Lime `#7ED957`, Body White `#FFFFFF` và Evidence Ink `#102019`. Root Green chứa chữ luôn dùng Body White; Signal Lime chứa chữ luôn dùng Evidence Ink. Signal Lime chỉ mang nghĩa active/selected/change/intervention/progress, không thay cho kết luận “khỏe” hoặc “an toàn”. Dark theme dùng green-black surfaces nhưng không đổi geometry/màu logo. Chi tiết đầy đủ nằm trong `BRAND_SPEC.md`.
+Brand cố định dùng Root Green `#025B30`, Signal Lime `#7ED957`, Body White `#FFFFFF` và Evidence Ink `#102019`. Root Green chứa chữ luôn dùng Body White; Signal Lime chứa chữ luôn dùng Evidence Ink. Signal Lime chỉ mang nghĩa active/selected/change/intervention/progress, không thay cho kết luận “khỏe” hoặc “an toàn”. Chi tiết đầy đủ nằm trong `BRAND_SPEC.md`.
 
 © Copyright from derekdaydoi
 
