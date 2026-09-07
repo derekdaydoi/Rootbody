@@ -1,0 +1,38 @@
+name: Remove Rootbody copyright UI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/remove-copyright.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  remove-copyright:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remove copyright UI and self-clean
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
+          text = text.replace('<div class="splash-identity"><div class="splash-wordmark">Rootbody</div><small>© Copyright from derekdaydoi</small></div>', '<div class="splash-identity"><div class="splash-wordmark">Rootbody</div></div>')
+          text = text.replace('<span class="brand-copy"><span class="brand-name">Rootbody</span><small>© Copyright from derekdaydoi</small></span>', '<span class="brand-copy"><span class="brand-name">Rootbody</span></span>')
+          text = text.replace('        <footer class="rb-product-footer">© Copyright from derekdaydoi</footer>\n', '')
+          if 'Copyright from derekdaydoi' in text:
+              raise SystemExit('Copyright string still exists in index.html')
+          path.write_text(text, encoding='utf-8')
+          PY
+          git config user.name "rootbody-maintenance"
+          git config user.email "rootbody-maintenance@users.noreply.github.com"
+          git rm .github/workflows/remove-copyright.yml
+          git add index.html
+          git diff --cached --check
+          git commit -m "fix: remove copyright from app UI"
+          git push
